@@ -148,6 +148,12 @@ class Actor : public Image
 
 	virtual void setResistance(float r)		{resistance = r;}
 
+	void setPositionX(float pos) {spriteData.x = pos;}
+	void setPositionY(float pos) {spriteData.y = pos;} 
+	void incPositionX(float pos) {spriteData.x += pos;}
+	void incPositionY(float pos) {spriteData.y += pos;}
+	void incPosition(VECTOR2 pos) {spriteData.x += pos.x; spriteData.y += pos.y;}
+
 	//virtual void draw() {};
 
     ////////////////////////////////////////

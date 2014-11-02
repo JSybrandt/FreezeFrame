@@ -7,7 +7,7 @@
 class FreezeFrame;
 
 namespace playerNS{
-	const float SPEED = 200;
+	const float SPEED = 300;
 	const float WEAPON_COOLDOWN = 1;
 }
 class Player: public Actor
