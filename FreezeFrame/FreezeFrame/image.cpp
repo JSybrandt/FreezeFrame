@@ -36,13 +36,15 @@ Image::Image()
     animComplete = false;
     graphics = NULL;                // link to graphics system
     colorFilter = graphicsNS::WHITE; // WHITE for no change
+	worldLoc = VECTOR2(0,0);
 }
 
 //=============================================================================
 // destructor
 //=============================================================================
 Image::~Image()
-{}
+{
+}
 
 //=============================================================================
 // Initialize the Image.
@@ -91,10 +93,14 @@ bool Image::initialize(Graphics *g, int width, int height, int ncols,
 // Pre : spriteBegin() is called
 // Post: spriteEnd() is called
 //=============================================================================
-void Image::draw(COLOR_ARGB color)
+void Image::draw(VECTOR2 screenLoc,COLOR_ARGB color)
 {
     if (!visible || graphics == NULL)
         return;
+
+	spriteData.x = worldLoc.x - screenLoc.x;
+	spriteData.y = worldLoc.y - screenLoc.y;
+
     // get fresh texture incase onReset() was called
     spriteData.texture = textureManager->getTexture();
     if(color == graphicsNS::FILTER)                     // if draw with filter
@@ -109,10 +115,14 @@ void Image::draw(COLOR_ARGB color)
 // Pre : spriteBegin() is called
 // Post: spriteEnd() is called
 //=============================================================================
-void Image::draw(SpriteData sd, COLOR_ARGB color)
+void Image::draw(VECTOR2 screenLoc,SpriteData sd, COLOR_ARGB color)
 {
     if (!visible || graphics == NULL)
         return;
+
+	spriteData.x = worldLoc.x - screenLoc.x;
+	spriteData.y = worldLoc.y - screenLoc.y;
+
     sd.rect = spriteData.rect;                  // use this Images rect to select texture
     sd.texture = textureManager->getTexture();  // get fresh texture incase onReset() was called
 

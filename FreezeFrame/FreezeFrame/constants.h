@@ -1,3 +1,5 @@
+#pragma once
+
 // Programming 2D Games
 // Copyright (c) 2011 by: 
 // Charles Kelly
@@ -26,7 +28,10 @@
 //                  Constants
 //-----------------------------------------------
 // graphic images
-const char BACKGROUND_IMAGE[] = "pictures\\background.jpg";  // photo source NASA/courtesy of nasaimages.org 
+const char BACKGROUND_IMAGE[] = "pictures\\background.png";
+const char MAN_IMAGE[] = "pictures\\man.png";
+const char TURRET_IMAGE[] = "pictures\\turret.png";
+const char BULLET_IMAGE[] = "pictures\\bullet.png";
 
 //Sound Locations
 const char WAVE_BANK[] = "audio\\Win\\Wave Bank.xwb";
@@ -40,8 +45,8 @@ const char SC_LAUNCH[] = "launch"; //MUST be exactly the same as cue name
 const char CLASS_NAME[] = "Freeze Frame";
 const char GAME_TITLE[] = "Freeze Frame";
 const bool FULLSCREEN = false;              // windowed or fullscreen DO NOT RUN FULLSCREEN IN DEBUG MODE
-const UINT GAME_WIDTH =  1280;               // width of game in pixels
-const UINT GAME_HEIGHT = 800;               // height of game in pixels
+const UINT GAME_WIDTH =  1280;               // width of screen in pixels
+const UINT GAME_HEIGHT = 800;               // height of screen in pixels
 
 //Explosion Cells
 const int  EXP_COLS = 2;
@@ -66,12 +71,11 @@ const UCHAR ESC_KEY      = VK_ESCAPE;   // escape key
 const UCHAR ALT_KEY      = VK_MENU;     // Alt key
 const UCHAR ENTER_KEY    = VK_RETURN;   // Enter key
 
-enum GameState{
-	TitleScreen,
-	Level1,
-	Level2,
-	Level3,
-	RestartScreen
-};
+
+
+const int MAX_ACTORS = 100;
+const int MAX_BULLETS = 1000;
+const int MAX_PARTICLES = 10000;
+const int MAX_SCENERY = 1000;
 
 #endif

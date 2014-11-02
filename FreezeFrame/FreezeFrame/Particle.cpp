@@ -17,7 +17,7 @@ void Particle::update(float frametime)
 	}
 }
 
-void Particle::draw()
+void Particle::draw(VECTOR2 screenLoc)
 {
 	if(active)
 	{
@@ -27,7 +27,7 @@ void Particle::draw()
 		else if(currentOpacity < .50)
 			c = graphicsNS::ALPHA50;
 
-		Actor::draw(c);
+		Actor::draw(screenLoc,c);
 	}
 }
 

@@ -9,6 +9,7 @@
 
 #include "game.h"
 #include "Controls.h"
+#include "Actor.h"
 #include <string>
 using std::string;
 #include <ctime>
@@ -20,10 +21,32 @@ using std::string;
 class FreezeFrame : public Game
 {
 private:
+
+	enum GameState{
+	TitleScreen,
+	Level1,
+	Level2,
+	Level3,
+	RestartScreen,
+	SIZE //THIS MUST BE THE LAST ELEMENT
+	};
+
     // variables
 	TextureManager backgroundTex;   
+	TextureManager manTex;
+	TextureManager turretTex; 
+	TextureManager bulletTex;   
 	Image   background;         // backdrop image
+	Actor actors[MAX_ACTORS];
 	Controls P1Controls;
+
+	VECTOR2 screenLoc;
+
+	VECTOR2 * worldSizes; //array of sizes per level
+
+	GameState currentState;
+
+	float rand01(){return ((rand()%100)/100.0);}
 
 public:
     // Constructor
@@ -40,6 +63,11 @@ public:
     void render();      // "
     void releaseAll();
     void resetAll();
+
+
+	//places the screen so the selected location is in the middle area (might not center)
+	void updateScreen(VECTOR2 center); 
+
 };
 
 #endif

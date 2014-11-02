@@ -8,5 +8,5 @@ public:
 	Particle();
 	virtual void update(float frametime);
 	void set(D3DXVECTOR2 loc);
-	virtual void draw();
+	virtual void draw(VECTOR2 screenLoc);
 };

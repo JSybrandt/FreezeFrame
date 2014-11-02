@@ -30,6 +30,8 @@ class Image
     bool    visible;        // true when visible
     bool    initialized;    // true when successfully initialized
     bool    animComplete;   // true when loop is false and endFrame has finished displaying
+	
+	VECTOR2 worldLoc;
 
   public:
     // Constructor
@@ -48,10 +50,10 @@ class Image
     virtual bool  getVisible()  {return visible;}
 
     // Return X position.
-    virtual float getX()        {return spriteData.x;}
+    virtual float getX()        {return worldLoc.x;}
 
     // Return Y position.
-    virtual float getY()        {return spriteData.y;}
+    virtual float getY()        {return worldLoc.y;}
 
     // Return scale factor.
     virtual float getScale()    {return spriteData.scale;}
@@ -63,13 +65,10 @@ class Image
     virtual int   getHeight()   {return spriteData.height;}
 
     // Return center X.
-    virtual float getCenterX()      {return spriteData.x + spriteData.width/2*getScale();}
+    virtual float getCenterX()      {return worldLoc.x + spriteData.width/2*getScale();}
 
     // Return center Y.
-    virtual float getCenterY()      {return spriteData.y + spriteData.height/2*getScale();}
-
-	virtual void setCenterX(float x){spriteData.x = x - spriteData.width/2*getScale();}
-	virtual void setCenterY(float y){spriteData.y = y - spriteData.height/2*getScale();}
+    virtual float getCenterY()      {return worldLoc.x + spriteData.height/2*getScale();}
 
     // Return rotation angle in degrees.
     virtual float getDegrees()      {return spriteData.angle*(180.0f/(float)PI);}
@@ -102,11 +101,15 @@ class Image
     //           Set functions            //
     ////////////////////////////////////////
 
+	virtual void setCenterX(float x){worldLoc.x = x - spriteData.width/2*getScale();}
+
+	virtual void setCenterY(float y){worldLoc.y = y - spriteData.height/2*getScale();}
+
     // Set X location.
-    virtual void setX(float newX)   {spriteData.x = newX;}
+    virtual void setX(float newX)   {worldLoc.x = newX;}
 
     // Set Y location.
-    virtual void setY(float newY)   {spriteData.y = newY;}
+    virtual void setY(float newY)   {worldLoc.y = newY;}
 
     // Set scale.
     virtual void setScale(float s)  {spriteData.scale = s;}
@@ -170,11 +173,11 @@ class Image
     virtual void flipVertical(bool flip)    {spriteData.flipVertical = flip;}
 
     // Draw Image using color as filter. Default color is WHITE.
-    virtual void draw(COLOR_ARGB color = graphicsNS::WHITE);
+    virtual void draw(VECTOR2 screenLoc, COLOR_ARGB color = graphicsNS::WHITE);
 
     // Draw this image using the specified SpriteData.
     //   The current SpriteData.rect is used to select the texture.
-    virtual void draw(SpriteData sd, COLOR_ARGB color = graphicsNS::WHITE); // draw with SpriteData using color as filter
+    virtual void draw(VECTOR2 screenLoc, SpriteData sd, COLOR_ARGB color = graphicsNS::WHITE); // draw with SpriteData using color as filter
 
     // Update the animation. frameTime is used to regulate the speed.
     virtual void update(float frameTime);
