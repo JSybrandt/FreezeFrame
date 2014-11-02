@@ -68,7 +68,7 @@ class Image
     virtual float getCenterX()      {return worldLoc.x + spriteData.width/2*getScale();}
 
     // Return center Y.
-    virtual float getCenterY()      {return worldLoc.x + spriteData.height/2*getScale();}
+    virtual float getCenterY()      {return worldLoc.y + spriteData.height/2*getScale();}
 
     // Return rotation angle in degrees.
     virtual float getDegrees()      {return spriteData.angle*(180.0f/(float)PI);}
@@ -100,6 +100,11 @@ class Image
     ////////////////////////////////////////
     //           Set functions            //
     ////////////////////////////////////////
+
+	virtual void setCenter(VECTOR2 center)
+	{
+		setCenterX(center.x);setCenterY(center.y);
+	}
 
 	virtual void setCenterX(float x){worldLoc.x = x - spriteData.width/2*getScale();}
 
@@ -173,11 +178,11 @@ class Image
     virtual void flipVertical(bool flip)    {spriteData.flipVertical = flip;}
 
     // Draw Image using color as filter. Default color is WHITE.
-    virtual void draw(VECTOR2 screenLoc, COLOR_ARGB color = graphicsNS::WHITE);
+    virtual void draw(VECTOR2 screenLoc, COLOR_ARGB color = graphicsNS::FILTER);
 
     // Draw this image using the specified SpriteData.
     //   The current SpriteData.rect is used to select the texture.
-    virtual void draw(VECTOR2 screenLoc, SpriteData sd, COLOR_ARGB color = graphicsNS::WHITE); // draw with SpriteData using color as filter
+    virtual void draw(VECTOR2 screenLoc, SpriteData sd, COLOR_ARGB color = graphicsNS::FILTER); // draw with SpriteData using color as filter
 
     // Update the animation. frameTime is used to regulate the speed.
     virtual void update(float frameTime);

@@ -20,6 +20,9 @@ FreezeFrame::FreezeFrame()
 	worldSizes[GameState::Level3] = VECTOR2(2048,2048);
 
 	currentState = Level1;
+	
+
+	P1Controls = Controls('W','S','A','D');
 }
 
 //=============================================================================
@@ -38,6 +41,7 @@ void FreezeFrame::initialize(HWND hwnd)
 {
 	Game::initialize(hwnd); // throws GameError
 
+
 	if(!backgroundTex.initialize(graphics,BACKGROUND_IMAGE))
 		throw GameError(1,"Failed to init background tex");
 	if(!manTex.initialize(graphics,MAN_IMAGE))
@@ -48,7 +52,13 @@ void FreezeFrame::initialize(HWND hwnd)
 		throw GameError(4,"Failed to init bullet tex");
 
 	if(!background.initialize(graphics,0,0,0,&backgroundTex))
-		throw GameError(4,"Failed to init background image");
+		throw GameError(5,"Failed to init background image");
+
+	if(!player.initialize(this,P1Controls,0,0,0,&manTex))
+		throw GameError(24,"Failed to init player");
+	player.setColorFilter(COLOR_ARGB(0xFF3E52ED));
+
+	player.setCenter(VECTOR2(1000,1000));
 
 	currentState = GameState::Level1;
 
@@ -60,6 +70,7 @@ void FreezeFrame::initialize(HWND hwnd)
 			throw GameError(-1*i,"FAILED TO MAKE DUDE!");
 		actors[i].setCenterX(rand01()*worldSizes[currentState].x);
 		actors[i].setCenterY(rand01()*worldSizes[currentState].y);
+		actors[i].setColorFilter(graphicsNS::RED);
 	}
 
 
@@ -73,19 +84,15 @@ void FreezeFrame::initialize(HWND hwnd)
 //=============================================================================
 void FreezeFrame::update()
 {
-	if(input->isKeyDown('W'))
-		screenLoc.y -= frameTime * 500;
-	if(input->isKeyDown('S'))
-		screenLoc.y += frameTime * 500;
-	if(input->isKeyDown('A'))
-		screenLoc.x -= frameTime * 500;
-	if(input->isKeyDown('D'))
-		screenLoc.x += frameTime * 500;
+	worldFrameTime = frameTime;
+	player.update(worldFrameTime);
+	updateScreen(player.getCenter());
 
-	if(screenLoc.x<0)screenLoc.x=0;
-	if(screenLoc.y<0)screenLoc.y=0;
-	if(screenLoc.x+GAME_WIDTH>worldSizes[currentState].x)screenLoc.x=worldSizes[currentState].x-GAME_WIDTH;
-	if(screenLoc.y+GAME_HEIGHT>worldSizes[currentState].y)screenLoc.y=worldSizes[currentState].y-GAME_HEIGHT;
+	for(int i = 0; i < MAX_ACTORS; i++)
+	{
+		actors[i].update(worldFrameTime);
+	}
+
 }
 
 //=============================================================================
@@ -113,8 +120,10 @@ void FreezeFrame::render()
 
 	for(int i = 0; i < MAX_ACTORS; i++)
 	{
-		actors[i].draw(screenLoc,graphicsNS::RED);
+		actors[i].draw(screenLoc,graphicsNS::FILTER);
 	}
+
+	player.draw(screenLoc);
 
 	graphics->spriteEnd();                  // end drawing sprites
 

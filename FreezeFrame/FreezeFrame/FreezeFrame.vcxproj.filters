@@ -63,6 +63,12 @@
     <ClCompile Include="freezeframe.cpp">
       <Filter>Source Files\GameFiles</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\GameFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Guard.cpp">
+      <Filter>Source Files\GameFiles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="constants.h">
@@ -102,6 +108,12 @@
       <Filter>Header Files\GameFiles</Filter>
     </ClInclude>
     <ClInclude Include="freezeframe.h">
+      <Filter>Header Files\GameFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\GameFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="Guard.h">
       <Filter>Header Files\GameFiles</Filter>
     </ClInclude>
   </ItemGroup>

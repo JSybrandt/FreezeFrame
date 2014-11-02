@@ -124,7 +124,7 @@ bool Actor::collidesWith(Actor &ent, VECTOR2 &collisionVector)
 bool Actor::collideCircle(Actor &ent, VECTOR2 &collisionVector)
 {
     // difference between centers
-    distSquared = *getCenter() - *ent.getCenter();
+    distSquared = getCenter() - ent.getCenter();
     distSquared.x = distSquared.x * distSquared.x;      // difference squared
     distSquared.y = distSquared.y * distSquared.y;
 
@@ -136,7 +136,7 @@ bool Actor::collideCircle(Actor &ent, VECTOR2 &collisionVector)
     if(distSquared.x + distSquared.y <= sumRadiiSquared)
     {
         // set collision vector
-        collisionVector = *ent.getCenter() - *getCenter();
+        collisionVector = ent.getCenter() - getCenter();
         return true;
     }
     return false;   // not colliding
@@ -161,7 +161,7 @@ bool Actor::collideBox(Actor &ent, VECTOR2 &collisionVector)
         (getCenterY() + edge.top*getScale() <= ent.getCenterY() + ent.getEdge().bottom*ent.getScale()) )
     {
         // set collision vector
-        collisionVector = *ent.getCenter() - *getCenter();
+        collisionVector = ent.getCenter() - getCenter();
         return true;
     }
     return false;
@@ -183,7 +183,7 @@ bool Actor::collideRotatedBox(Actor &ent, VECTOR2 &collisionVector)
     if (projectionsOverlap(ent) && ent.projectionsOverlap(*this))
     {
         // set collision vector
-        collisionVector = *ent.getCenter() - *getCenter();
+        collisionVector = ent.getCenter() - getCenter();
         return true;
     }
     return false;
@@ -261,14 +261,14 @@ bool Actor::collideRotatedBoxCircle(Actor &ent, VECTOR2 &collisionVector)
     computeRotatedBox();                    // prepare rotated box
 
     // project circle center onto edge01
-    center01 = graphics->Vector2Dot(&edge01, ent.getCenter());
+    center01 = graphics->Vector2Dot(&edge01, &ent.getCenter());
     min01 = center01 - ent.getRadius()*ent.getScale(); // min and max are Radius from center
     max01 = center01 + ent.getRadius()*ent.getScale();
     if (min01 > edge01Max || max01 < edge01Min) // if projections do not overlap
         return false;                       // no collision is possible
         
     // project circle center onto edge03
-    center03 = graphics->Vector2Dot(&edge03, ent.getCenter());
+    center03 = graphics->Vector2Dot(&edge03, &ent.getCenter());
     min03 = center03 - ent.getRadius()*ent.getScale(); // min and max are Radius from center
     max03 = center03 + ent.getRadius()*ent.getScale();
     if (min03 > edge03Max || max03 < edge03Min) // if projections do not overlap
@@ -287,7 +287,7 @@ bool Actor::collideRotatedBoxCircle(Actor &ent, VECTOR2 &collisionVector)
 
     // circle not in voronoi region so it is colliding with edge of box
     // set collision vector, uses simple center of circle to center of box
-    collisionVector = *ent.getCenter() - *getCenter();
+    collisionVector = ent.getCenter() - getCenter();
     return true;
 }
 
@@ -299,7 +299,7 @@ bool Actor::collideRotatedBoxCircle(Actor &ent, VECTOR2 &collisionVector)
 //=============================================================================
 bool Actor::collideCornerCircle(VECTOR2 corner, Actor &ent, VECTOR2 &collisionVector)
 {
-    distSquared = corner - *ent.getCenter();            // corner - circle
+    distSquared = corner - ent.getCenter();            // corner - circle
     distSquared.x = distSquared.x * distSquared.x;      // difference squared
     distSquared.y = distSquared.y * distSquared.y;
 
@@ -311,7 +311,7 @@ bool Actor::collideCornerCircle(VECTOR2 corner, Actor &ent, VECTOR2 &collisionVe
     if(distSquared.x + distSquared.y <= sumRadiiSquared)
     {
         // set collision vector
-        collisionVector = *ent.getCenter() - corner;
+        collisionVector = ent.getCenter() - corner;
         return true;
     }
     return false;
@@ -332,7 +332,7 @@ void Actor::computeRotatedBox()
     VECTOR2 rotatedX(cos(spriteData.angle), sin(spriteData.angle));
     VECTOR2 rotatedY(-sin(spriteData.angle), cos(spriteData.angle));
 
-    const VECTOR2 *center = getCenter();
+    const VECTOR2 *center = &getCenter();
     corners[0] = *center + rotatedX * ((float)edge.left*getScale())  +
                            rotatedY * ((float)edge.top*getScale());
     corners[1] = *center + rotatedX * ((float)edge.right*getScale()) + 

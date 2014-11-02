@@ -8,13 +8,15 @@
 #define WIN32_LEAN_AND_MEAN
 
 #include "game.h"
-#include "Controls.h"
-#include "Actor.h"
 #include <string>
 using std::string;
 #include <ctime>
 
 
+#include "Controls.h"
+#include "Actor.h"
+#include "Player.h"
+#include "Guard.h"
 //=============================================================================
 // Create game class
 //=============================================================================
@@ -37,8 +39,11 @@ private:
 	TextureManager turretTex; 
 	TextureManager bulletTex;   
 	Image   background;         // backdrop image
-	Actor actors[MAX_ACTORS];
+	Guard actors[MAX_ACTORS];
 	Controls P1Controls;
+	Player player;
+
+	float worldFrameTime;
 
 	VECTOR2 screenLoc;
 
@@ -67,6 +72,11 @@ public:
 
 	//places the screen so the selected location is in the middle area (might not center)
 	void updateScreen(VECTOR2 center); 
+
+	VECTOR2 getMouseInWorld(){
+		VECTOR2 mouse(input->getMouseX(),input->getMouseY());
+		return screenLoc + mouse;
+	}
 
 };
 

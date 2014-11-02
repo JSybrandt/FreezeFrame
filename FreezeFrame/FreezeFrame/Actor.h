@@ -81,10 +81,9 @@ class Actor : public Image
     ////////////////////////////////////////
 
     // Return center of scaled Actor as screen x,y.
-    virtual const VECTOR2* getCenter()   
+    virtual const VECTOR2 getCenter()   
     {
-        center = VECTOR2(getCenterX(),getCenterY());
-        return &center;
+        return VECTOR2(getCenterX(),getCenterY());
     }
 
     // Return radius of collision circle.
