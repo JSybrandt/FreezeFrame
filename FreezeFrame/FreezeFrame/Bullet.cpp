@@ -1,16 +1,17 @@
 #include"Bullet.h"
 #include "freezeframe.h"
 
-bool Bullet::initialize(FreezeFrame* g, int width, int height, int ncols,TextureManager *textureM)
+bool Bullet::initialize(FreezeFrame* g, int width, int height, int ncols,TextureManager *bulletTM, TextureManager* lineTM)
 {
 	game = g;
 	setActive(false);
-	return Actor::initialize(g,width,height,ncols,textureM);
+	bool result =  Actor::initialize(g,width,height,ncols,bulletTM);
+	result = result && line.initialize(game->getGraphics(),0,0,0,lineTM);
+	return result;
 }
 
 void Bullet::create(VECTOR2 loc, float dir, COLOR_ARGB c)
 {
-	cooldown = 0;
 	velocity = utilityNS::rotateVector(VECTOR2(1,0),dir)*bulletNS::SPEED;
 	setCenter(loc);
 	setColorFilter(c);
@@ -18,20 +19,23 @@ void Bullet::create(VECTOR2 loc, float dir, COLOR_ARGB c)
 	firedLocation = loc;
 	setRadians(dir);
 
+	line.setRadians(dir);
+
+	line.setCenter(getCenter());
+	
+	VECTOR2 offset(line.getWidth()/2,0);
+	offset = utilityNS::rotateVector(offset,dir);
+
+	line.setCenter(line.getCenter()+offset);
+
+	line.setColorFilter(c);
+
 }
 
 void Bullet::update(float frametime)
 {
 	if(getActive())
 	{
-		if(cooldown <= 0)
-		{
-			game->spawnSmokeParticle(getCenter(),getColorFilter());
-			cooldown = bulletNS::SMOKE_COOLDOWN;
-		}
-		else
-			cooldown -= frametime;
-
 		setCenter(getCenter()+velocity*frametime);
 	}
 }
@@ -40,9 +44,14 @@ void Bullet::draw(VECTOR2 screenLoc)
 {
 	if(getActive())
 	{
-		//TODO: draw line from fired location to current location
-		//VECTOR2 line[] = {firedLocation - screenLoc, getCenter()-screenLoc};
-		//graphics->drawLine(line[0],line[2],getColorFilter());
+		VECTOR2 lineData = getCenter()-firedLocation;
+		float lineLength = D3DXVec2Length(&lineData);
+		RECT lineRect = line.getSpriteDataRect();
+		lineRect.right = lineLength;
+		line.setSpriteDataRect(lineRect);
+
+		line.draw(screenLoc);
+
 		Actor::draw(screenLoc);
 	}
 }

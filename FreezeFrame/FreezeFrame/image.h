@@ -43,6 +43,12 @@ class Image
     //           Get functions            //
     ////////////////////////////////////////
 
+	// Return center of scaled Actor as screen x,y.
+    virtual const VECTOR2 getCenter()   
+    {
+        return VECTOR2(getCenterX(),getCenterY());
+    }
+
     // Return reference to SpriteData structure.
     const virtual SpriteData& getSpriteInfo() {return spriteData;}
 

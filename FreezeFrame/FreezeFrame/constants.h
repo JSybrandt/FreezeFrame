@@ -36,6 +36,7 @@ const char TURRET_IMAGE[] = "pictures\\turret.png";
 const char BULLET_IMAGE[] = "pictures\\bullet.png";
 const char CURSOR_IMAGE[] = "pictures\\cursor.png";
 const char	BULLET_TRAIL_IMAGE[] = "pictures\\bulletTrail.png";
+const char	LINE_IMAGE[] = "pictures\\line.png";
 
 const char MENU_IMAGE[] = "pictures\\menu.png";
 const char MENU_CURSOR_IMAGE[] = "pictures\\menuCursor.png";

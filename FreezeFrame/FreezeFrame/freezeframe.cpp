@@ -66,6 +66,8 @@ void FreezeFrame::initialize(HWND hwnd)
 		throw GameError(7,"Failed to init menu tex");
 	if(!menuCursorTex.initialize(graphics,MENU_CURSOR_IMAGE))
 		throw GameError(8,"Failed to init menu cursor tex");
+	if(!lineTex.initialize(graphics,LINE_IMAGE))
+		throw GameError(9,"Failed to init line tex");
 
 
 	if(!title.initialize(graphics,MENU_CELL_WIDTH,MENU_CELL_HEIGHT,1,&menuTex))
@@ -116,13 +118,13 @@ void FreezeFrame::initialize(HWND hwnd)
 
 	for(int i = 0 ; i < MAX_PLAYER_BULLETS; i++)
 	{
-		if(!playerBullets[i].initialize(this,0,0,0,&bulletTex))
+		if(!playerBullets[i].initialize(this,0,0,0,&bulletTex,&lineTex))
 			throw GameError(-1*i,"FAILED TO MAKE player bullet!");
 	}
 
 	for(int i = 0 ; i < MAX_ENEMY_BULLETS; i++)
 	{
-		if(!enemyBullets[i].initialize(this,0,0,0,&bulletTex))
+		if(!enemyBullets[i].initialize(this,0,0,0,&bulletTex,&lineTex))
 			throw GameError(-1*i,"FAILED TO MAKE enemy bullet!");
 	}
 

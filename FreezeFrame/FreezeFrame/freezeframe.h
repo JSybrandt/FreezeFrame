@@ -64,6 +64,7 @@ private:
 	TextureManager bulletTex;   
 	TextureManager cursorTex;
 	TextureManager bulletTrailTex;
+	TextureManager lineTex;
 
 	TextureManager menuCursorTex;
 	TextureManager menuTex;
