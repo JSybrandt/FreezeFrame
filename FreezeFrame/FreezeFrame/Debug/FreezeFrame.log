@@ -1,38 +1,37 @@
-﻿Build started 11/2/2014 12:46:03 AM.
+﻿Build started 11/2/2014 1:06:58 AM.
      1>Project "C:\PROJECTS\FreezeFrame\FreezeFrame\FreezeFrame\FreezeFrame.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\\Include" /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Actor.cpp Guard.cpp Particle.cpp Player.cpp audio.cpp constants.cpp freezeframe.cpp game.cpp graphics.cpp image.cpp input.cpp textDX.cpp textureManager.cpp winmain.cpp
-         freezeframe.cpp
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.h(55): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.h(78): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.cpp(68): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
-         Player.cpp
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.h(55): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.h(78): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
-     1>c:\projects\freezeframe\freezeframe\freezeframe\player.cpp(40): warning C4305: '*=' : truncation from 'double' to 'float'
-         Guard.cpp
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.h(55): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.h(78): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
-         Actor.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\\Include" /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Cursor.cpp Guard.cpp Player.cpp freezeframe.cpp winmain.cpp
+         Cursor.cpp
+     1>c:\projects\freezeframe\freezeframe\freezeframe\cursor.h(7): warning C4244: 'initializing' : conversion from 'const double' to 'const float', possible loss of data
+     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.h(58): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.h(81): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
          Generating Code...
          Compiling...
          winmain.cpp
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.h(55): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.h(78): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
-         textureManager.cpp
-         textDX.cpp
-         input.cpp
-         image.cpp
-         graphics.cpp
-         game.cpp
-         constants.cpp
-         audio.cpp
-         Particle.cpp
+     1>c:\projects\freezeframe\freezeframe\freezeframe\cursor.h(7): warning C4244: 'initializing' : conversion from 'const double' to 'const float', possible loss of data
+     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.h(58): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.h(81): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+         freezeframe.cpp
+     1>c:\projects\freezeframe\freezeframe\freezeframe\cursor.h(7): warning C4244: 'initializing' : conversion from 'const double' to 'const float', possible loss of data
+     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.h(58): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.h(81): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.cpp(74): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+         Player.cpp
+     1>c:\projects\freezeframe\freezeframe\freezeframe\cursor.h(7): warning C4244: 'initializing' : conversion from 'const double' to 'const float', possible loss of data
+     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.h(58): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.h(81): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>c:\projects\freezeframe\freezeframe\freezeframe\player.cpp(40): warning C4305: '*=' : truncation from 'double' to 'float'
+         Guard.cpp
+     1>c:\projects\freezeframe\freezeframe\freezeframe\cursor.h(7): warning C4244: 'initializing' : conversion from 'const double' to 'const float', possible loss of data
+     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.h(58): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.h(81): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
          Generating Code...
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\PROJECTS\FreezeFrame\FreezeFrame\FreezeFrame\Debug\FreezeFrame.exe" /NOLOGO /LIBPATH:"C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\\Lib\x86" d3d9.lib d3dx9.lib winmm.lib xinput.lib winmm.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\PROJECTS\FreezeFrame\FreezeFrame\FreezeFrame\Debug\FreezeFrame.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\PROJECTS\FreezeFrame\FreezeFrame\FreezeFrame\Debug\FreezeFrame.lib" /MACHINE:X86 /SAFESEH Debug\Actor.obj
          Debug\audio.obj
          Debug\constants.obj
+         Debug\Cursor.obj
          Debug\game.obj
          Debug\graphics.obj
          Debug\Guard.obj
@@ -49,4 +48,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:13.48
+Time Elapsed 00:00:06.40

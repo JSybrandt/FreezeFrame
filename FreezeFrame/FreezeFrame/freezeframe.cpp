@@ -41,6 +41,7 @@ void FreezeFrame::initialize(HWND hwnd)
 {
 	Game::initialize(hwnd); // throws GameError
 
+	ShowCursor(false);
 
 	if(!backgroundTex.initialize(graphics,BACKGROUND_IMAGE))
 		throw GameError(1,"Failed to init background tex");
@@ -52,16 +53,21 @@ void FreezeFrame::initialize(HWND hwnd)
 		throw GameError(4,"Failed to init bullet tex");
 	if(!walkTex.initialize(graphics,WALK_IMAGE))
 		throw GameError(5,"Failed to init walk tex");
-
+	if(!cursorTex.initialize(graphics,CURSOR_IMAGE))
+		throw GameError(5,"Failed to init cursor tex");
 
 	if(!background.initialize(graphics,0,0,0,&backgroundTex))
 		throw GameError(5,"Failed to init background image");
 
 	if(!player.initialize(this,P1Controls,0,0,0,&manTex))
 		throw GameError(24,"Failed to init player");
+
 	player.setColorFilter(COLOR_ARGB(0xFF3E52ED));
 
 	player.setCenter(VECTOR2(1000,1000));
+
+	if(!cursor.initialize(this,0,0,0,&cursorTex))
+		throw GameError(25,"Failed to init cursor");
 
 	currentState = GameState::Level1;
 
@@ -94,6 +100,8 @@ void FreezeFrame::update()
 	worldFrameTime = frameTime;
 	player.update(worldFrameTime);
 	updateScreen(player.getCenter());
+
+	cursor.update(worldFrameTime);
 
 	for(int i = 0; i < MAX_ACTORS; i++)
 	{
@@ -131,6 +139,8 @@ void FreezeFrame::render()
 	}
 
 	player.draw(screenLoc);
+
+	cursor.draw(screenLoc);
 
 	graphics->spriteEnd();                  // end drawing sprites
 

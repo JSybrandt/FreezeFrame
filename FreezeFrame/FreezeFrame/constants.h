@@ -33,6 +33,7 @@ const char WALK_IMAGE[] = "pictures\\walkingAni.png";
 const char MAN_IMAGE[] = "pictures\\man.png";
 const char TURRET_IMAGE[] = "pictures\\turret.png";
 const char BULLET_IMAGE[] = "pictures\\bullet.png";
+const char CURSOR_IMAGE[] = "pictures\\cursor.png";
 
 //Sound Locations
 const char WAVE_BANK[] = "audio\\Win\\Wave Bank.xwb";

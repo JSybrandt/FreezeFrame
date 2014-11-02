@@ -90,6 +90,7 @@
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="audio.cpp" />
     <ClCompile Include="constants.cpp" />
+    <ClCompile Include="Cursor.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="graphics.cpp" />
     <ClCompile Include="Guard.cpp" />
@@ -107,6 +108,7 @@
     <ClInclude Include="audio.h" />
     <ClInclude Include="constants.h" />
     <ClInclude Include="Controls.h" />
+    <ClInclude Include="Cursor.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gameError.h" />
     <ClInclude Include="graphics.h" />

@@ -17,6 +17,7 @@ using std::string;
 #include "Actor.h"
 #include "Player.h"
 #include "Guard.h"
+#include "Cursor.h"
 //=============================================================================
 // Create game class
 //=============================================================================
@@ -39,6 +40,8 @@ private:
 	TextureManager walkTex;
 	TextureManager turretTex; 
 	TextureManager bulletTex;   
+	TextureManager cursorTex;
+	Cursor cursor;
 	Image   background;         // backdrop image
 	Guard actors[MAX_ACTORS];
 	Controls P1Controls;
