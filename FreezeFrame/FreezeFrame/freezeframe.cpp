@@ -50,6 +50,9 @@ void FreezeFrame::initialize(HWND hwnd)
 		throw GameError(3,"Failed to init turret tex");
 	if(!bulletTex.initialize(graphics,BULLET_IMAGE))
 		throw GameError(4,"Failed to init bullet tex");
+	if(!walkTex.initialize(graphics,WALK_IMAGE))
+		throw GameError(5,"Failed to init walk tex");
+
 
 	if(!background.initialize(graphics,0,0,0,&backgroundTex))
 		throw GameError(5,"Failed to init background image");
@@ -66,15 +69,19 @@ void FreezeFrame::initialize(HWND hwnd)
 
 	for(int i = 0; i < MAX_ACTORS; i++)
 	{
+		//if(!actors[i].initialize(this,64,64,4,&walkTex))
 		if(!actors[i].initialize(this,0,0,0,&manTex))
 			throw GameError(-1*i,"FAILED TO MAKE DUDE!");
 		actors[i].setCenterX(rand01()*worldSizes[currentState].x);
 		actors[i].setCenterY(rand01()*worldSizes[currentState].y);
 		actors[i].setColorFilter(graphicsNS::RED);
+		//actors[i].setFrames(0, 3);   // animation frames
+		//actors[i].setCurrentFrame(1);     // starting frame
+		//actors[i].setFrameDelay(0.08f);
 	}
 
 
-	
+
 
 	return;
 }

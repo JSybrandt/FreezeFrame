@@ -36,6 +36,7 @@ private:
     // variables
 	TextureManager backgroundTex;   
 	TextureManager manTex;
+	TextureManager walkTex;
 	TextureManager turretTex; 
 	TextureManager bulletTex;   
 	Image   background;         // backdrop image
