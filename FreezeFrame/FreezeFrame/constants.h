@@ -53,9 +53,9 @@ const UINT GAME_HEIGHT = 800;               // height of screen in pixels
 
 //Walking Cells
 const int  WALK_COL = 4;
-const int  EXP_WIDTH = 64;
-const int  EXP_HEIGHT = 64;
-const float EXP_DELAY = 0.05f;
+const int  WALK_WIDTH = 64;
+const int  WALK_HEIGHT = 64;
+const float WALK_DELAY = 0.05f;
 
 //Feet Cells
 const int  FEET_COL = 4;

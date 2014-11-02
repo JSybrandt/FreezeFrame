@@ -77,15 +77,15 @@ void FreezeFrame::initialize(HWND hwnd)
 
 	for(int i = 0; i < MAX_ACTORS; i++)
 	{
-		//if(!actors[i].initialize(this,64,64,4,&walkTex))
-		if(!actors[i].initialize(this,0,0,0,&manTex))
+		if(!actors[i].initialize(this,64,64,4,&walkTex))
+		//if(!actors[i].initialize(this,0,0,0,&manTex))
 			throw GameError(-1*i,"FAILED TO MAKE DUDE!");
 		actors[i].setCenterX(rand01()*worldSizes[currentState].x);
 		actors[i].setCenterY(rand01()*worldSizes[currentState].y);
 		actors[i].setColorFilter(graphicsNS::RED);
-		//actors[i].setFrames(0, 3);   // animation frames
-		//actors[i].setCurrentFrame(1);     // starting frame
-		//actors[i].setFrameDelay(0.08f);
+		actors[i].setFrames(0, 6);   // animation frames
+		actors[i].setCurrentFrame(0);     // starting frame
+		actors[i].setFrameDelay(0.08f);
 	}
 
 
