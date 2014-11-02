@@ -24,6 +24,7 @@ FreezeFrame::FreezeFrame()
 
 	currentState = TitleScreen;
 	
+	timeMultiplier = 1;
 
 	P1Controls = Controls('W','S','A','D');
 }
@@ -105,7 +106,7 @@ void FreezeFrame::initialize(HWND hwnd)
 		actors[i].setColorFilter(graphicsNS::RED);
 		actors[i].setFrames(0, 6);   // animation frames
 		actors[i].setCurrentFrame(0);     // starting frame
-		actors[i].setFrameDelay(0.08f);
+		actors[i].setFrameDelay(0.05f); //0.08 seems appriopriate
 	}
 
 	for(int i = 0 ; i < MAX_PARTICLES; i++)
@@ -209,14 +210,17 @@ void FreezeFrame::menuUpdate()
 void FreezeFrame::level1Update()
 {
 	worldFrameTime = frameTime;
+	timeMultiplier = 1;
 	player.update(worldFrameTime);
 	updateScreen(player.getCenter());
+
 
 	cursor.update(worldFrameTime);
 
 	for(int i = 0; i < MAX_ACTORS; i++)
 	{
 		actors[i].update(worldFrameTime);
+		
 	}
 
 	for(int i = 0 ; i < MAX_PARTICLES; i++)
@@ -239,7 +243,11 @@ void FreezeFrame::level1Update()
 // Artificial Intelligence
 //=============================================================================
 void FreezeFrame::ai()
-{}
+{
+	for(int i = 0; i < MAX_ACTORS; i++) {
+		actors[i].ai(worldFrameTime, player);
+	}
+}
 
 //=============================================================================
 // Handle collisions

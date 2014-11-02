@@ -41,8 +41,10 @@ void Player::update(float &frametime)
 
 		setCenter(getCenter()+inputDir);
 
-		if(inputDir == VECTOR2(0,0))
+		if(inputDir == VECTOR2(0,0)) {
 			frametime *= 0.01;
+			game->timeMultiplier = 0.01;
+		}
 		
 
 		weaponCooldown -= frametime;
