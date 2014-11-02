@@ -10,6 +10,7 @@
 #include "image.h"
 #include "input.h"
 #include "game.h"
+#include "Utility.h"
 
 namespace ActorNS
 {
@@ -189,6 +190,11 @@ class Actor : public Image
 	
 	
 	void virtual explosion();
+
+	void virtual draw(VECTOR2 screenLoc, COLOR_ARGB c = graphicsNS::FILTER)
+	{
+		if(getActive()) Image::draw(screenLoc,c);
+	}
 };
 
 #endif

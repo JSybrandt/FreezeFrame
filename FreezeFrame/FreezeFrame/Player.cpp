@@ -30,6 +30,11 @@ void Player::update(float &frametime)
 		if(input->isKeyDown(controls.right))
 			inputDir.x=1;
 
+		if(input->getMouseLButton()&& (weaponCooldown <= 0) ){
+			game->spawnBullet(getCenter(),mouseDir,getColorFilter(),true);
+			weaponCooldown  = playerNS::WEAPON_COOLDOWN;
+		}
+
 		D3DXVec2Normalize(&inputDir,&inputDir);
 
 		inputDir *= playerNS::SPEED*frametime;
@@ -39,6 +44,9 @@ void Player::update(float &frametime)
 		if(inputDir == VECTOR2(0,0))
 			frametime *= 0.01;
 		
+
+		weaponCooldown -= frametime;
+		if(weaponCooldown < 0) weaponCooldown =0;
 
 	}
 }

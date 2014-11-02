@@ -1,18 +1,16 @@
 #include "Particle.h"
 
-Particle::Particle()
+Particle::Particle():Actor()
 {
-	currentOpacity = 0;
-	active = false;
-	dissipationRate = 2;
+	setActive(false);
 }
 
 void Particle::update(float frametime)
 {
 	if(active)
 	{
-		currentOpacity -= dissipationRate*frametime;
-		if(currentOpacity<=0) active = false;
+		age += frametime;
+		if(age>=particleNS::LIFETIME) active = false;
 
 	}
 }
@@ -21,20 +19,18 @@ void Particle::draw(VECTOR2 screenLoc)
 {
 	if(active)
 	{
-		COLOR_ARGB c = graphicsNS::WHITE;
-		if(currentOpacity < .25)
-			c = graphicsNS::ALPHA25;
-		else if(currentOpacity < .50)
-			c = graphicsNS::ALPHA50;
-
+		COLOR_ARGB c = Graphics::calculateAlpha(1-(age/particleNS::LIFETIME))&colorFilter;
 		Actor::draw(screenLoc,c);
 	}
 }
 
 
-void Particle::set(D3DXVECTOR2 loc)
+void Particle::create(D3DXVECTOR2 loc,COLOR_ARGB c)
 {
+
 	active = true;
-	currentOpacity = 1;
+	age = 0;
 	setCenterX(loc.x);setCenterY(loc.y);
+	setColorFilter(c);
+
 }

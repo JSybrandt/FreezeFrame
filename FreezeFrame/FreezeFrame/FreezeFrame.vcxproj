@@ -89,6 +89,7 @@
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="audio.cpp" />
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="constants.cpp" />
     <ClCompile Include="Cursor.cpp" />
     <ClCompile Include="game.cpp" />
@@ -101,11 +102,13 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="textDX.cpp" />
     <ClCompile Include="textureManager.cpp" />
+    <ClCompile Include="Utility.cpp" />
     <ClCompile Include="winmain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
     <ClInclude Include="audio.h" />
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="constants.h" />
     <ClInclude Include="Controls.h" />
     <ClInclude Include="Cursor.h" />
@@ -120,6 +123,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="textDX.h" />
     <ClInclude Include="textureManager.h" />
+    <ClInclude Include="Utility.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

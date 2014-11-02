@@ -224,6 +224,15 @@ public:
     {
         sprite->End();
     }
+
+	//returns the alpha corresponding to a certain percent
+	static int calculateAlpha(float percent)
+	{
+		percent = min(1,max(0,percent));
+		return ((int)(0xFF*percent))<<24 | 0x00FFFFFF;
+	}
+
+
 };
 
 #endif

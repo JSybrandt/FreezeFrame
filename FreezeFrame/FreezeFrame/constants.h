@@ -34,6 +34,22 @@ const char MAN_IMAGE[] = "pictures\\man.png";
 const char TURRET_IMAGE[] = "pictures\\turret.png";
 const char BULLET_IMAGE[] = "pictures\\bullet.png";
 const char CURSOR_IMAGE[] = "pictures\\cursor.png";
+const char	BULLET_TRAIL_IMAGE[] = "pictures\\bulletTrail.png";
+
+const char MENU_IMAGE[] = "pictures\\menu.png";
+const char MENU_CURSOR_IMAGE[] = "pictures\\menuCursor.png";
+
+//menu cells
+const int MENU_CELL_WIDTH = 442;
+const int MENU_CELL_HEIGHT = 78;
+const int MENU_TITLE = 0;
+const int MENU_SUBTITLE = 1;
+const int MENU_PLAY = 2;
+const int MENU_FEELING_LUCKY = 3;
+const int MENU_OPTIONS = 4;
+const int MENU_QUIT = 5;
+
+
 
 //Sound Locations
 const char WAVE_BANK[] = "audio\\Win\\Wave Bank.xwb";
@@ -75,9 +91,5 @@ const UCHAR ENTER_KEY    = VK_RETURN;   // Enter key
 
 
 
-const int MAX_ACTORS = 100;
-const int MAX_BULLETS = 1000;
-const int MAX_PARTICLES = 10000;
-const int MAX_SCENERY = 1000;
 
 #endif

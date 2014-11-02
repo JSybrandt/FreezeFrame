@@ -8,12 +8,15 @@ class FreezeFrame;
 
 namespace playerNS{
 	const float SPEED = 200;
+	const float WEAPON_COOLDOWN = 1;
 }
 class Player: public Actor
 {
 private:
 	Controls controls;
 	FreezeFrame* game;
+	float weaponCooldown;
+
 public:
 	Player();
 	~Player();

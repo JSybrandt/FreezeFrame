@@ -18,6 +18,27 @@ using std::string;
 #include "Player.h"
 #include "Guard.h"
 #include "Cursor.h"
+#include "Bullet.h"
+#include "Particle.h"
+
+
+
+namespace freezeFrameNS
+{
+	const int MAX_ACTORS = 100;
+	const int MAX_PLAYER_BULLETS = 100;
+	const int MAX_ENEMY_BULLETS = 100;
+	const int MAX_PARTICLES = 10000;
+	const int MAX_SCENERY = 1000;
+
+	const int NUM_MENU_OPTIONS = 4;
+	const float MENU_ITEM_SPEED = 300;
+	const float MENU_ITEM_DELAY = 0.25;
+}
+
+using namespace freezeFrameNS;
+using namespace utilityNS;
+
 //=============================================================================
 // Create game class
 //=============================================================================
@@ -32,7 +53,7 @@ private:
 	Level3,
 	RestartScreen,
 	SIZE //THIS MUST BE THE LAST ELEMENT
-	};
+};
 
     // variables
 	TextureManager backgroundTex;   
@@ -41,9 +62,24 @@ private:
 	TextureManager turretTex; 
 	TextureManager bulletTex;   
 	TextureManager cursorTex;
+	TextureManager bulletTrailTex;
+
+	TextureManager menuCursorTex;
+	TextureManager menuTex;
+
+	Image title;
+	Image subtitle;
+	Image menuItems[NUM_MENU_OPTIONS];
+	Image menuCursor;
+
 	Cursor cursor;
 	Image   background;         // backdrop image
+
 	Guard actors[MAX_ACTORS];
+	Bullet playerBullets[MAX_PLAYER_BULLETS];
+	Bullet enemyBullets[MAX_ENEMY_BULLETS];
+	Particle particles[MAX_PARTICLES];
+
 	Controls P1Controls;
 	Player player;
 
@@ -54,8 +90,6 @@ private:
 	VECTOR2 * worldSizes; //array of sizes per level
 
 	GameState currentState;
-
-	float rand01(){return ((rand()%100)/100.0);}
 
 public:
     // Constructor
@@ -81,6 +115,22 @@ public:
 		VECTOR2 mouse(input->getMouseX(),input->getMouseY());
 		return screenLoc + mouse;
 	}
+
+	VECTOR2 getPlayerLoc(){
+		return player.getCenter();
+	}
+
+	bool spawnBullet(VECTOR2 loc, float dir,COLOR_ARGB c, bool playerBullet);
+	bool spawnSmokeParticle(VECTOR2 loc,COLOR_ARGB c);
+	
+	void menuLoad();
+	void menuUpdate();
+	void menuRender();
+
+	void level1Load();
+	void level1Update();
+	void level1Render();
+
 
 };
 
