@@ -53,6 +53,8 @@ void FreezeFrame::initialize(HWND hwnd)
 		throw GameError(4,"Failed to init bullet tex");
 	if(!walkTex.initialize(graphics,WALK_IMAGE))
 		throw GameError(5,"Failed to init walk tex");
+	if(!feetTex.initialize(graphics,FEET_IMAGE))
+		throw GameError(5,"Failed to init walk tex");
 	if(!cursorTex.initialize(graphics,CURSOR_IMAGE))
 		throw GameError(5,"Failed to init cursor tex");
 
