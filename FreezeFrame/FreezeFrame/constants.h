@@ -29,6 +29,7 @@
 //-----------------------------------------------
 // graphic images
 const char BACKGROUND_IMAGE[] = "pictures\\background.png";
+const char WALK_IMAGE[] = "pictures\\walkingAni.png";
 const char MAN_IMAGE[] = "pictures\\man.png";
 const char TURRET_IMAGE[] = "pictures\\turret.png";
 const char BULLET_IMAGE[] = "pictures\\bullet.png";
@@ -49,9 +50,9 @@ const UINT GAME_WIDTH =  1280;               // width of screen in pixels
 const UINT GAME_HEIGHT = 800;               // height of screen in pixels
 
 //Explosion Cells
-const int  EXP_COLS = 2;
-const int  EXP_WIDTH = 32;
-const int  EXP_HEIGHT = 32;
+const int  WALK_COL = 1;
+const int  EXP_WIDTH = 64;
+const int  EXP_HEIGHT = 64;
 const float EXP_SPEED = 90.5f;
 const float EXP_DELAY = 0.05f;
  
