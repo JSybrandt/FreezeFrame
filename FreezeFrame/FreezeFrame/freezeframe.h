@@ -59,6 +59,7 @@ private:
 	TextureManager backgroundTex;   
 	TextureManager manTex;
 	TextureManager walkTex;
+	TextureManager feetTex;
 	TextureManager turretTex; 
 	TextureManager bulletTex;   
 	TextureManager cursorTex;

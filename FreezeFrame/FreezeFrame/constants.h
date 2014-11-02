@@ -30,6 +30,7 @@
 // graphic images
 const char BACKGROUND_IMAGE[] = "pictures\\background.png";
 const char WALK_IMAGE[] = "pictures\\walkingAni.png";
+const char FEET_IMAGE[] = "pictures\\feetAni.png";
 const char MAN_IMAGE[] = "pictures\\man.png";
 const char TURRET_IMAGE[] = "pictures\\turret.png";
 const char BULLET_IMAGE[] = "pictures\\bullet.png";
@@ -66,12 +67,17 @@ const bool FULLSCREEN = false;              // windowed or fullscreen DO NOT RUN
 const UINT GAME_WIDTH =  1280;               // width of screen in pixels
 const UINT GAME_HEIGHT = 800;               // height of screen in pixels
 
-//Explosion Cells
-const int  WALK_COL = 1;
-const int  EXP_WIDTH = 64;
-const int  EXP_HEIGHT = 64;
-const float EXP_SPEED = 90.5f;
-const float EXP_DELAY = 0.05f;
+//Walking Cells
+const int  WALK_COL = 4;
+const int  WALK_WIDTH = 64;
+const int  WALK_HEIGHT = 64;
+const float WALK_DELAY = 0.05f;
+
+//Feet Cells
+const int  FEET_COL = 4;
+const int  FEET_WIDTH = 64;
+const int  FEET_HEIGHT = 64;
+const float FEET_DELAY = 0.05f;
  
 // game
 const double PI = 3.14159265;

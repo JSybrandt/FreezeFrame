@@ -14,5 +14,6 @@ bool Guard::initialize(FreezeFrame * g, int width, int height, int ncols, Textur
 void Guard::update(float frametime)
 {
 	//TODO: more than run right
-	setX(getX()+guardNS::SPEED*frametime);
+	//setX(getX()+guardNS::SPEED*frametime);
+	Actor::update(frametime);
 }
