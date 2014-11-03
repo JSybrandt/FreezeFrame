@@ -198,7 +198,10 @@ void FreezeFrame::menuUpdate()
 		selectedItem-=1;
 	if(input->wasKeyPressed(P1Controls.down))
 		selectedItem+=1;
-	selectedItem%= NUM_MENU_OPTIONS;
+	if(selectedItem < 0)
+		selectedItem = 3;
+	if(selectedItem > 3)
+		selectedItem = 0;
 
 	if(input->wasKeyPressed(VK_RETURN))
 	{
