@@ -71,15 +71,17 @@ void FreezeFrame::initialize(HWND hwnd)
 		throw GameError(9,"Failed to init line tex");
 	if(!exitTex.initialize(graphics,EXIT_IMAGE))
 		throw GameError(9,"Failed to init exit tex");
+	if(!wallTex.initialize(graphics,WALL_IMAGE))
+		throw GameError(10,"Failed to init wall tex");
 
 	if(!exit.initialize(this,0,0,0,&exitTex))
-		throw GameError(10,"Failed to init exit");
+		throw GameError(11,"Failed to init exit");
 
 	if(!title.initialize(graphics,MENU_CELL_WIDTH,MENU_CELL_HEIGHT,1,&menuTex))
-		throw GameError(9,"Failed to init title");
+		throw GameError(12,"Failed to init title");
 	title.setCurrentFrame(MENU_TITLE);
 	if(!subtitle.initialize(graphics,MENU_CELL_WIDTH,MENU_CELL_HEIGHT,1,&menuTex))
-		throw GameError(10,"Failed to init subtitle");
+		throw GameError(13,"Failed to init subtitle");
 	subtitle.setCurrentFrame(MENU_SUBTITLE);
 
 	for(int i = 0; i < freezeFrameNS::NUM_MENU_OPTIONS; i++)
@@ -91,10 +93,10 @@ void FreezeFrame::initialize(HWND hwnd)
 	}
 
 	if(!menuCursor.initialize(graphics,0,0,0,&menuCursorTex))
-		throw GameError(11,"Failed to init menu corsor");
+		throw GameError(14,"Failed to init menu corsor");
 
 	if(!background.initialize(graphics,0,0,0,&backgroundTex))
-		throw GameError(7,"Failed to init background image");
+		throw GameError(15,"Failed to init background image");
 
 	if(!player.initialize(this,P1Controls,0,0,0,&manTex))
 		throw GameError(24,"Failed to init player");
@@ -139,6 +141,12 @@ void FreezeFrame::initialize(HWND hwnd)
 			throw GameError(-1*i,"FAILED TO MAKE enemy bullet!");
 	}
 
+	for(int i = 0 ; i < MAX_WALLS; i++)
+	{
+		if(!walls[i].initialize(this,0,0,0,&wallTex))
+			throw GameError(-1*i,"FAILED TO MAKE wall!");
+	}
+
 	player.setColorFilter(COLOR_ARGB(0xFF3E52ED));
 
 	currentState = TitleScreen;
@@ -163,60 +171,67 @@ void FreezeFrame::update()
 
 }
 
-void FreezeFrame::menuUpdate()
+void FreezeFrame::menuUpdate(bool reset)
 {
 	static float counter = 0; 
 	static int selectedItem = 0;
 
-	counter += frameTime;
-
-	if(title.getX()>0)title.setX(0);
-	if(title.getX()<0)title.setX(title.getX()+MENU_ITEM_SPEED*frameTime);
-
-	if(counter > MENU_ITEM_DELAY){
-		if(subtitle.getX()>0)subtitle.setX(0);
-		if(subtitle.getX()<0)subtitle.setX(subtitle.getX()+MENU_ITEM_SPEED*frameTime);
-	}
-
-
-	for(int i = 0 ; i < freezeFrameNS::NUM_MENU_OPTIONS; i++)
-	{
-		if(counter > (i+2)*MENU_ITEM_DELAY)
-		{
-			if(menuItems[i].getX()<GAME_WIDTH-menuItems[i].getWidth())menuItems[i].setX(GAME_WIDTH-menuItems[i].getWidth());
-			if(menuItems[i].getX()>GAME_WIDTH-menuItems[i].getWidth())menuItems[i].setX(menuItems[i].getX()-MENU_ITEM_SPEED*frameTime);
-		}
-
-		if(selectedItem==i)
-		{
-			menuCursor.setY(menuItems[i].getY());
-		}
-
-	}
-
-	if(input->wasKeyPressed(P1Controls.up))
-		selectedItem-=1;
-	if(input->wasKeyPressed(P1Controls.down))
-		selectedItem+=1;
-	if(selectedItem < 0)
-		selectedItem = 3;
-	if(selectedItem > 3)
+	if(reset){
+		counter = 0;
 		selectedItem = 0;
-
-	if(input->wasKeyPressed(VK_RETURN))
+	}
+	else
 	{
-		switch (selectedItem)
-		{
-		case 0:
-			level1Load();
-			break;
-		case 3:
-			PostQuitMessage(0);
-			break;
-		default:
-			break;
+		counter += frameTime;
+
+		if(title.getX()>0)title.setX(0);
+		if(title.getX()<0)title.setX(title.getX()+MENU_ITEM_SPEED*frameTime);
+
+		if(counter > MENU_ITEM_DELAY){
+			if(subtitle.getX()>0)subtitle.setX(0);
+			if(subtitle.getX()<0)subtitle.setX(subtitle.getX()+MENU_ITEM_SPEED*frameTime);
 		}
+
+
+		for(int i = 0 ; i < freezeFrameNS::NUM_MENU_OPTIONS; i++)
+		{
+			if(counter > (i+2)*MENU_ITEM_DELAY)
+			{
+				if(menuItems[i].getX()<GAME_WIDTH-menuItems[i].getWidth())menuItems[i].setX(GAME_WIDTH-menuItems[i].getWidth());
+				if(menuItems[i].getX()>GAME_WIDTH-menuItems[i].getWidth())menuItems[i].setX(menuItems[i].getX()-MENU_ITEM_SPEED*frameTime);
+			}
+
+			if(selectedItem==i)
+			{
+				menuCursor.setY(menuItems[i].getY());
+			}
+
+		}
+
+		if(input->wasKeyPressed(P1Controls.up))
+			selectedItem-=1;
+		if(input->wasKeyPressed(P1Controls.down))
+			selectedItem+=1;
+		if(selectedItem < 0)
+			selectedItem = 3;
+		if(selectedItem > 3)
+			selectedItem = 0;
+
+		if(input->wasKeyPressed(VK_RETURN))
+		{
+			switch (selectedItem)
+			{
+			case 0:
+				level1Load();
+				break;
+			case 3:
+				PostQuitMessage(0);
+				break;
+			default:
+				break;
+			}
 		
+		}
 	}
 }
 
@@ -275,18 +290,28 @@ void FreezeFrame::collisions()
 		VECTOR2 collisionVector;
 		for(int i = 0; i < MAX_PLAYER_BULLETS; i++)
 		{
+
 			for(int j = 0 ; j < MAX_GUARDS; j++)
 				if(playerBullets[i].collidesWith(guards[j],collisionVector))
 				{
 					guards[j].setHealth(0);
 					playerBullets[i].setActive(false);
 				}
+
 			for(int j = 0 ; j < MAX_TURRETS; j++)
 				if(playerBullets[i].collidesWith(turrets[j],collisionVector))
 				{
 					//turrets[j].setHealth(0);
 					playerBullets[i].setActive(false);
 				}
+
+			for(int j = 0; j < MAX_WALLS; j++)
+				if(playerBullets[i].collidesWith(walls[j],collisionVector))
+				{
+					playerBullets[i].setActive(false);
+				}
+
+			//leaves screen
 			if(playerBullets[i].getCenter().x < 0 || playerBullets[i].getCenter().x > worldSizes[currentState].x || 
 			   playerBullets[i].getCenter().y < 0 || playerBullets[i].getCenter().y > worldSizes[currentState].y)
 			   playerBullets[i].setActive(false);
@@ -299,8 +324,21 @@ void FreezeFrame::collisions()
 			   enemyBullets[i].setActive(false);
 
 			if(enemyBullets[i].collidesWith(player,collisionVector))
-				menuLoad();
+				menuLoad(); //TODO:something cool on death
+
+			for(int j = 0; j < MAX_WALLS; j++)
+				if(enemyBullets[i].collidesWith(walls[j],collisionVector))
+				{
+					enemyBullets[i].setActive(false);
+				}
 		}
+
+		for(int j = 0; j < MAX_WALLS; j++)
+			if(player.collidesWith(walls[j],collisionVector))
+			{
+				//TODO: better cut off
+				player.setCenter(player.getCenter()+collisionVector);
+			}
 
 		if(player.collidesWith(exit,collisionVector))
 		{
@@ -382,11 +420,6 @@ void FreezeFrame::levelsRender()
 		enemyBullets[i].draw(screenLoc);
 	}
 
-	for(int i = 0 ; i < MAX_PARTICLES; i++)
-	{
-		particles[i].draw(screenLoc);
-	}
-
 	for(int i = 0; i < MAX_GUARDS; i++)
 	{
 		guards[i].draw(screenLoc,graphicsNS::FILTER);
@@ -395,6 +428,11 @@ void FreezeFrame::levelsRender()
 	for(int i = 0; i < MAX_TURRETS; i++)
 	{
 		turrets[i].draw(screenLoc,graphicsNS::WHITE);
+	}
+
+	for(int i = 0; i < MAX_WALLS; i++)
+	{
+		walls[i].draw(screenLoc);
 	}
 
 	player.draw(screenLoc);
@@ -444,6 +482,9 @@ void FreezeFrame::menuLoad()
 
 	menuCursor.setCenterY(menuItems[0].getCenterY());
 	menuCursor.setX(GAME_WIDTH-menuCursor.getWidth());
+
+	menuUpdate(true);
+
 }
 
 void FreezeFrame::level1Load()
@@ -460,6 +501,9 @@ void FreezeFrame::level1Load()
 	spawnTurret(VECTOR2(worldSizes[currentState].x*3/5,worldSizes[currentState].y*2/3),turretDir);
 	spawnTurret(VECTOR2(worldSizes[currentState].x*2/5,worldSizes[currentState].y/2),turretDir);
 
+	spawnWall(VECTOR2(worldSizes[currentState].x*0.7,0),VECTOR2(16,worldSizes[currentState].y/3));
+	spawnWall(VECTOR2(worldSizes[currentState].x*0.7,worldSizes[currentState].y*2/3),VECTOR2(16,worldSizes[currentState].y/3));
+
 	exit.setCenterX(worldSizes[currentState].x-exit.getWidth());
 	exit.setCenterY(worldSizes[currentState].y/2);
 	exit.update(0);
@@ -472,7 +516,7 @@ void FreezeFrame::level2Load()
 
 	player.setCenter(VECTOR2(1000,1000));
 
-	/*for(int i = 0; i < MAX_GUARDS; i++)
+	for(int i = 0; i < MAX_GUARDS; i++)
 	{
 		guards[i].create(VECTOR2(rand01()*worldSizes[currentState].x,rand01()*worldSizes[currentState].y));
 	}
@@ -482,7 +526,7 @@ void FreezeFrame::level2Load()
 		VECTOR2 spawn(rand01()*worldSizes[currentState].x,rand01()*worldSizes[currentState].y);
 		turrets[i].setRadians(rand01()*2*PI);
 		turrets[i].create(spawn,rand01()*2*PI);
-	}*/
+	}
 
 	exit.setCenterX(100);
 	exit.setCenterY(100);
@@ -555,6 +599,19 @@ bool FreezeFrame::spawnTurret(VECTOR2 loc, float dir)
 	return false;
 }
 
+bool FreezeFrame::spawnWall(VECTOR2 loc, VECTOR2 size)
+{
+	for(int i = 0; i < MAX_WALLS; i++)
+	{
+		if(!walls[i].getActive())
+		{
+			walls[i].create(loc,size);
+			return true;
+		}
+	}
+	return false;
+}
+
 void FreezeFrame::spawnParticleCloud(VECTOR2 loc, COLOR_ARGB c)
 {
 	float dir,spd;
@@ -593,4 +650,6 @@ void FreezeFrame::deactivateAll()
 		enemyBullets[i].setActive(false);
 	for(int i = 0 ; i < MAX_PARTICLES; i++)
 		particles[i].setActive(false);
+	for(int i = 0; i < MAX_WALLS; i++)
+		walls[i].setActive(false);
 }

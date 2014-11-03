@@ -22,16 +22,17 @@ using std::string;
 #include "Particle.h"
 #include "Exit.h"
 #include "Turret.h"
-
+#include "Wall.h"
 
 namespace freezeFrameNS
 {
 	const int MAX_GUARDS = 100;
-	const int MAX_TURRETS = 10;
+	const int MAX_TURRETS = 100;
 	const int MAX_PLAYER_BULLETS = 100;
 	const int MAX_ENEMY_BULLETS = 1000;
 	const int MAX_PARTICLES = 10000;
 	const int MAX_SCENERY = 1000;
+	const int MAX_WALLS = 100;
 
 	const int NUM_MENU_OPTIONS = 4;
 	const float MENU_ITEM_SPEED = 300;
@@ -71,11 +72,12 @@ private:
 	TextureManager particleTex;
 	TextureManager lineTex;
 	TextureManager exitTex;
+	TextureManager wallTex;
+	TextureManager menuCursorTex;
+	TextureManager menuTex;
 
 	Exit exit;
 
-	TextureManager menuCursorTex;
-	TextureManager menuTex;
 
 	Image title;
 	Image subtitle;
@@ -90,6 +92,7 @@ private:
 	Bullet playerBullets[MAX_PLAYER_BULLETS];
 	Bullet enemyBullets[MAX_ENEMY_BULLETS];
 	Particle particles[MAX_PARTICLES];
+	Wall walls[MAX_WALLS];
 
 	Controls P1Controls;
 	Player player;
@@ -125,24 +128,17 @@ public:
 	//places the screen so the selected location is in the middle area (might not center)
 	void updateScreen(VECTOR2 center); 
 
-	VECTOR2 getMouseInWorld(){
-		VECTOR2 mouse(input->getMouseX(),input->getMouseY());
-		return screenLoc + mouse;
-	}
-
-	VECTOR2 getPlayerLoc(){
-		return player.getCenter();
-	}
-
 	bool spawnBullet(VECTOR2 loc, float dir,COLOR_ARGB c, bool playerBullet);
 	bool spawnParticle(VECTOR2 loc,VECTOR2 vel, COLOR_ARGB c);
 	bool spawnTurret(VECTOR2 loc, float dir);
-	
+	bool spawnWall(VECTOR2 loc, VECTOR2 size);
+
+
 	void spawnParticleCloud(VECTOR2 loc, COLOR_ARGB c);
 	void spawnParticleCone(VECTOR2 loc, float dir, COLOR_ARGB c);
 
 	void menuLoad();
-	void menuUpdate();
+	void menuUpdate(bool reset = false);
 	void menuRender();
 
 	void level1Load();
@@ -154,6 +150,14 @@ public:
 
 	void deactivateAll();
 
+	VECTOR2 getMouseInWorld(){
+		VECTOR2 mouse(input->getMouseX(),input->getMouseY());
+		return screenLoc + mouse;
+	}
+
+	VECTOR2 getPlayerLoc(){
+		return player.getCenter();
+	}
 
 };
 

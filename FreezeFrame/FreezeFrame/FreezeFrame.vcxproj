@@ -104,6 +104,7 @@
     <ClCompile Include="textureManager.cpp" />
     <ClCompile Include="Turret.cpp" />
     <ClCompile Include="Utility.cpp" />
+    <ClCompile Include="Wall.cpp" />
     <ClCompile Include="winmain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -127,6 +128,7 @@
     <ClInclude Include="textureManager.h" />
     <ClInclude Include="Turret.h" />
     <ClInclude Include="Utility.h" />
+    <ClInclude Include="Wall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
