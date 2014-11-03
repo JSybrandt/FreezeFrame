@@ -459,6 +459,7 @@ void FreezeFrame::level1Load()
 
 	exit.setCenterX(worldSizes[currentState].x-exit.getWidth());
 	exit.setCenterY(worldSizes[currentState].y/2);
+	exit.update(0);
 }
 
 void FreezeFrame::level2Load()
@@ -468,7 +469,7 @@ void FreezeFrame::level2Load()
 
 	player.setCenter(VECTOR2(1000,1000));
 
-	for(int i = 0; i < MAX_GUARDS; i++)
+	/*for(int i = 0; i < MAX_GUARDS; i++)
 	{
 		guards[i].create(VECTOR2(rand01()*worldSizes[currentState].x,rand01()*worldSizes[currentState].y));
 	}
@@ -478,10 +479,11 @@ void FreezeFrame::level2Load()
 		VECTOR2 spawn(rand01()*worldSizes[currentState].x,rand01()*worldSizes[currentState].y);
 		turrets[i].setRadians(rand01()*2*PI);
 		turrets[i].create(spawn,rand01()*2*PI);
-	}
+	}*/
 
 	exit.setCenterX(100);
 	exit.setCenterY(100);
+	exit.update(0);
 }
 
 
