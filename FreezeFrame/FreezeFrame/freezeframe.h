@@ -93,6 +93,7 @@ private:
 
 	float worldFrameTime;
 	
+	
 
 	VECTOR2 screenLoc;
 
@@ -101,7 +102,7 @@ private:
 	GameState currentState;
 
 public:
-	
+	float timeMultiplier;
 	// Constructor
     FreezeFrame();
 

@@ -24,6 +24,7 @@ FreezeFrame::FreezeFrame()
 
 	currentState = TitleScreen;
 	
+	timeMultiplier = 1;
 
 	P1Controls = Controls('W','S','A','D');
 }

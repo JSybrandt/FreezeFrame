@@ -9,6 +9,7 @@ Player::Player():Actor(){
 	edge.right = 12;
 	collisionType = BOX;*/
 
+	timeMultiplier = 1;
 	radius = 10;
 	collisionType = CIRCLE;
 
@@ -52,8 +53,16 @@ void Player::update(float &frametime)
 
 		setCenter(getCenter()+inputDir);
 
-		if(inputDir == VECTOR2(0,0)) {
-			frametime *= 0.01;
+		if(inputDir == VECTOR2(0,0) && timeMultiplier > 0.01 ) { //
+			timeMultiplier -= 0.05;
+			frametime *= timeMultiplier;
+			if(timeMultiplier < 0.01)
+				timeMultiplier = 0.01;
+			//frametime *= .01;				//If need this back, just comment out anything with time multiplier.
+		}
+		else if(timeMultiplier < 1) {
+			timeMultiplier += 0.05;
+			frametime *= timeMultiplier;
 		}
 		
 
