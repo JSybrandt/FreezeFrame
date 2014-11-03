@@ -71,6 +71,8 @@ void FreezeFrame::initialize(HWND hwnd)
 		throw GameError(9,"Failed to init line tex");
 	if(!exitTex.initialize(graphics,EXIT_IMAGE))
 		throw GameError(9,"Failed to init exit tex");
+	if(!baseTex.initialize(graphics,BASE_IMAGE))
+		throw GameError(9,"Failed to init exit tex");
 
 	if(!exit.initialize(this,0,0,0,&exitTex))
 		throw GameError(10,"Failed to init exit");
@@ -115,6 +117,10 @@ void FreezeFrame::initialize(HWND hwnd)
 	{
 		if(!turrets[i].initialize(this,TURRET_WIDTH,TURRET_HEIGHT,TURRET_COL,&turretTex))
 			throw GameError(-1*i,"FAILED TO MAKE turret!");
+		if(!bases[i].initialize(this,BASE_WIDTH,BASE_HEIGHT,0,&baseTex))
+			throw GameError(-1*i,"FAILED TO MAKE turret!");
+		bases[i].setRadians(PI/4);
+		turrets[i].setBase(&bases[i]);
 		turrets[i].setFrames(0, 4);   // animation frames
 		turrets[i].setCurrentFrame(4);     // starting frame
 		turrets[i].setFrameDelay(TURRET_DELAY); //
@@ -394,7 +400,7 @@ void FreezeFrame::levelsRender()
 
 	for(int i = 0; i < MAX_TURRETS; i++)
 	{
-		turrets[i].draw(screenLoc,graphicsNS::WHITE);
+		turrets[i].draw(screenLoc);
 	}
 
 	player.draw(screenLoc);

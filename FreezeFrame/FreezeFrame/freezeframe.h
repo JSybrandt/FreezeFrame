@@ -62,6 +62,7 @@ private:
 
     // variables
 	TextureManager backgroundTex;   
+	TextureManager baseTex;
 	TextureManager manTex;
 	TextureManager walkTex;
 	TextureManager feetTex;
@@ -87,6 +88,7 @@ private:
 
 	Guard guards[MAX_GUARDS];
 	Turret turrets[MAX_TURRETS];
+	Actor  bases[MAX_TURRETS];
 	Bullet playerBullets[MAX_PLAYER_BULLETS];
 	Bullet enemyBullets[MAX_ENEMY_BULLETS];
 	Particle particles[MAX_PARTICLES];

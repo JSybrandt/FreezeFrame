@@ -16,6 +16,7 @@ class Turret:public Actor
 {
 private:
 	FreezeFrame * game;
+	Actor * base;
 	float minDir, maxDir,rotVel;
 	float weaponCooldown;
 public:
@@ -26,6 +27,10 @@ public:
 	void update(float frameTime);
 
 	void animate(float frameTime);
+
+	void setBase(Actor *base);
+
+	void draw(VECTOR2 screenLoc);
 
 	void create(VECTOR2 loc, float dir);
 
