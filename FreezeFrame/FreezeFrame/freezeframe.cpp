@@ -73,6 +73,8 @@ void FreezeFrame::initialize(HWND hwnd)
 		throw GameError(9,"Failed to init exit tex");
 	if(!wallTex.initialize(graphics,WALL_IMAGE))
 		throw GameError(10,"Failed to init wall tex");
+	if(!baseTex.initialize(graphics,BASE_IMAGE))
+		throw GameError(9,"Failed to init exit tex");
 
 	if(!exit.initialize(this,0,0,0,&exitTex))
 		throw GameError(11,"Failed to init exit");
@@ -98,8 +100,12 @@ void FreezeFrame::initialize(HWND hwnd)
 	if(!background.initialize(graphics,0,0,0,&backgroundTex))
 		throw GameError(15,"Failed to init background image");
 
-	if(!player.initialize(this,P1Controls,0,0,0,&manTex))
+	if(!player.initialize(this,P1Controls,PL_WIDTH,PL_HEIGHT,PL_COL,&manTex))
 		throw GameError(24,"Failed to init player");
+	player.setFrames(0, 5);
+	player.setCurrentFrame(5);
+	player.setFrameDelay(PL_DELAY);
+	player.setLoop(false);
 
 	if(!cursor.initialize(this,0,0,0,&cursorTex))
 		throw GameError(25,"Failed to init cursor");
@@ -115,7 +121,7 @@ void FreezeFrame::initialize(HWND hwnd)
 
 	for(int i = 0; i < MAX_TURRETS; i++)
 	{
-		if(!turrets[i].initialize(this,TURRET_WIDTH,TURRET_HEIGHT,TURRET_COL,&turretTex))
+		if(!turrets[i].initialize(this,TURRET_WIDTH,TURRET_HEIGHT,TURRET_COL,&turretTex, &baseTex))
 			throw GameError(-1*i,"FAILED TO MAKE turret!");
 		turrets[i].setFrames(0, 4);   // animation frames
 		turrets[i].setCurrentFrame(4);     // starting frame
@@ -427,7 +433,7 @@ void FreezeFrame::levelsRender()
 
 	for(int i = 0; i < MAX_TURRETS; i++)
 	{
-		turrets[i].draw(screenLoc,graphicsNS::WHITE);
+		turrets[i].draw(screenLoc);
 	}
 
 	for(int i = 0; i < MAX_WALLS; i++)
@@ -499,7 +505,7 @@ void FreezeFrame::level1Load()
 
 	spawnTurret(VECTOR2(worldSizes[currentState].x*3/5,worldSizes[currentState].y/3),turretDir);
 	spawnTurret(VECTOR2(worldSizes[currentState].x*3/5,worldSizes[currentState].y*2/3),turretDir);
-	spawnTurret(VECTOR2(worldSizes[currentState].x*2/5,worldSizes[currentState].y/2),turretDir);
+	//spawnTurret(VECTOR2(worldSizes[currentState].x*2/5,worldSizes[currentState].y/2),turretDir);
 
 	spawnWall(VECTOR2(worldSizes[currentState].x*0.7,0),VECTOR2(16,worldSizes[currentState].y/3));
 	spawnWall(VECTOR2(worldSizes[currentState].x*0.7,worldSizes[currentState].y*2/3),VECTOR2(16,worldSizes[currentState].y/3));
@@ -516,12 +522,12 @@ void FreezeFrame::level2Load()
 
 	player.setCenter(VECTOR2(1000,1000));
 
-	for(int i = 0; i < MAX_GUARDS; i++)
+	for(int i = 0; i < 10; i++)
 	{
 		guards[i].create(VECTOR2(rand01()*worldSizes[currentState].x,rand01()*worldSizes[currentState].y));
 	}
 
-	for(int i = 0; i < MAX_TURRETS; i++)
+	for(int i = 0; i < 10; i++)
 	{
 		VECTOR2 spawn(rand01()*worldSizes[currentState].x,rand01()*worldSizes[currentState].y);
 		turrets[i].setRadians(rand01()*2*PI);

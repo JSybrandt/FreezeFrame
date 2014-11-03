@@ -10,15 +10,18 @@ Turret::Turret():Actor()
 	edge.right = 76;
 
 	collisionType = BOX;
+	base.setRadians(PI/4);
 
 	setActive(false);
 	weaponCooldown = 0;
 }
 
-bool Turret::initialize(FreezeFrame * g, int width, int height, int ncols, TextureManager *textureM)
+bool Turret::initialize(FreezeFrame * g, int width, int height, int ncols, TextureManager *turretTM, TextureManager *baseTM)
 {
 	game = g;
-	return Actor::initialize(g,width,height,ncols,textureM);
+	bool result =  Actor::initialize(g,width,height,ncols,turretTM);
+	result = result && base.initialize(g,BASE_WIDTH,BASE_HEIGHT,0,baseTM);
+	return result;
 }
 
 void Turret::update(float frametime)
@@ -87,33 +90,22 @@ void Turret::update(float frametime)
 			setRadians(radians+ rotVel*frametime);
 		}
 	}
+	base.update(frametime);
 	Image::update(frametime);
 
-	//animate(frametime);
 
 }
 
-void Turret::animate(float frameTime) {
-	if (endFrame - startFrame > 0)          // if animated sprite
-    {
-        animTimer += frameTime;             // total elapsed time
-        if (animTimer > frameDelay)
-        {
-            animTimer -= frameDelay;
-            currentFrame++;
-            if (currentFrame < startFrame || currentFrame > endFrame)
-            {
-                if(loop == true)            // if looping animation
-                    currentFrame = startFrame;
-                else                        // not looping animation
-                {
-                    currentFrame = endFrame;
-                    animComplete = true;    // animation complete
-                }
-            }
-            setRect();                      // set spriteData.rect
-        }
-    }
+void Turret::draw(VECTOR2 screenLoc)
+{
+	if(getActive())
+	{
+		
+
+		base.draw(screenLoc);
+
+		Actor::draw(screenLoc);
+	}
 }
 
 void Turret::create(VECTOR2 loc, float dir)
@@ -124,4 +116,5 @@ void Turret::create(VECTOR2 loc, float dir)
 	maxDir = dir + turretNS::ROTATION_WIDTH;
 	rotVel = turretNS::ROTATION_SPEED;
 	setCenter(loc);
+	base.setCenter(loc);
 }

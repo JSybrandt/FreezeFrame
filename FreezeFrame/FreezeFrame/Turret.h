@@ -16,16 +16,19 @@ class Turret:public Actor
 {
 private:
 	FreezeFrame * game;
+	Actor base;
 	float minDir, maxDir,rotVel;
 	float weaponCooldown;
 public:
 	Turret();
 
-	bool initialize(FreezeFrame * g, int width, int height, int ncols, TextureManager *textureM);
+	bool initialize(FreezeFrame * g, int width, int height, int ncols, TextureManager *turretTM, TextureManager *baseTM);
 
 	void update(float frameTime);
 
 	void animate(float frameTime);
+
+	void draw(VECTOR2 screenLoc);
 
 	void create(VECTOR2 loc, float dir);
 

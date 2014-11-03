@@ -45,6 +45,8 @@ void Player::update(float &frametime)
 		if(input->getMouseLButton()&& (weaponCooldown <= 0) ){
 			game->spawnBullet(getCenter()+utilityNS::rotateVector(playerNS::bulletDisplacement,mouseDir),mouseDir,getColorFilter(),true);
 			weaponCooldown  = playerNS::WEAPON_COOLDOWN;
+			animComplete = false;
+			setCurrentFrame(0);
 		}
 
 		D3DXVec2Normalize(&inputDir,&inputDir);
@@ -82,4 +84,5 @@ void Player::update(float &frametime)
 		if(weaponCooldown < 0) weaponCooldown =0;
 
 	}
+	Image::update(frametime);
 }
