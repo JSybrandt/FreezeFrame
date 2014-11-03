@@ -67,6 +67,8 @@ void Turret::update(float frametime)
 			if(weaponCooldown <= 0)
 			{
 				game->spawnBullet(getCenter(),radians,graphicsNS::RED,false);
+				animComplete = false;
+				setCurrentFrame(0);
 				weaponCooldown = turretNS::FIRE_RATE;
 			}
 		}
@@ -85,7 +87,33 @@ void Turret::update(float frametime)
 			setRadians(radians+ rotVel*frametime);
 		}
 	}
+	Image::update(frametime);
 
+	//animate(frametime);
+
+}
+
+void Turret::animate(float frameTime) {
+	if (endFrame - startFrame > 0)          // if animated sprite
+    {
+        animTimer += frameTime;             // total elapsed time
+        if (animTimer > frameDelay)
+        {
+            animTimer -= frameDelay;
+            currentFrame++;
+            if (currentFrame < startFrame || currentFrame > endFrame)
+            {
+                if(loop == true)            // if looping animation
+                    currentFrame = startFrame;
+                else                        // not looping animation
+                {
+                    currentFrame = endFrame;
+                    animComplete = true;    // animation complete
+                }
+            }
+            setRect();                      // set spriteData.rect
+        }
+    }
 }
 
 void Turret::create(VECTOR2 loc, float dir)

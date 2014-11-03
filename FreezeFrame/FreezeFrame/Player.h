@@ -17,6 +17,7 @@ private:
 	Controls controls;
 	FreezeFrame* game;
 	float weaponCooldown;
+	float timeMultiplier;
 
 public:
 	Player();

@@ -9,6 +9,7 @@ Player::Player():Actor(){
 	edge.right = 12;
 	collisionType = BOX;*/
 
+	timeMultiplier = 1;
 	radius = 10;
 	collisionType = CIRCLE;
 
@@ -48,14 +49,34 @@ void Player::update(float &frametime)
 
 		D3DXVec2Normalize(&inputDir,&inputDir);
 
-		inputDir *= playerNS::SPEED*frametime;
+		//inputDir *= playerNS::SPEED*frametime;				//TESTING
+
+		inputDir *= playerNS::SPEED;							
+
+		if(inputDir == VECTOR2(0,0) && timeMultiplier > 0.01 ) { //
+			timeMultiplier -= 0.05;
+			if(timeMultiplier < 0.01)
+				timeMultiplier = 0.01;
+			frametime *= timeMultiplier;
+			
+			//frametime *= .01;				//If need this back, just comment out anything with time multiplier.
+		}
+
+		else if(inputDir == VECTOR2(0,0))
+			frametime *= timeMultiplier;
+
+		else if(timeMultiplier < 1) {
+			timeMultiplier += 0.05;
+			if(timeMultiplier > 1)
+				timeMultiplier = 1;
+			frametime *= timeMultiplier;
+		}
+
+		inputDir *= frametime;					
 
 		setCenter(getCenter()+inputDir);
 
-		if(inputDir == VECTOR2(0,0)) {
-			frametime *= 0.01;
-		}
-		
+		//ifs go here normally
 
 		weaponCooldown -= frametime;
 		if(weaponCooldown < 0) weaponCooldown =0;

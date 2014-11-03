@@ -26,6 +26,7 @@ class Actor : public Image
     COLLISION_TYPE collisionType;
     VECTOR2 center;         // center of Actor
     float   radius;         // radius of collision circle
+	float	perimeter;
     VECTOR2 distSquared;    // used for calculating circle collision
     float   sumRadiiSquared;
     // edge specifies the collision box relative to the center of the Actor.
@@ -148,12 +149,12 @@ class Actor : public Image
 
 	virtual void setResistance(float r)		{resistance = r;}
 
-	/*void setPositionX(float pos) {spriteData.x = pos;}
-	void setPositionY(float pos) {spriteData.y = pos;} 
-	void incPositionX(float pos) {spriteData.x += pos;}
-	void incPositionY(float pos) {spriteData.y += pos;}
-	void incPosition(VECTOR2 pos) {spriteData.x += pos.x; spriteData.y += pos.y;}
-*/
+	//void setPositionX(float pos) {spriteData.x = pos;}
+	//void setPositionY(float pos) {spriteData.y = pos;} 
+	//void incPositionX(float pos) {spriteData.x += pos;}
+	//void incPositionY(float pos) {spriteData.y += pos;}
+	//void incPosition(VECTOR2 pos) {spriteData.x += pos.x; spriteData.y += pos.y;}
+
 	//virtual void draw() {};
 
     ////////////////////////////////////////
