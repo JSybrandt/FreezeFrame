@@ -35,7 +35,7 @@ const char MAN_IMAGE[] = "pictures\\man.png";
 const char TURRET_IMAGE[] = "pictures\\turret.png";
 const char BULLET_IMAGE[] = "pictures\\bullet.png";
 const char CURSOR_IMAGE[] = "pictures\\cursor.png";
-const char	BULLET_TRAIL_IMAGE[] = "pictures\\bulletTrail.png";
+const char	PARTICLE_IMAGE[] = "pictures\\particle.png";
 const char	LINE_IMAGE[] = "pictures\\line.png";
 const char	EXIT_IMAGE[] = "pictures\\exit.png";
 

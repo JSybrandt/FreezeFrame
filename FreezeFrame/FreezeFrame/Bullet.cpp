@@ -33,7 +33,9 @@ void Bullet::create(VECTOR2 loc, float dir, COLOR_ARGB c)
 
 	line.setCenter(line.getCenter()+offset);
 
-	line.setColorFilter(c);
+	line.setColorFilter(c & graphics->calculateAlpha(0.6));
+
+	game->spawnParticleCone(loc,dir,particleNS::SMOKE_COLOR);
 
 }
 

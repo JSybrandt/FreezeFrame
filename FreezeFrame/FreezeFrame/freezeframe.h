@@ -30,12 +30,15 @@ namespace freezeFrameNS
 	const int MAX_TURRETS = 10;
 	const int MAX_PLAYER_BULLETS = 100;
 	const int MAX_ENEMY_BULLETS = 1000;
-	const int MAX_PARTICLES = 1000;
+	const int MAX_PARTICLES = 10000;
 	const int MAX_SCENERY = 1000;
 
 	const int NUM_MENU_OPTIONS = 4;
 	const float MENU_ITEM_SPEED = 300;
 	const float MENU_ITEM_DELAY = 0.25;
+
+	const int NUM_PARTICLES_IN_SMOKE_EFFECT = 300;
+	const int NUM_PARTICLES_IN_CONE_EFFECT = 150;
 }
 
 using namespace freezeFrameNS;
@@ -65,7 +68,7 @@ private:
 	TextureManager turretTex; 
 	TextureManager bulletTex;   
 	TextureManager cursorTex;
-	TextureManager bulletTrailTex;
+	TextureManager particleTex;
 	TextureManager lineTex;
 	TextureManager exitTex;
 
@@ -131,9 +134,12 @@ public:
 	}
 
 	bool spawnBullet(VECTOR2 loc, float dir,COLOR_ARGB c, bool playerBullet);
-	bool spawnSmokeParticle(VECTOR2 loc,COLOR_ARGB c);
+	bool spawnParticle(VECTOR2 loc,VECTOR2 vel, COLOR_ARGB c);
 	bool spawnTurret(VECTOR2 loc, float dir);
 	
+	void spawnParticleCloud(VECTOR2 loc, COLOR_ARGB c);
+	void spawnParticleCone(VECTOR2 loc, float dir, COLOR_ARGB c);
+
 	void menuLoad();
 	void menuUpdate();
 	void menuRender();

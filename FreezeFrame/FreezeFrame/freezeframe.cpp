@@ -60,8 +60,8 @@ void FreezeFrame::initialize(HWND hwnd)
 		throw GameError(5,"Failed to init walk tex");
 	if(!cursorTex.initialize(graphics,CURSOR_IMAGE))
 		throw GameError(5,"Failed to init cursor tex");
-	if(!bulletTrailTex.initialize(graphics,BULLET_TRAIL_IMAGE))
-		throw GameError(6,"Failed to init bullet trail tex");
+	if(!particleTex.initialize(graphics,PARTICLE_IMAGE))
+		throw GameError(6,"Failed to init particle tex");
 	if(!menuTex.initialize(graphics,MENU_IMAGE))
 		throw GameError(7,"Failed to init menu tex");
 	if(!menuCursorTex.initialize(graphics,MENU_CURSOR_IMAGE))
@@ -118,7 +118,7 @@ void FreezeFrame::initialize(HWND hwnd)
 
 	for(int i = 0 ; i < MAX_PARTICLES; i++)
 	{
-		if(!particles[i].initialize(this,0,0,0,&bulletTrailTex))
+		if(!particles[i].initialize(this,0,0,0,&particleTex))
 			throw GameError(-1*i,"FAILED TO MAKE particle!");
 	}
 
@@ -374,6 +374,11 @@ void FreezeFrame::levelsRender()
 		enemyBullets[i].draw(screenLoc);
 	}
 
+	for(int i = 0 ; i < MAX_PARTICLES; i++)
+	{
+		particles[i].draw(screenLoc);
+	}
+
 	for(int i = 0; i < MAX_GUARDS; i++)
 	{
 		guards[i].draw(screenLoc,graphicsNS::FILTER);
@@ -512,13 +517,13 @@ bool FreezeFrame::spawnBullet(VECTOR2 loc, float dir,COLOR_ARGB c, bool playerBu
 }
 
 
-bool FreezeFrame::spawnSmokeParticle(VECTOR2 loc, COLOR_ARGB c)
+bool FreezeFrame::spawnParticle(VECTOR2 loc,VECTOR2 vel, COLOR_ARGB c)
 {
 	for(int i = 0; i < MAX_PARTICLES; i++)
 	{
 		if(!particles[i].getActive())
 		{
-			particles[i].create(loc,c);
+			particles[i].create(loc,vel,c);
 			return true;
 		}
 	}
@@ -538,6 +543,30 @@ bool FreezeFrame::spawnTurret(VECTOR2 loc, float dir)
 	}
 
 	return false;
+}
+
+void FreezeFrame::spawnParticleCloud(VECTOR2 loc, COLOR_ARGB c)
+{
+	float dir,spd;
+	VECTOR2 v(1,0);
+	for(int i = 0; i < NUM_PARTICLES_IN_SMOKE_EFFECT; i++)
+	{
+		dir = rand01()*2*PI;
+		spd = rand01()*particleNS::CLOUD_VEL;
+		spawnParticle(loc,rotateVector(v,dir)*spd,c);
+	}
+}
+
+void FreezeFrame::spawnParticleCone(VECTOR2 loc,float dir, COLOR_ARGB c)
+{
+	float currentdir,spd;
+	VECTOR2 v(1,0);
+	for(int i = 0; i < NUM_PARTICLES_IN_CONE_EFFECT; i++)
+	{
+		currentdir = rand01()*PI/4-PI/8+dir;
+		spd = (rand01()/2+0.5)*particleNS::CONE_VEL;
+		spawnParticle(loc,rotateVector(v,currentdir)*spd,c);
+	}
 }
 
 

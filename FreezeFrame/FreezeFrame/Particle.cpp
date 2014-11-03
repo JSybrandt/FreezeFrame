@@ -7,30 +7,33 @@ Particle::Particle():Actor()
 
 void Particle::update(float frametime)
 {
-	if(active)
+	if(getActive())
 	{
 		age += frametime;
-		if(age>=particleNS::LIFETIME) active = false;
+		if(age>=particleNS::MAX_LIFETIME) active = false;
+		setCenter(getCenter()+frametime*velocity);
 
 	}
 }
 
 void Particle::draw(VECTOR2 screenLoc)
 {
-	if(active)
+	if(getActive())
 	{
-		COLOR_ARGB c = Graphics::calculateAlpha(1-(age/particleNS::LIFETIME))&colorFilter;
+		COLOR_ARGB c = Graphics::calculateAlpha(1-(age/particleNS::MAX_LIFETIME))&colorFilter;
 		Actor::draw(screenLoc,c);
 	}
 }
 
 
-void Particle::create(D3DXVECTOR2 loc,COLOR_ARGB c)
+void Particle::create(VECTOR2 loc,VECTOR2 vel, COLOR_ARGB c)
 {
 
-	active = true;
-	age = 0;
-	setCenterX(loc.x);setCenterY(loc.y);
+	setActive(true);
+	age = utilityNS::rand01()*particleNS::MAX_LIFETIME;
+	setCenter(loc);
+	setVelocity(vel);
 	setColorFilter(c);
+
 
 }

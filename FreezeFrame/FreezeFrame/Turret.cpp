@@ -28,34 +28,41 @@ void Turret::update(float frametime)
 		VECTOR2 toPlayer = game->getPlayerLoc() - getCenter();
 		float dirToPlayer = atan2(toPlayer.y,toPlayer.x);
 		float distSqrdToPlayer = D3DXVec2LengthSq(&toPlayer);
-
 		float radians = getRadians();
 
 		//if the player is close and in view
 		if(distSqrdToPlayer < turretNS::ENGAGE_DISTANCE_SQRD)
 		{
 			
-			//TODO:radian fix!
-			if(dirToPlayer < 0)dirToPlayer+=2*PI;
-			if(radians < 0) radians+= 2*PI;
+			//convert to principle arguments
+			dirToPlayer = toPincipleArgument(dirToPlayer);
+			radians = toPincipleArgument(radians);
 
-			if(abs(radians - dirToPlayer) <= turretNS::ROT_EPSILON)
+			float diff = dirToPlayer - radians;
+
+			diff = toPincipleArgument(diff);
+
+			//if we got um
+			if(abs(diff) <= turretNS::ROT_EPSILON)
 			{
 				setRadians(dirToPlayer);
 				radians = getRadians();
 			}
+			//rotate towards him
 			else 
 			{
-				if (radians > dirToPlayer)
+				if (diff < 0 )
 				{
 					rotVel = -turretNS::ROTATION_SPEED;
 				}
-				else if (radians < dirToPlayer)
+				else if (diff > 0)
 				{
 					rotVel = turretNS::ROTATION_SPEED;
 				}
 				setRadians(radians+ rotVel*frametime);
 			}
+
+			//fire gun, he's nearby
 			weaponCooldown -= frametime;
 			if(weaponCooldown <= 0)
 			{
