@@ -20,7 +20,7 @@ using std::string;
 #include "Cursor.h"
 #include "Bullet.h"
 #include "Particle.h"
-
+#include "Exit.h"
 
 
 namespace freezeFrameNS
@@ -65,6 +65,9 @@ private:
 	TextureManager cursorTex;
 	TextureManager bulletTrailTex;
 	TextureManager lineTex;
+	TextureManager exitTex;
+
+	Exit exit;
 
 	TextureManager menuCursorTex;
 	TextureManager menuTex;
@@ -95,7 +98,6 @@ private:
 	GameState currentState;
 
 public:
-    float timeMultiplier;
 	
 	// Constructor
     FreezeFrame();

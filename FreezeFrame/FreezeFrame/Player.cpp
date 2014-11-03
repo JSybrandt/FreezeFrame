@@ -31,7 +31,7 @@ void Player::update(float &frametime)
 			inputDir.x=1;
 
 		if(input->getMouseLButton()&& (weaponCooldown <= 0) ){
-			game->spawnBullet(getCenter(),mouseDir,getColorFilter(),true);
+			game->spawnBullet(getCenter()+utilityNS::rotateVector(playerNS::bulletDisplacement,mouseDir),mouseDir,getColorFilter(),true);
 			weaponCooldown  = playerNS::WEAPON_COOLDOWN;
 		}
 
@@ -43,7 +43,6 @@ void Player::update(float &frametime)
 
 		if(inputDir == VECTOR2(0,0)) {
 			frametime *= 0.01;
-			game->timeMultiplier = 0.01;
 		}
 		
 

@@ -24,7 +24,6 @@ FreezeFrame::FreezeFrame()
 
 	currentState = TitleScreen;
 	
-	timeMultiplier = 1;
 
 	P1Controls = Controls('W','S','A','D');
 }
@@ -69,7 +68,11 @@ void FreezeFrame::initialize(HWND hwnd)
 		throw GameError(8,"Failed to init menu cursor tex");
 	if(!lineTex.initialize(graphics,LINE_IMAGE))
 		throw GameError(9,"Failed to init line tex");
+	if(!exitTex.initialize(graphics,EXIT_IMAGE))
+		throw GameError(9,"Failed to init exit tex");
 
+	if(!exit.initialize(this,0,0,0,&exitTex))
+		throw GameError(10,"Failed to init exit");
 
 	if(!title.initialize(graphics,MENU_CELL_WIDTH,MENU_CELL_HEIGHT,1,&menuTex))
 		throw GameError(9,"Failed to init title");
@@ -134,7 +137,6 @@ void FreezeFrame::initialize(HWND hwnd)
 	currentState = TitleScreen;
 	menuLoad();
 	
-
 	return;
 }
 
@@ -212,7 +214,6 @@ void FreezeFrame::menuUpdate()
 void FreezeFrame::level1Update()
 {
 	worldFrameTime = frameTime;
-	timeMultiplier = 1;
 	player.update(worldFrameTime);
 	updateScreen(player.getCenter());
 
@@ -256,7 +257,26 @@ void FreezeFrame::ai()
 //=============================================================================
 void FreezeFrame::collisions()
 {
-	
+	if(currentState!=TitleScreen)
+	{
+		VECTOR2 collisionVector;
+		for(int i = 0; i < MAX_PLAYER_BULLETS; i++)
+		{
+			for(int j = 0 ; j < MAX_ACTORS; j++)
+				if(playerBullets[i].collidesWith(actors[j],collisionVector))
+				{
+					actors[j].setHealth(0);
+					playerBullets[i].setActive(false);
+				}
+		}
+
+		if(player.collidesWith(exit,collisionVector))
+		{
+			currentState = TitleScreen;
+			menuLoad();
+		}
+	}
+
 }
 
 //=============================================================================
@@ -299,6 +319,8 @@ void FreezeFrame::menuRender()
 void FreezeFrame::level1Render()
 {
 	background.draw(screenLoc);
+
+	exit.draw(screenLoc);
 
 	for(int i = 0 ; i < MAX_PARTICLES; i++)
 	{
@@ -376,6 +398,9 @@ void FreezeFrame::level1Load()
 		actors[i].setCenterY(rand01()*worldSizes[currentState].y);
 		actors[i].setColorFilter(graphicsNS::RED);
 	}
+
+	exit.setCenterX(100);
+	exit.setCenterY(100);
 }
 
 

@@ -9,6 +9,7 @@ class FreezeFrame;
 namespace playerNS{
 	const float SPEED = 300;
 	const float WEAPON_COOLDOWN = 1;
+	const VECTOR2 bulletDisplacement(28,-18);
 }
 class Player: public Actor
 {

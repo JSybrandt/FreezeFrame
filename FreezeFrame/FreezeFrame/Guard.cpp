@@ -1,7 +1,13 @@
 #include "guard.h"
 #include"freezeframe.h"
 
-Guard::Guard():Actor(){}
+Guard::Guard():Actor(){
+	edge.top = -32;
+	edge.bottom = 32;
+	edge.left = -12;
+	edge.right = 12;
+	collisionType = COLLISION_TYPE::BOX;
+}
 Guard::~Guard(){}
 
 bool Guard::initialize(FreezeFrame * g, int width, int height, int ncols, TextureManager *textureM)
@@ -13,65 +19,55 @@ bool Guard::initialize(FreezeFrame * g, int width, int height, int ncols, Textur
 
 void Guard::update(float frameTime)
 {
-	//VECTOR2 foo = velocity*frameTime*guardNS::SPEED;
-	//TODO: more than run right
-	setX(getX()+velocity.x);
-	setY(getY()+velocity.y);
-	//incPosition(foo);
-	Actor::update(frameTime);
+	if(getActive())
+	{
+		if(health <= 0)
+			setActive(false);
+
+		setCenter(getCenter()+(getVelocity()*guardNS::SPEED*frameTime));
+		setRadians(atan2(velocity.y,velocity.x));
+		Actor::update(frameTime);
+	}
 }
 
-void Guard::evade(float time)
+void Guard::evade(float frameTime)
 {
-	//add code here
-	float newX = guardNS::SPEED*time;
-	float newY = guardNS::SPEED*time;
-
-	if(targetEntity.getCenterX() > getCenterX())
-		newX = -newX;
-	if(targetEntity.getCenterY() > getCenterY())
-		newY = -newY;
-
-	VECTOR2 test(newX, newY);
-	D3DXVec2Normalize(&test, &test);
-	setVelocity(test);
-	return;
+	VECTOR2 disp = targetEntity.getCenter()-getCenter();
+	D3DXVec2Normalize(&disp,&disp);
+	setVelocity(-disp);
 }
 
-void Guard::deltaTrack(float time)
+void Guard::deltaTrack(float frametime)
 {
-	//add code here
-	float newX = 1;
-	float newY = 1;
+
+	VECTOR2 v(0,0);
 
 	if(targetEntity.getCenterX() < getCenterX())
-		newX = -newX;
-	if(targetEntity.getCenterY() < getCenterY())
-		newY = -newY;
+		v.x = -1;
+	if(targetEntity.getCenterX() > getCenterX())
+		v.x = 1;
 
-	VECTOR2 test(newX, newY);
-	D3DXVec2Normalize(&test, &test);
-	test *= guardNS::SPEED*game->timeMultiplier;
-	
-	setVelocity(test);
+	if(targetEntity.getCenterY() < getCenterY())
+		v.y = -1;
+	if(targetEntity.getCenterY() > getCenterY())
+		v.y = 1;
+
+	D3DXVec2Normalize(&v, &v);
+	setVelocity(v);
 
 }
-void Guard::vectorTrack(float time)
+void Guard::vectorTrack(float frametime)
 {
-	
-	VECTOR2 test = targetEntity.getCenter();
-	test -= getCenter();
-	D3DXVec2Normalize(&test,&test);
-	test.x *= guardNS::SPEED*game->timeMultiplier;
-	test.y *= guardNS::SPEED*game->timeMultiplier;
-	setVelocity(test);
+	VECTOR2 disp = targetEntity.getCenter()-getCenter();
+	D3DXVec2Normalize(&disp,&disp);
+	setVelocity(disp);
 }
 
 void Guard::ai(float time, Actor &t)
 { 
 	targetEntity = t;
-	//vectorTrack(time);
-	deltaTrack(time);
+	vectorTrack(time);
+	//deltaTrack(time);
 	//evade();
 	return;
 }

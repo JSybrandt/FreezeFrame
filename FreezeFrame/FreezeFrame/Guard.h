@@ -6,7 +6,7 @@ class FreezeFrame;
 
 namespace guardNS
 {
-	const float SPEED=2;
+	const float SPEED=100;
 };
 
 class Guard:public Actor
