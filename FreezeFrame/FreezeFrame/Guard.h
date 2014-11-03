@@ -7,6 +7,7 @@ class FreezeFrame;
 namespace guardNS
 {
 	const float SPEED=100;
+	const COLOR_ARGB COLOR = graphicsNS::RED;
 };
 
 class Guard:public Actor
@@ -25,6 +26,8 @@ public:
 	void update(float frametime);
 
 	void ai(float time, Actor &t);
+
+	void create(VECTOR2 loc);
 
 	bool getHunting() {return target;}
 

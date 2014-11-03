@@ -1,6 +1,11 @@
 #include"Bullet.h"
 #include "freezeframe.h"
 
+Bullet::Bullet(){
+	radius = 8;
+	collisionType = CIRCLE;
+}
+
 bool Bullet::initialize(FreezeFrame* g, int width, int height, int ncols,TextureManager *bulletTM, TextureManager* lineTM)
 {
 	game = g;

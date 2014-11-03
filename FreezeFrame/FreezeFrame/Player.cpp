@@ -1,7 +1,18 @@
 #include"Player.h"
 #include"freezeframe.h"
 
-Player::Player():Actor(){};
+Player::Player():Actor(){
+	//TODO: tighter collision
+	/*edge.top = -32;
+	edge.bottom = 32;
+	edge.left = -12;
+	edge.right = 12;
+	collisionType = BOX;*/
+
+	radius = 10;
+	collisionType = CIRCLE;
+
+};
 Player::~Player(){};
 
 bool Player::initialize(FreezeFrame * g, Controls c, int width, int height, int ncols, TextureManager *textureM)

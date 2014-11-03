@@ -5,7 +5,7 @@
 class FreezeFrame;
 
 namespace bulletNS{
-	const float SPEED = 1000;
+	const float SPEED = 600;
 };
 
 class Bullet: public Actor
@@ -17,6 +17,8 @@ private:
 	Image line;
 
 public:
+
+	Bullet();
 
 	bool initialize(FreezeFrame* g, int width, int height, int ncols,TextureManager *bulletTM, TextureManager *lineTM);
 

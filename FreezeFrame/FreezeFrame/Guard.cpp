@@ -7,6 +7,8 @@ Guard::Guard():Actor(){
 	edge.left = -12;
 	edge.right = 12;
 	collisionType = COLLISION_TYPE::BOX;
+	colorFilter = guardNS::COLOR;
+	setActive(false);
 }
 Guard::~Guard(){}
 
@@ -70,4 +72,10 @@ void Guard::ai(float time, Actor &t)
 	//deltaTrack(time);
 	//evade();
 	return;
+}
+
+void Guard::create(VECTOR2 loc)
+{
+	setActive(true);
+	setCenter(loc);
 }

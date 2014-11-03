@@ -18,7 +18,7 @@ FreezeFrame::FreezeFrame()
 
 	worldSizes = new VECTOR2[GameState::SIZE];
 	worldSizes[GameState::TitleScreen] = VECTOR2(GAME_WIDTH,GAME_HEIGHT);
-	worldSizes[GameState::Level1] = VECTOR2(4096,4096);
+	worldSizes[GameState::Level1] = VECTOR2(GAME_WIDTH,GAME_HEIGHT);
 	worldSizes[GameState::Level2] = VECTOR2(2048,2048);
 	worldSizes[GameState::Level3] = VECTOR2(2048,2048);
 
@@ -101,17 +101,19 @@ void FreezeFrame::initialize(HWND hwnd)
 	if(!cursor.initialize(this,0,0,0,&cursorTex))
 		throw GameError(25,"Failed to init cursor");
 
-	for(int i = 0; i < MAX_ACTORS; i++)
+	for(int i = 0; i < MAX_GUARDS; i++)
 	{
-		if(!actors[i].initialize(this,64,64,4,&walkTex))
+		if(!guards[i].initialize(this,64,64,4,&walkTex))
 			throw GameError(-1*i,"FAILED TO MAKE DUDE!");
+		guards[i].setFrames(0, 6);   // animation frames
+		guards[i].setCurrentFrame(0);     // starting frame
+		guards[i].setFrameDelay(0.05f); //0.08 seems appriopriate
+	}
 
-		actors[i].setCenterX(rand01()*worldSizes[currentState].x);
-		actors[i].setCenterY(rand01()*worldSizes[currentState].y);
-		actors[i].setColorFilter(graphicsNS::RED);
-		actors[i].setFrames(0, 6);   // animation frames
-		actors[i].setCurrentFrame(0);     // starting frame
-		actors[i].setFrameDelay(0.05f); //0.08 seems appriopriate
+	for(int i = 0; i < MAX_TURRETS; i++)
+	{
+		if(!turrets[i].initialize(this,0,0,0,&turretTex))
+			throw GameError(-1*i,"FAILED TO MAKE turret!");
 	}
 
 	for(int i = 0 ; i < MAX_PARTICLES; i++)
@@ -150,8 +152,8 @@ void FreezeFrame::update()
 	case TitleScreen:
 		menuUpdate();
 		break;
-	case Level1:
-		level1Update();
+	default:
+		levelsUpdate();
 	}
 
 }
@@ -198,7 +200,6 @@ void FreezeFrame::menuUpdate()
 		switch (selectedItem)
 		{
 		case 0:
-			currentState = Level1;
 			level1Load();
 			break;
 		case 3:
@@ -211,7 +212,7 @@ void FreezeFrame::menuUpdate()
 	}
 }
 
-void FreezeFrame::level1Update()
+void FreezeFrame::levelsUpdate()
 {
 	worldFrameTime = frameTime;
 	player.update(worldFrameTime);
@@ -220,9 +221,9 @@ void FreezeFrame::level1Update()
 
 	cursor.update(worldFrameTime);
 
-	for(int i = 0; i < MAX_ACTORS; i++)
+	for(int i = 0; i < MAX_GUARDS; i++)
 	{
-		actors[i].update(worldFrameTime);
+		guards[i].update(worldFrameTime);
 		
 	}
 
@@ -240,6 +241,10 @@ void FreezeFrame::level1Update()
 	{
 		enemyBullets[i].update(worldFrameTime);
 	}
+	for(int i = 0; i < MAX_TURRETS; i++)
+	{
+		turrets[i].update(worldFrameTime);
+	}
 }
 
 //=============================================================================
@@ -247,8 +252,8 @@ void FreezeFrame::level1Update()
 //=============================================================================
 void FreezeFrame::ai()
 {
-	for(int i = 0; i < MAX_ACTORS; i++) {
-		actors[i].ai(worldFrameTime, player);
+	for(int i = 0; i < MAX_GUARDS; i++) {
+		guards[i].ai(worldFrameTime, player);
 	}
 }
 
@@ -262,18 +267,50 @@ void FreezeFrame::collisions()
 		VECTOR2 collisionVector;
 		for(int i = 0; i < MAX_PLAYER_BULLETS; i++)
 		{
-			for(int j = 0 ; j < MAX_ACTORS; j++)
-				if(playerBullets[i].collidesWith(actors[j],collisionVector))
+			for(int j = 0 ; j < MAX_GUARDS; j++)
+				if(playerBullets[i].collidesWith(guards[j],collisionVector))
 				{
-					actors[j].setHealth(0);
+					guards[j].setHealth(0);
 					playerBullets[i].setActive(false);
 				}
+			for(int j = 0 ; j < MAX_TURRETS; j++)
+				if(playerBullets[i].collidesWith(turrets[j],collisionVector))
+				{
+					//turrets[j].setHealth(0);
+					playerBullets[i].setActive(false);
+				}
+			if(playerBullets[i].getCenter().x < 0 || playerBullets[i].getCenter().x > worldSizes[currentState].x || 
+			   playerBullets[i].getCenter().y < 0 || playerBullets[i].getCenter().y > worldSizes[currentState].y)
+			   playerBullets[i].setActive(false);
+		}
+
+		for(int i = 0; i < MAX_ENEMY_BULLETS; i++)
+		{
+			if(enemyBullets[i].getCenter().x < 0 || enemyBullets[i].getCenter().x > worldSizes[currentState].x || 
+			   enemyBullets[i].getCenter().y < 0 || enemyBullets[i].getCenter().y > worldSizes[currentState].y)
+			   enemyBullets[i].setActive(false);
+
+			if(enemyBullets[i].collidesWith(player,collisionVector))
+				menuLoad();
 		}
 
 		if(player.collidesWith(exit,collisionVector))
 		{
-			currentState = TitleScreen;
-			menuLoad();
+			switch (currentState)
+			{
+			case FreezeFrame::Level1:
+				level2Load();
+				break;
+			case FreezeFrame::Level2:
+				menuLoad();
+				break;
+			case FreezeFrame::Level3:
+				break;
+			case FreezeFrame::RestartScreen:
+				break;
+			default:
+				break;
+			}
 		}
 	}
 
@@ -290,8 +327,8 @@ void FreezeFrame::render()
 	case TitleScreen:
 		menuRender();
 		break;
-	case Level1:
-		level1Render();
+	default:
+		levelsRender();
 	}
 
 	graphics->spriteEnd();                  // end drawing sprites
@@ -316,7 +353,7 @@ void FreezeFrame::menuRender()
 	
 }
 
-void FreezeFrame::level1Render()
+void FreezeFrame::levelsRender()
 {
 	background.draw(screenLoc);
 
@@ -337,9 +374,14 @@ void FreezeFrame::level1Render()
 		enemyBullets[i].draw(screenLoc);
 	}
 
-	for(int i = 0; i < MAX_ACTORS; i++)
+	for(int i = 0; i < MAX_GUARDS; i++)
 	{
-		actors[i].draw(screenLoc,graphicsNS::FILTER);
+		guards[i].draw(screenLoc,graphicsNS::FILTER);
+	}
+
+	for(int i = 0; i < MAX_TURRETS; i++)
+	{
+		turrets[i].draw(screenLoc,graphicsNS::WHITE);
 	}
 
 	player.draw(screenLoc);
@@ -371,6 +413,9 @@ void FreezeFrame::resetAll()
 
 void FreezeFrame::menuLoad()
 {
+	currentState = TitleScreen;
+	deactivateAll();
+
 	float padding = 20;
 	title.setX(-title.getWidth());
 	title.setY(padding);
@@ -390,20 +435,44 @@ void FreezeFrame::menuLoad()
 
 void FreezeFrame::level1Load()
 {
+	currentState = Level1;
+	deactivateAll();
+
+	player.setCenter(VECTOR2(worldSizes[currentState].x/6,worldSizes[currentState].y/2));
+
+	VECTOR2(worldSizes[currentState].x*3/5,worldSizes[currentState].y/3);
+	float turretDir = PI;
+
+	spawnTurret(VECTOR2(worldSizes[currentState].x*3/5,worldSizes[currentState].y/3),turretDir);
+	spawnTurret(VECTOR2(worldSizes[currentState].x*3/5,worldSizes[currentState].y*2/3),turretDir);
+	spawnTurret(VECTOR2(worldSizes[currentState].x*2/5,worldSizes[currentState].y/2),turretDir);
+
+	exit.setCenterX(worldSizes[currentState].x-exit.getWidth());
+	exit.setCenterY(worldSizes[currentState].y/2);
+}
+
+void FreezeFrame::level2Load()
+{
+	currentState = Level2;
+	deactivateAll();
+
 	player.setCenter(VECTOR2(1000,1000));
 
-	for(int i = 0; i < MAX_ACTORS; i++)
+	for(int i = 0; i < MAX_GUARDS; i++)
 	{
-		actors[i].setCenterX(rand01()*worldSizes[currentState].x);
-		actors[i].setCenterY(rand01()*worldSizes[currentState].y);
-		actors[i].setColorFilter(graphicsNS::RED);
+		guards[i].create(VECTOR2(rand01()*worldSizes[currentState].x,rand01()*worldSizes[currentState].y));
+	}
+
+	for(int i = 0; i < MAX_TURRETS; i++)
+	{
+		VECTOR2 spawn(rand01()*worldSizes[currentState].x,rand01()*worldSizes[currentState].y);
+		turrets[i].setRadians(rand01()*2*PI);
+		turrets[i].create(spawn,rand01()*2*PI);
 	}
 
 	exit.setCenterX(100);
 	exit.setCenterY(100);
 }
-
-
 
 
 void FreezeFrame::updateScreen(VECTOR2 center)
@@ -457,4 +526,32 @@ bool FreezeFrame::spawnSmokeParticle(VECTOR2 loc, COLOR_ARGB c)
 	return false;
 }
 
+bool FreezeFrame::spawnTurret(VECTOR2 loc, float dir)
+{
+	for(int i = 0; i < MAX_TURRETS; i++)
+	{
+		if(!turrets[i].getActive())
+		{
+			turrets[i].create(loc,dir);
+			return true;
+		}
+	}
 
+	return false;
+}
+
+
+
+void FreezeFrame::deactivateAll()
+{
+	for(int i = 0 ; i < MAX_GUARDS; i++)
+		guards[i].setActive(false);
+	for(int i = 0 ; i < MAX_TURRETS; i++)
+		turrets[i].setActive(false);
+	for(int i = 0 ; i < MAX_PLAYER_BULLETS; i++)
+		playerBullets[i].setActive(false);
+	for(int i = 0 ; i < MAX_ENEMY_BULLETS; i++)
+		enemyBullets[i].setActive(false);
+	for(int i = 0 ; i < MAX_PARTICLES; i++)
+		particles[i].setActive(false);
+}

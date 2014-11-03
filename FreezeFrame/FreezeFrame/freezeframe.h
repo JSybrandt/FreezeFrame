@@ -21,14 +21,16 @@ using std::string;
 #include "Bullet.h"
 #include "Particle.h"
 #include "Exit.h"
+#include "Turret.h"
 
 
 namespace freezeFrameNS
 {
-	const int MAX_ACTORS = 100;
+	const int MAX_GUARDS = 100;
+	const int MAX_TURRETS = 10;
 	const int MAX_PLAYER_BULLETS = 100;
-	const int MAX_ENEMY_BULLETS = 100;
-	const int MAX_PARTICLES = 10000;
+	const int MAX_ENEMY_BULLETS = 1000;
+	const int MAX_PARTICLES = 1000;
 	const int MAX_SCENERY = 1000;
 
 	const int NUM_MENU_OPTIONS = 4;
@@ -80,7 +82,8 @@ private:
 	Cursor cursor;
 	Image   background;         // backdrop image
 
-	Guard actors[MAX_ACTORS];
+	Guard guards[MAX_GUARDS];
+	Turret turrets[MAX_TURRETS];
 	Bullet playerBullets[MAX_PLAYER_BULLETS];
 	Bullet enemyBullets[MAX_ENEMY_BULLETS];
 	Particle particles[MAX_PARTICLES];
@@ -129,14 +132,20 @@ public:
 
 	bool spawnBullet(VECTOR2 loc, float dir,COLOR_ARGB c, bool playerBullet);
 	bool spawnSmokeParticle(VECTOR2 loc,COLOR_ARGB c);
+	bool spawnTurret(VECTOR2 loc, float dir);
 	
 	void menuLoad();
 	void menuUpdate();
 	void menuRender();
 
 	void level1Load();
-	void level1Update();
-	void level1Render();
+	void level2Load();
+
+	void levelsUpdate();
+	void levelsRender();
+
+
+	void deactivateAll();
 
 
 };
