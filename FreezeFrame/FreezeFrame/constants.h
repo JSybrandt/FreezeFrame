@@ -32,7 +32,7 @@ const char BACKGROUND_IMAGE[] = "pictures\\background.png";
 const char WALK_IMAGE[] = "pictures\\walkingAni.png";
 const char FEET_IMAGE[] = "pictures\\feetAni.png";
 const char MAN_IMAGE[] = "pictures\\man.png";
-const char TURRET_IMAGE[] = "pictures\\turret.png";
+const char TURRET_IMAGE[] = "pictures\\turretAni.png";
 const char BULLET_IMAGE[] = "pictures\\bullet.png";
 const char CURSOR_IMAGE[] = "pictures\\cursor.png";
 const char	BULLET_TRAIL_IMAGE[] = "pictures\\bulletTrail.png";
@@ -80,6 +80,12 @@ const int  FEET_COL = 4;
 const int  FEET_WIDTH = 64;
 const int  FEET_HEIGHT = 64;
 const float FEET_DELAY = 0.05f;
+
+//Turret Cells
+const int  TURRET_COL = 3;
+const int  TURRET_WIDTH = 64;
+const int  TURRET_HEIGHT = 64;
+const float TURRET_DELAY = 0.05f;
  
 // game
 const double PI = 3.14159265;

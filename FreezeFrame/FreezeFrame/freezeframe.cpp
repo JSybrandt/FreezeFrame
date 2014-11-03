@@ -113,8 +113,12 @@ void FreezeFrame::initialize(HWND hwnd)
 
 	for(int i = 0; i < MAX_TURRETS; i++)
 	{
-		if(!turrets[i].initialize(this,0,0,0,&turretTex))
+		if(!turrets[i].initialize(this,TURRET_WIDTH,TURRET_HEIGHT,TURRET_COL,&turretTex))
 			throw GameError(-1*i,"FAILED TO MAKE turret!");
+		turrets[i].setFrames(0, 4);   // animation frames
+		turrets[i].setCurrentFrame(4);     // starting frame
+		turrets[i].setFrameDelay(TURRET_DELAY); //
+		turrets[i].setLoop(false);
 	}
 
 	for(int i = 0 ; i < MAX_PARTICLES; i++)

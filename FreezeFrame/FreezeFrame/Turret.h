@@ -25,6 +25,8 @@ public:
 
 	void update(float frameTime);
 
+	void animate(float frameTime);
+
 	void create(VECTOR2 loc, float dir);
 
 };
