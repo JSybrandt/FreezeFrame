@@ -10,15 +10,18 @@ Turret::Turret():Actor()
 	edge.right = 76;
 
 	collisionType = BOX;
+	base.setRadians(PI/4);
 
 	setActive(false);
 	weaponCooldown = 0;
 }
 
-bool Turret::initialize(FreezeFrame * g, int width, int height, int ncols, TextureManager *textureM)
+bool Turret::initialize(FreezeFrame * g, int width, int height, int ncols, TextureManager *turretTM, TextureManager *baseTM)
 {
 	game = g;
-	return Actor::initialize(g,width,height,ncols,textureM);
+	bool result =  Actor::initialize(g,width,height,ncols,turretTM);
+	result = result && base.initialize(g,BASE_WIDTH,BASE_HEIGHT,0,baseTM);
+	return result;
 }
 
 void Turret::update(float frametime)
@@ -87,23 +90,19 @@ void Turret::update(float frametime)
 			setRadians(radians+ rotVel*frametime);
 		}
 	}
-	base->update(frametime);
+	base.update(frametime);
 	Image::update(frametime);
 
 
-}
-
-void Turret::setBase(Actor *base) {
-	this->base = base;
-	return;
 }
 
 void Turret::draw(VECTOR2 screenLoc)
 {
 	if(getActive())
 	{
+		
 
-		base->draw(screenLoc);
+		base.draw(screenLoc);
 
 		Actor::draw(screenLoc);
 	}
@@ -117,5 +116,5 @@ void Turret::create(VECTOR2 loc, float dir)
 	maxDir = dir + turretNS::ROTATION_WIDTH;
 	rotVel = turretNS::ROTATION_SPEED;
 	setCenter(loc);
-	base->setCenter(loc);
+	base.setCenter(loc);
 }

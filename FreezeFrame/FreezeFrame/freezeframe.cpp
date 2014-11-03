@@ -98,8 +98,12 @@ void FreezeFrame::initialize(HWND hwnd)
 	if(!background.initialize(graphics,0,0,0,&backgroundTex))
 		throw GameError(7,"Failed to init background image");
 
-	if(!player.initialize(this,P1Controls,0,0,0,&manTex))
+	if(!player.initialize(this,P1Controls,PL_WIDTH,PL_HEIGHT,PL_COL,&manTex))
 		throw GameError(24,"Failed to init player");
+	player.setFrames(0, 5);
+	player.setCurrentFrame(5);
+	player.setFrameDelay(PL_DELAY);
+	player.setLoop(false);
 
 	if(!cursor.initialize(this,0,0,0,&cursorTex))
 		throw GameError(25,"Failed to init cursor");
@@ -115,12 +119,8 @@ void FreezeFrame::initialize(HWND hwnd)
 
 	for(int i = 0; i < MAX_TURRETS; i++)
 	{
-		if(!turrets[i].initialize(this,TURRET_WIDTH,TURRET_HEIGHT,TURRET_COL,&turretTex))
+		if(!turrets[i].initialize(this,TURRET_WIDTH,TURRET_HEIGHT,TURRET_COL,&turretTex, &baseTex))
 			throw GameError(-1*i,"FAILED TO MAKE turret!");
-		if(!bases[i].initialize(this,BASE_WIDTH,BASE_HEIGHT,0,&baseTex))
-			throw GameError(-1*i,"FAILED TO MAKE turret!");
-		bases[i].setRadians(PI/4);
-		turrets[i].setBase(&bases[i]);
 		turrets[i].setFrames(0, 4);   // animation frames
 		turrets[i].setCurrentFrame(4);     // starting frame
 		turrets[i].setFrameDelay(TURRET_DELAY); //
@@ -478,7 +478,7 @@ void FreezeFrame::level2Load()
 
 	player.setCenter(VECTOR2(1000,1000));
 
-	/*for(int i = 0; i < MAX_GUARDS; i++)
+	for(int i = 0; i < MAX_GUARDS; i++)
 	{
 		guards[i].create(VECTOR2(rand01()*worldSizes[currentState].x,rand01()*worldSizes[currentState].y));
 	}
@@ -488,7 +488,7 @@ void FreezeFrame::level2Load()
 		VECTOR2 spawn(rand01()*worldSizes[currentState].x,rand01()*worldSizes[currentState].y);
 		turrets[i].setRadians(rand01()*2*PI);
 		turrets[i].create(spawn,rand01()*2*PI);
-	}*/
+	}
 
 	exit.setCenterX(100);
 	exit.setCenterY(100);
