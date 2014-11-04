@@ -202,6 +202,7 @@ class Actor : public Image
 	{
 		if(getActive()) Image::draw(screenLoc,c);
 	}
+
 };
 
 #endif

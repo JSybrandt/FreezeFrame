@@ -17,10 +17,12 @@ bool Bullet::initialize(FreezeFrame* g, int width, int height, int ncols,Texture
 
 void Bullet::create(VECTOR2 loc, float dir, COLOR_ARGB c)
 {
+	
+	setActive(true);
+
 	velocity = utilityNS::rotateVector(VECTOR2(1,0),dir)*bulletNS::SPEED;
 	setCenter(loc);
 	setColorFilter(c);
-	setActive(true);
 	firedLocation = loc;
 	setRadians(dir);
 
@@ -37,6 +39,8 @@ void Bullet::create(VECTOR2 loc, float dir, COLOR_ARGB c)
 
 	game->spawnParticleCone(loc,dir,particleNS::SMOKE_COLOR);
 
+	update(0);
+
 }
 
 void Bullet::update(float frametime)
@@ -44,6 +48,13 @@ void Bullet::update(float frametime)
 	if(getActive())
 	{
 		setCenter(getCenter()+velocity*frametime);
+
+		VECTOR2 lineData = getCenter()-firedLocation;
+		float lineLength = D3DXVec2Length(&lineData);
+		RECT lineRect = line.getSpriteDataRect();
+		lineRect.right = lineLength;
+		line.setSpriteDataRect(lineRect);
+
 	}
 }
 
@@ -51,12 +62,7 @@ void Bullet::draw(VECTOR2 screenLoc)
 {
 	if(getActive())
 	{
-		VECTOR2 lineData = getCenter()-firedLocation;
-		float lineLength = D3DXVec2Length(&lineData);
-		RECT lineRect = line.getSpriteDataRect();
-		lineRect.right = lineLength;
-		line.setSpriteDataRect(lineRect);
-
+		
 		line.draw(screenLoc);
 
 		Actor::draw(screenLoc);

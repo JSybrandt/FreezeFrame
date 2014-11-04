@@ -39,6 +39,7 @@ const char CURSOR_IMAGE[] = "pictures\\cursor.png";
 const char	PARTICLE_IMAGE[] = "pictures\\particle.png";
 const char	LINE_IMAGE[] = "pictures\\line2.png";
 const char	EXIT_IMAGE[] = "pictures\\exit.png";
+const char	WALL_IMAGE[] = "pictures\\wall.png";
 
 const char MENU_IMAGE[] = "pictures\\menu.png";
 const char MENU_CURSOR_IMAGE[] = "pictures\\menuCursor.png";
