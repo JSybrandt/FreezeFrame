@@ -77,6 +77,7 @@ void Turret::update(float frametime)
 				game->spawnBullet(v2,radians,graphicsNS::RED,false);
 				animComplete = false;
 				setCurrentFrame(0);
+				audio->playCue(LASER_CUE);
 				weaponCooldown = turretNS::FIRE_RATE;
 			}
 		}
