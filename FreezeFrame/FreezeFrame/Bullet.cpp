@@ -39,6 +39,7 @@ void Bullet::create(VECTOR2 loc, float dir, COLOR_ARGB c)
 
 	game->spawnParticleCone(loc,dir,particleNS::SMOKE_COLOR);
 
+	//inits line
 	update(0);
 
 }

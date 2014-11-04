@@ -1,6 +1,8 @@
 #include"Player.h"
 #include"freezeframe.h"
 
+using namespace playerNS;
+
 Player::Player():Actor(){
 	//TODO: tighter collision
 	/*edge.top = -32;
@@ -9,9 +11,11 @@ Player::Player():Actor(){
 	edge.right = 12;
 	collisionType = BOX;*/
 
-	timeMultiplier = 1;
 	radius = 10;
 	collisionType = CIRCLE;
+
+	currentTimeMultiplier = 1;
+	desiredTimeMultiplier = STANDING_TM;
 
 };
 Player::~Player(){};
@@ -27,6 +31,7 @@ void Player::update(float &frametime)
 {
 	if(getActive())
 	{
+		float currentSpeed = playerNS::RUN_SPEED;
 		VECTOR2 distToMouse = game->getMouseInWorld()-getCenter();
 		float mouseDir = atan2(distToMouse.y,distToMouse.x);
 		setRadians(mouseDir);
@@ -45,43 +50,55 @@ void Player::update(float &frametime)
 		if(input->getMouseLButton()&& (weaponCooldown <= 0) ){
 			game->spawnBullet(getCenter()+utilityNS::rotateVector(playerNS::bulletDisplacement,mouseDir),mouseDir,getColorFilter(),true);
 			weaponCooldown  = playerNS::WEAPON_COOLDOWN;
+			recoilCooldown = playerNS::RECOIL_TIME;
 			animComplete = false;
 			setCurrentFrame(0);
 		}
 
+		//if walking
+		if(input->isKeyDown(controls.walk))
+		{
+			currentSpeed = WALK_SPEED;
+			desiredTimeMultiplier = WALK_TM;
+		}
+		//if running
+		else if(inputDir != VECTOR2(0,0))
+		{
+			currentSpeed = RUN_SPEED;
+			desiredTimeMultiplier = RUN_TM;
+		}
+		else if(recoilCooldown > 0)
+		{
+			desiredTimeMultiplier = RECOIL_TM;
+		}
+		else
+		{
+			desiredTimeMultiplier = STANDING_TM;
+		}
+
+
+		if(currentTimeMultiplier - desiredTimeMultiplier < TIME_EPSILON)
+			currentTimeMultiplier = desiredTimeMultiplier;
+
+		if(currentTimeMultiplier != desiredTimeMultiplier)
+		{
+			float diff = desiredTimeMultiplier - currentTimeMultiplier;
+			diff /= abs(diff);
+			currentTimeMultiplier += diff*D_TIME_PER_FRAME;
+		}
+
+		frametime *= currentTimeMultiplier;
+
+
 		D3DXVec2Normalize(&inputDir,&inputDir);
-
-		//inputDir *= playerNS::SPEED*frametime;				//TESTING
-
-		inputDir *= playerNS::SPEED;							
-
-		if(inputDir == VECTOR2(0,0) && timeMultiplier > 0.01 ) { //
-			timeMultiplier -= 0.05;
-			if(timeMultiplier < 0.01)
-				timeMultiplier = 0.01;
-			frametime *= timeMultiplier;
-			
-			//frametime *= .01;				//If need this back, just comment out anything with time multiplier.
-		}
-
-		else if(inputDir == VECTOR2(0,0))
-			frametime *= timeMultiplier;
-
-		else if(timeMultiplier < 1) {
-			timeMultiplier += 0.05;
-			if(timeMultiplier > 1)
-				timeMultiplier = 1;
-			frametime *= timeMultiplier;
-		}
-
-		inputDir *= frametime;					
-
+		inputDir *= currentSpeed*frametime;					
 		setCenter(getCenter()+inputDir);
-
-		//ifs go here normally
 
 		weaponCooldown -= frametime;
 		if(weaponCooldown < 0) weaponCooldown =0;
+
+		recoilCooldown -= frametime;
+		if(recoilCooldown < 0)recoilCooldown = 0;
 
 	}
 	Image::update(frametime);

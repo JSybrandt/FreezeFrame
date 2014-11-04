@@ -14,7 +14,7 @@ FreezeFrame::FreezeFrame()
 {
 	srand(time(0));
 
-	P1Controls = Controls('W','S','A','D');
+	P1Controls = Controls('W','S','A','D','C');
 
 	worldSizes = new VECTOR2[GameState::SIZE];
 	worldSizes[GameState::TitleScreen] = VECTOR2(GAME_WIDTH,GAME_HEIGHT);
@@ -24,9 +24,6 @@ FreezeFrame::FreezeFrame()
 
 	currentState = TitleScreen;
 	
-	timeMultiplier = 1;
-
-	P1Controls = Controls('W','S','A','D');
 }
 
 //=============================================================================
@@ -343,7 +340,7 @@ void FreezeFrame::collisions()
 			if(player.collidesWith(walls[j],collisionVector))
 			{
 				//TODO: better cut off
-				player.setCenter(player.getCenter()+collisionVector);
+				//player.setCenter(player.getCenter()-collisionVector);
 			}
 
 		if(player.collidesWith(exit,collisionVector))
@@ -498,20 +495,32 @@ void FreezeFrame::level1Load()
 	currentState = Level1;
 	deactivateAll();
 
-	player.setCenter(VECTOR2(worldSizes[currentState].x/6,worldSizes[currentState].y/2));
+	player.setTop(0);player.setCenterX(worldSizes[currentState].x/6);
 
-	VECTOR2(worldSizes[currentState].x*3/5,worldSizes[currentState].y/3);
-	float turretDir = PI;
 
-	spawnTurret(VECTOR2(worldSizes[currentState].x*3/5,worldSizes[currentState].y/3),turretDir);
-	spawnTurret(VECTOR2(worldSizes[currentState].x*3/5,worldSizes[currentState].y*2/3),turretDir);
-	//spawnTurret(VECTOR2(worldSizes[currentState].x*2/5,worldSizes[currentState].y/2),turretDir);
+	VECTOR2 offset(30,-30);
 
-	spawnWall(VECTOR2(worldSizes[currentState].x*0.7,0),VECTOR2(16,worldSizes[currentState].y/3));
-	spawnWall(VECTOR2(worldSizes[currentState].x*0.7,worldSizes[currentState].y*2/3),VECTOR2(16,worldSizes[currentState].y/3));
+	Turret * t1 = spawnTurret(VECTOR2(0,0),-PI/4);
+	Turret * t2 = spawnTurret(VECTOR2(0,0),3*PI/4);
 
-	exit.setCenterX(worldSizes[currentState].x-exit.getWidth());
-	exit.setCenterY(worldSizes[currentState].y/2);
+	t1->setLeft(0);
+	t1->setBot(worldSizes[currentState].y);
+	t1->setCenter(t1->getCenter()+offset);
+
+	t2->setRight(worldSizes[currentState].x);
+	t2->setTop(0);
+	t2->setCenter(t2->getCenter()-offset);
+
+	Wall* w1 = spawnWall(VECTOR2(0,0),VECTOR2(16,worldSizes[currentState].y*2/3));
+	Wall* w2 = spawnWall(VECTOR2(0,0),VECTOR2(16,worldSizes[currentState].y*2/3));
+
+	w1->setCenterX(worldSizes[currentState].x/3);
+
+	w2->setCenterX(worldSizes[currentState].x*2/3);
+	w2->setBot(worldSizes[currentState].y);
+
+	exit.setBot(worldSizes[currentState].y);
+	exit.setRight(worldSizes[currentState].x);
 	exit.update(0);
 }
 
@@ -553,7 +562,7 @@ void FreezeFrame::updateScreen(VECTOR2 center)
 }
 
 
-bool FreezeFrame::spawnBullet(VECTOR2 loc, float dir,COLOR_ARGB c, bool playerBullet)
+Bullet* FreezeFrame::spawnBullet(VECTOR2 loc, float dir,COLOR_ARGB c, bool playerBullet)
 {
 	int maxBullets = MAX_ENEMY_BULLETS;
 	Bullet * arr = enemyBullets;
@@ -569,53 +578,53 @@ bool FreezeFrame::spawnBullet(VECTOR2 loc, float dir,COLOR_ARGB c, bool playerBu
 		if(!arr[i].getActive())
 		{
 			arr[i].create(loc,dir,c);
-			return true;
+			return &arr[i];
 		}
 	}
 
-	return false;
+	return nullptr;
 }
 
 
-bool FreezeFrame::spawnParticle(VECTOR2 loc,VECTOR2 vel, COLOR_ARGB c)
+Particle* FreezeFrame::spawnParticle(VECTOR2 loc,VECTOR2 vel, COLOR_ARGB c)
 {
 	for(int i = 0; i < MAX_PARTICLES; i++)
 	{
 		if(!particles[i].getActive())
 		{
 			particles[i].create(loc,vel,c);
-			return true;
+			return &particles[i];
 		}
 	}
 
-	return false;
+	return nullptr;
 }
 
-bool FreezeFrame::spawnTurret(VECTOR2 loc, float dir)
+Turret* FreezeFrame::spawnTurret(VECTOR2 loc, float dir)
 {
 	for(int i = 0; i < MAX_TURRETS; i++)
 	{
 		if(!turrets[i].getActive())
 		{
 			turrets[i].create(loc,dir);
-			return true;
+			return &turrets[i];
 		}
 	}
 
-	return false;
+	return nullptr;
 }
 
-bool FreezeFrame::spawnWall(VECTOR2 loc, VECTOR2 size)
+Wall* FreezeFrame::spawnWall(VECTOR2 loc, VECTOR2 size)
 {
 	for(int i = 0; i < MAX_WALLS; i++)
 	{
 		if(!walls[i].getActive())
 		{
 			walls[i].create(loc,size);
-			return true;
+			return &walls[i];
 		}
 	}
-	return false;
+	return nullptr;
 }
 
 void FreezeFrame::spawnParticleCloud(VECTOR2 loc, COLOR_ARGB c)

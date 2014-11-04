@@ -11,10 +11,15 @@ void Wall::create(VECTOR2 loc, VECTOR2 size)
 	r.right=size.x;r.bottom=size.y;
 	setSpriteDataRect(r);
 
+	spriteData.width = size.x;
+	spriteData.height = size.y;
+
 	edge.top= -size.y/2;
 	edge.bottom= size.y/2;
 	edge.left = -size.x/2;
 	edge.right = size.x/2;
+
+	collisionType = BOX;
 
 	update(0);
 }

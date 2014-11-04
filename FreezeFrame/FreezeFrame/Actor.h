@@ -125,6 +125,11 @@ class Actor : public Image
     //           Set functions            //
     ////////////////////////////////////////
 
+	virtual void setLeft(float l){setX(l);}
+	virtual void setRight(float r){setX(r-getWidth());}
+	virtual void setTop(float t){setY(t);}
+	virtual void setBot(float b){setY(b-getHeight());}
+
     // Set velocity.
     virtual void  setVelocity(VECTOR2 v)    {velocity = v;}
 	virtual void  setVelocity(float x, float y)    {velocity.x = x; velocity.y = y;}

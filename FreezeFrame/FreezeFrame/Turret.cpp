@@ -90,6 +90,7 @@ void Turret::update(float frametime)
 			setRadians(radians+ rotVel*frametime);
 		}
 	}
+	base.setCenter(getCenter());
 	base.update(frametime);
 	Image::update(frametime);
 
@@ -101,10 +102,10 @@ void Turret::draw(VECTOR2 screenLoc)
 	if(getActive())
 	{
 		
-
 		base.draw(screenLoc);
 
 		Actor::draw(screenLoc);
+
 	}
 }
 

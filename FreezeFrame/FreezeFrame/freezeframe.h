@@ -110,7 +110,6 @@ private:
 	GameState currentState;
 
 public:
-	float timeMultiplier;
 	// Constructor
     FreezeFrame();
 
@@ -130,10 +129,10 @@ public:
 	//places the screen so the selected location is in the middle area (might not center)
 	void updateScreen(VECTOR2 center); 
 
-	bool spawnBullet(VECTOR2 loc, float dir,COLOR_ARGB c, bool playerBullet);
-	bool spawnParticle(VECTOR2 loc,VECTOR2 vel, COLOR_ARGB c);
-	bool spawnTurret(VECTOR2 loc, float dir);
-	bool spawnWall(VECTOR2 loc, VECTOR2 size);
+	Bullet* spawnBullet(VECTOR2 loc, float dir,COLOR_ARGB c, bool playerBullet);
+	Particle* spawnParticle(VECTOR2 loc,VECTOR2 vel, COLOR_ARGB c);
+	Turret* spawnTurret(VECTOR2 loc, float dir);
+	Wall* spawnWall(VECTOR2 loc, VECTOR2 size);
 
 
 	void spawnParticleCloud(VECTOR2 loc, COLOR_ARGB c);
