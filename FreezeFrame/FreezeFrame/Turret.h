@@ -10,6 +10,8 @@ namespace turretNS{
 	const float ROTATION_WIDTH = PI/2;
 	const float ROT_EPSILON = 0.001;
 	const float FIRE_RATE = 0.5;
+	const VECTOR2 BULLET1_OFFSET(30,-15);
+	const VECTOR2 BULLET2_OFFSET(30,15);
 };
 
 class Turret:public Actor

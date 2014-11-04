@@ -2,6 +2,8 @@
 
 #include "freezeframe.h"
 
+using namespace turretNS;
+
 Turret::Turret():Actor()
 {
 	edge.top = -32;
@@ -69,7 +71,10 @@ void Turret::update(float frametime)
 			weaponCooldown -= frametime;
 			if(weaponCooldown <= 0)
 			{
-				game->spawnBullet(getCenter(),radians,graphicsNS::RED,false);
+				VECTOR2 v1 = getCenter() + utilityNS::rotateVector(BULLET1_OFFSET,getRadians());
+				VECTOR2 v2 = getCenter() + utilityNS::rotateVector(BULLET2_OFFSET,getRadians());
+				game->spawnBullet(v1,radians,graphicsNS::RED,false);
+				game->spawnBullet(v2,radians,graphicsNS::RED,false);
 				animComplete = false;
 				setCurrentFrame(0);
 				weaponCooldown = turretNS::FIRE_RATE;

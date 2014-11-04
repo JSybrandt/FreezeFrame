@@ -39,7 +39,7 @@ namespace freezeFrameNS
 	const float MENU_ITEM_DELAY = 0.25;
 
 	const int NUM_PARTICLES_IN_SMOKE_EFFECT = 300;
-	const int NUM_PARTICLES_IN_CONE_EFFECT = 150;
+	const int NUM_PARTICLES_IN_CONE_EFFECT = 100;
 }
 
 using namespace freezeFrameNS;

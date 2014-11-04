@@ -48,15 +48,25 @@ void Player::update(float &frametime)
 			inputDir.x=1;
 
 		if(input->getMouseLButton()&& (weaponCooldown <= 0) ){
-			game->spawnBullet(getCenter()+utilityNS::rotateVector(playerNS::bulletDisplacement,mouseDir),mouseDir,getColorFilter(),true);
+
+			//because we dont want to use the angle form player center
+			VECTOR2 bulletLoc = getCenter()+utilityNS::rotateVector(playerNS::bulletDisplacement,mouseDir);
+			VECTOR2 bulletPath = game->getMouseInWorld()-bulletLoc;
+			float bulletAngle = atan2(bulletPath.y,bulletPath.x);
+
+			game->spawnBullet(bulletLoc,bulletAngle,getColorFilter(),true);
 			weaponCooldown  = playerNS::WEAPON_COOLDOWN;
 			recoilCooldown = playerNS::RECOIL_TIME;
 			animComplete = false;
 			setCurrentFrame(0);
 		}
 
+		if(inputDir == VECTOR2(0,0))
+		{
+			desiredTimeMultiplier = STANDING_TM;
+		}
 		//if walking
-		if(input->isKeyDown(controls.walk))
+		else if(input->isKeyDown(controls.walk))
 		{
 			currentSpeed = WALK_SPEED;
 			desiredTimeMultiplier = WALK_TM;
@@ -71,10 +81,7 @@ void Player::update(float &frametime)
 		{
 			desiredTimeMultiplier = RECOIL_TM;
 		}
-		else
-		{
-			desiredTimeMultiplier = STANDING_TM;
-		}
+		
 
 
 		if(currentTimeMultiplier - desiredTimeMultiplier < TIME_EPSILON)
