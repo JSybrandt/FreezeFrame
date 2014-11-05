@@ -36,10 +36,11 @@ const char TURRET_IMAGE[] = "pictures\\turretAni.png";
 const char BASE_IMAGE[] = "pictures\\turretBase.png";
 const char BULLET_IMAGE[] = "pictures\\bullet.png";
 const char CURSOR_IMAGE[] = "pictures\\cursor.png";
-const char	PARTICLE_IMAGE[] = "pictures\\particle.png";
-const char	LINE_IMAGE[] = "pictures\\line2.png";
-const char	EXIT_IMAGE[] = "pictures\\exit.png";
-const char	WALL_IMAGE[] = "pictures\\wall.png";
+const char PARTICLE_IMAGE[] = "pictures\\particle.png";
+const char LINE_IMAGE[] = "pictures\\line2.png";
+const char EXIT_IMAGE[] = "pictures\\exit.png";
+const char WALL_IMAGE[] = "pictures\\wall.png";
+const char MINE_IMAGE[] = "pictures\\landmine.png";
 
 const char MENU_IMAGE[] = "pictures\\menu.png";
 const char MENU_CURSOR_IMAGE[] = "pictures\\menuCursor.png";

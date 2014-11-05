@@ -1,0 +1,30 @@
+#pragma once
+
+#include "Actor.h"
+#include "textDX.h"
+#include <string>
+
+namespace landmineNS{
+	const float TIME_UNTIL_EXPLOSION = 1.5;
+	const float EXPLOSION_LIFETIME = 0.25;
+	const float MINE_RADIUS = 32;
+	const float EXPLOSION_RADIUS = 128;
+	const VECTOR2 TEXT_DISPLACEMENT(-12,-32);
+};
+
+class LandMine: public Actor
+{
+private:
+	bool primed,exploding;
+	float timeRemaining;
+	TextDX * text;
+public:
+	LandMine();
+	void update(float frametime);
+	void draw(VECTOR2 screenLoc);
+	void create(VECTOR2 loc);
+	void wasSteppedOn();//call when the mine gets stepped on
+	bool initialize(Game * g, TextDX * text,int width, int height, int ncols, TextureManager *textureM);
+	bool getDangerous(){return exploding&&getActive();}
+	bool getPrimed(){return primed;}
+};

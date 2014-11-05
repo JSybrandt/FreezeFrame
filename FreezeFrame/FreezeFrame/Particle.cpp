@@ -3,6 +3,7 @@
 Particle::Particle():Actor()
 {
 	setActive(false);
+	setRadians(utilityNS::rand01()*2*PI);
 }
 
 void Particle::update(float frametime)

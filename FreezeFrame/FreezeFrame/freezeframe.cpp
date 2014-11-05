@@ -21,6 +21,7 @@ FreezeFrame::FreezeFrame()
 	worldSizes[GameState::Level1] = VECTOR2(GAME_WIDTH,GAME_HEIGHT);
 	worldSizes[GameState::Level2] = VECTOR2(2048,2048);
 	worldSizes[GameState::Level3] = VECTOR2(2048,2048);
+	worldSizes[GameState::FeelingLucky] = VECTOR2(GAME_WIDTH,GAME_HEIGHT);
 
 	currentState = TitleScreen;
 	
@@ -72,6 +73,11 @@ void FreezeFrame::initialize(HWND hwnd)
 		throw GameError(10,"Failed to init wall tex");
 	if(!baseTex.initialize(graphics,BASE_IMAGE))
 		throw GameError(9,"Failed to init exit tex");
+	if(!mineTex.initialize(graphics,MINE_IMAGE))
+		throw GameError(9,"Failed to init mine tex");
+
+	if(!mineText.initialize(graphics,20,true,false,"Courier New"))
+		throw GameError(9,"Failed to init mine text");
 
 	if(!exit.initialize(this,0,0,0,&exitTex))
 		throw GameError(11,"Failed to init exit");
@@ -148,6 +154,12 @@ void FreezeFrame::initialize(HWND hwnd)
 	{
 		if(!walls[i].initialize(this,0,0,0,&wallTex))
 			throw GameError(-1*i,"FAILED TO MAKE wall!");
+	}
+
+	for(int i = 0; i < MAX_MINES; i++)
+	{
+		if(!mines[i].initialize(this,&mineText,0,0,0,&mineTex))
+			throw GameError(-1*i,"FAILED TO MAKE explosion!");
 	}
 
 	player.setColorFilter(COLOR_ARGB(0xFF3E52ED));
@@ -227,6 +239,9 @@ void FreezeFrame::menuUpdate(bool reset)
 			case 0:
 				level1Load();
 				break;
+			case 1:
+				feelingLuckyLoad();
+				break;
 			case 3:
 				PostQuitMessage(0);
 				break;
@@ -271,6 +286,10 @@ void FreezeFrame::levelsUpdate()
 	{
 		turrets[i].update(worldFrameTime);
 	}
+	for(int i = 0; i < MAX_MINES; i++)
+	{
+		mines[i].update(worldFrameTime);
+	}
 }
 
 //=============================================================================
@@ -298,6 +317,7 @@ void FreezeFrame::collisions()
 				if(playerBullets[i].collidesWith(guards[j],collisionVector))
 				{
 					guards[j].setHealth(0);
+					spawnParticleCloud(guards[j].getCenter(),graphicsNS::RED);
 					playerBullets[i].setActive(false);
 				}
 
@@ -343,6 +363,17 @@ void FreezeFrame::collisions()
 				//player.setCenter(player.getCenter()-collisionVector);
 			}
 
+		for(int i = 0; i < MAX_MINES; i++)
+		{
+			//if a landmine blew up a player
+			if(player.collidesWith(mines[i],collisionVector))
+			{
+				mines[i].wasSteppedOn();
+				if(mines[i].getDangerous())
+					menuLoad(); //TODO:something cool on death
+			}			
+		}
+
 		if(player.collidesWith(exit,collisionVector))
 		{
 			switch (currentState)
@@ -357,6 +388,8 @@ void FreezeFrame::collisions()
 				break;
 			case FreezeFrame::RestartScreen:
 				break;
+			case FeelingLucky:
+				menuLoad();
 			default:
 				break;
 			}
@@ -436,6 +469,11 @@ void FreezeFrame::levelsRender()
 	for(int i = 0; i < MAX_WALLS; i++)
 	{
 		walls[i].draw(screenLoc);
+	}
+
+	for(int i = 0; i < MAX_MINES; i++)
+	{
+		mines[i].draw(screenLoc);
 	}
 
 	player.draw(screenLoc);
@@ -519,6 +557,8 @@ void FreezeFrame::level1Load()
 	w2->setCenterX(worldSizes[currentState].x*2/3);
 	w2->setBot(worldSizes[currentState].y);
 
+	spawnMine(worldSizes[currentState]*0.5);
+
 	exit.setBot(worldSizes[currentState].y);
 	exit.setRight(worldSizes[currentState].x);
 	exit.update(0);
@@ -545,6 +585,27 @@ void FreezeFrame::level2Load()
 
 	exit.setCenterX(100);
 	exit.setCenterY(100);
+	exit.update(0);
+}
+
+void FreezeFrame::feelingLuckyLoad()
+{
+	currentState = FeelingLucky;
+	deactivateAll();
+
+	VECTOR2 playerPos(worldSizes[currentState]/2);
+	VECTOR2 turretDisp(worldSizes[currentState].y/2,0);
+
+	for(float i = 0 ; i < 2*PI; i+=PI/3)
+	{
+		spawnTurret(playerPos+rotateVector(turretDisp,i),i+PI);
+	}
+
+	player.setCenter(playerPos);
+
+
+	exit.setRight(worldSizes[currentState].x);
+	exit.setBot(worldSizes[currentState].y);
 	exit.update(0);
 }
 
@@ -622,6 +683,19 @@ Wall* FreezeFrame::spawnWall(VECTOR2 loc, VECTOR2 size)
 		{
 			walls[i].create(loc,size);
 			return &walls[i];
+		}
+	}
+	return nullptr;
+}
+
+LandMine* FreezeFrame::spawnMine(VECTOR2 loc)
+{
+	for(int i = 0; i < MAX_MINES; i++)
+	{
+		if(!mines[i].getActive())
+		{
+			mines[i].create(loc);
+			return &mines[i];
 		}
 	}
 	return nullptr;

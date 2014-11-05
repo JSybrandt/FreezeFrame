@@ -61,7 +61,12 @@ void Player::update(float &frametime)
 			setCurrentFrame(0);
 		}
 
-		if(inputDir == VECTOR2(0,0))
+
+		if(recoilCooldown > 0)
+		{
+			desiredTimeMultiplier = RECOIL_TM;
+		}
+		else if(inputDir == VECTOR2(0,0))
 		{
 			desiredTimeMultiplier = STANDING_TM;
 		}
@@ -77,10 +82,7 @@ void Player::update(float &frametime)
 			currentSpeed = RUN_SPEED;
 			desiredTimeMultiplier = RUN_TM;
 		}
-		else if(recoilCooldown > 0)
-		{
-			desiredTimeMultiplier = RECOIL_TM;
-		}
+		
 		
 
 

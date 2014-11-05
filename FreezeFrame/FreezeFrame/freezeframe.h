@@ -23,6 +23,7 @@ using std::string;
 #include "Exit.h"
 #include "Turret.h"
 #include "Wall.h"
+#include "LandMine.h"
 
 namespace freezeFrameNS
 {
@@ -33,6 +34,7 @@ namespace freezeFrameNS
 	const int MAX_PARTICLES = 10000;
 	const int MAX_SCENERY = 1000;
 	const int MAX_WALLS = 100;
+	const int MAX_MINES = 100;
 
 	const int NUM_MENU_OPTIONS = 4;
 	const float MENU_ITEM_SPEED = 300;
@@ -57,6 +59,7 @@ private:
 	Level1,
 	Level2,
 	Level3,
+	FeelingLucky,
 	RestartScreen,
 	SIZE //THIS MUST BE THE LAST ELEMENT
 };
@@ -76,6 +79,9 @@ private:
 	TextureManager wallTex;
 	TextureManager menuCursorTex;
 	TextureManager menuTex;
+	TextureManager mineTex;
+
+	TextDX mineText;
 
 	Exit exit;
 
@@ -95,6 +101,7 @@ private:
 	Bullet enemyBullets[MAX_ENEMY_BULLETS];
 	Particle particles[MAX_PARTICLES];
 	Wall walls[MAX_WALLS];
+	LandMine mines[MAX_MINES];
 
 	Controls P1Controls;
 	Player player;
@@ -133,7 +140,7 @@ public:
 	Particle* spawnParticle(VECTOR2 loc,VECTOR2 vel, COLOR_ARGB c);
 	Turret* spawnTurret(VECTOR2 loc, float dir);
 	Wall* spawnWall(VECTOR2 loc, VECTOR2 size);
-
+	LandMine* spawnMine(VECTOR2 loc);
 
 	void spawnParticleCloud(VECTOR2 loc, COLOR_ARGB c);
 	void spawnParticleCone(VECTOR2 loc, float dir, COLOR_ARGB c);
@@ -144,6 +151,7 @@ public:
 
 	void level1Load();
 	void level2Load();
+	void feelingLuckyLoad();
 
 	void levelsUpdate();
 	void levelsRender();
