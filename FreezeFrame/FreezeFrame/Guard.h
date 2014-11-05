@@ -7,6 +7,7 @@ class FreezeFrame;
 namespace guardNS
 {
 	const float SPEED=100;
+	const float ENGAGE_DISTANCE_SQRD = pow(500,2);
 	const COLOR_ARGB COLOR = graphicsNS::RED;
 };
 
