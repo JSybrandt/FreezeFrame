@@ -158,8 +158,12 @@ void FreezeFrame::initialize(HWND hwnd)
 
 	for(int i = 0; i < MAX_MINES; i++)
 	{
-		if(!mines[i].initialize(this,&mineText,0,0,0,&mineTex))
+		if(!mines[i].initialize(this,&mineText,MINE_WIDTH,MINE_HEIGHT,MINE_COL,&mineTex))
 			throw GameError(-1*i,"FAILED TO MAKE explosion!");
+		turrets[i].setFrames(0, 1);   // animation frames
+		turrets[i].setCurrentFrame(0);     // starting frame
+		turrets[i].setFrameDelay(MINE_DELAY); //
+		turrets[i].setLoop(true);
 	}
 
 	player.setColorFilter(COLOR_ARGB(0xFF3E52ED));
