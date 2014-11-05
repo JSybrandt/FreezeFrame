@@ -79,7 +79,7 @@ const int  WALK_HEIGHT = 64;
 const float WALK_DELAY = 0.05f;
 
 //Feet Cells
-const int  FEET_COL = 4;
+const int  FEET_COL = 3;
 const int  FEET_WIDTH = 64;
 const int  FEET_HEIGHT = 64;
 const float FEET_DELAY = 0.05f;

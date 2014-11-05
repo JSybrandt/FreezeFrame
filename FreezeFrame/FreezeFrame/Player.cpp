@@ -20,11 +20,30 @@ Player::Player():Actor(){
 };
 Player::~Player(){};
 
-bool Player::initialize(FreezeFrame * g, Controls c, int width, int height, int ncols, TextureManager *textureM)
+bool Player::initialize(FreezeFrame * g, Controls c, int width, int height, int ncols, TextureManager *playerTM, TextureManager *feetTM)
 {
 	game = g;
 	controls = c;
-	return Actor::initialize(game,width,height,ncols,textureM);
+	
+	bool result =  Actor::initialize(g,width,height,ncols,playerTM);
+	result = result && feet.initialize(g,FEET_WIDTH,FEET_HEIGHT,FEET_COL,feetTM);
+	feet.setFrames(0,2);
+	feet.setCurrentFrame(2);
+	feet.setFrameDelay(FEET_DELAY);
+	feet.setLoop(true);
+
+
+	return result;
+}
+
+void Player::draw(VECTOR2 screenLoc)
+{
+	if(getActive())
+	{
+		feet.draw(screenLoc);
+
+		Actor::draw(screenLoc);
+	}
 }
 
 void Player::update(float &frametime)
@@ -46,6 +65,12 @@ void Player::update(float &frametime)
 			inputDir.x=-1;
 		if(input->isKeyDown(controls.right))
 			inputDir.x=1;
+		if(inputDir != VECTOR2(0,0)) {
+			feet.update(frametime);
+			feet.setRadians(atan(inputDir.y/inputDir.x));
+		}
+		sin(inputDir.y);
+
 
 		if(input->getMouseLButton()&& (weaponCooldown <= 0) ){
 
@@ -100,6 +125,7 @@ void Player::update(float &frametime)
 		D3DXVec2Normalize(&inputDir,&inputDir);
 		inputDir *= currentSpeed*frametime;					
 		setCenter(getCenter()+inputDir);
+		feet.setCenter(getCenter() + inputDir);
 
 		weaponCooldown -= frametime;
 		if(weaponCooldown < 0) weaponCooldown =0;

@@ -97,7 +97,7 @@ void FreezeFrame::initialize(HWND hwnd)
 	if(!background.initialize(graphics,0,0,0,&backgroundTex))
 		throw GameError(15,"Failed to init background image");
 
-	if(!player.initialize(this,P1Controls,PL_WIDTH,PL_HEIGHT,PL_COL,&manTex))
+	if(!player.initialize(this,P1Controls,PL_WIDTH,PL_HEIGHT,PL_COL,&manTex, &feetTex))
 		throw GameError(24,"Failed to init player");
 	player.setFrames(0, 5);
 	player.setCurrentFrame(5);
