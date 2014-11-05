@@ -40,7 +40,7 @@ const char PARTICLE_IMAGE[] = "pictures\\particle.png";
 const char LINE_IMAGE[] = "pictures\\line2.png";
 const char EXIT_IMAGE[] = "pictures\\exit.png";
 const char WALL_IMAGE[] = "pictures\\wall.png";
-const char MINE_IMAGE[] = "pictures\\landmine.png";
+const char MINE_IMAGE[] = "pictures\\mineAni.png";
 
 const char MENU_IMAGE[] = "pictures\\menu.png";
 const char MENU_CURSOR_IMAGE[] = "pictures\\menuCursor.png";
@@ -98,6 +98,12 @@ const int  TURRET_HEIGHT = 64;
 const float TURRET_DELAY = 0.05f;
 const int  BASE_WIDTH = 128;
 const int  BASE_HEIGHT = 128;
+
+//Mine Cells
+const int  MINE_COL = 2;
+const int  MINE_WIDTH = 32;
+const int  MINE_HEIGHT = 32;
+const float MINE_DELAY = 0.05f;
  
 // game
 const double PI = 3.14159265;
