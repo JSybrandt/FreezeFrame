@@ -17,6 +17,8 @@ Player::Player():Actor(){
 	currentTimeMultiplier = 1;
 	desiredTimeMultiplier = STANDING_TM;
 
+	timeUntilWallCollision = 1;
+
 };
 Player::~Player(){};
 
@@ -31,6 +33,7 @@ bool Player::initialize(FreezeFrame * g, Controls c, int width, int height, int 
 	feet.setCurrentFrame(2);
 	feet.setFrameDelay(FEET_DELAY);
 	feet.setLoop(true);
+	feet.setCenter(getCenter());
 
 
 	return result;
@@ -50,91 +53,109 @@ void Player::update(float &frametime)
 {
 	if(getActive())
 	{
-		float currentSpeed = playerNS::RUN_SPEED;
-		VECTOR2 distToMouse = game->getMouseInWorld()-getCenter();
-		float mouseDir = atan2(distToMouse.y,distToMouse.x);
-		setRadians(mouseDir);
-
-		VECTOR2 inputDir(0,0);
-
-		if(input->isKeyDown(controls.up))
-			inputDir.y=-1;
-		if(input->isKeyDown(controls.down))
-			inputDir.y=1;
-		if(input->isKeyDown(controls.left))
-			inputDir.x=-1;
-		if(input->isKeyDown(controls.right))
-			inputDir.x=1;
-		if(inputDir != VECTOR2(0,0)) {
-			feet.update(frametime);
-			feet.setRadians(atan(inputDir.y/inputDir.x));
-		}
-		sin(inputDir.y);
-
-
-		if(input->getMouseLButton()&& (weaponCooldown <= 0) ){
-
-			//because we dont want to use the angle form player center
-			VECTOR2 bulletLoc = getCenter()+utilityNS::rotateVector(playerNS::bulletDisplacement,mouseDir);
-			VECTOR2 bulletPath = game->getMouseInWorld()-bulletLoc;
-			float bulletAngle = atan2(bulletPath.y,bulletPath.x);
-
-			game->spawnBullet(bulletLoc,bulletAngle,getColorFilter(),true);
-			weaponCooldown  = playerNS::WEAPON_COOLDOWN;
-			recoilCooldown = playerNS::RECOIL_TIME;
-			animComplete = false;
-			setCurrentFrame(0);
-		}
-
-
-		if(recoilCooldown > 0)
+		if(alive)
 		{
-			desiredTimeMultiplier = RECOIL_TM;
-		}
-		else if(inputDir == VECTOR2(0,0))
-		{
-			desiredTimeMultiplier = STANDING_TM;
-		}
-		//if walking
-		else if(input->isKeyDown(controls.walk))
-		{
-			currentSpeed = WALK_SPEED;
-			desiredTimeMultiplier = WALK_TM;
-		}
-		//if running
-		else if(inputDir != VECTOR2(0,0))
-		{
-			currentSpeed = RUN_SPEED;
-			desiredTimeMultiplier = RUN_TM;
-		}
+			float currentSpeed = playerNS::RUN_SPEED;
+			VECTOR2 distToMouse = game->getMouseInWorld()-getCenter();
+			float mouseDir = atan2(distToMouse.y,distToMouse.x);
+			setRadians(mouseDir);
+
+			VECTOR2 inputDir(0,0);
+
+			if(input->isKeyDown(controls.up))
+				inputDir.y=-1;
+			if(input->isKeyDown(controls.down))
+				inputDir.y=1;
+			if(input->isKeyDown(controls.left))
+				inputDir.x=-1;
+			if(input->isKeyDown(controls.right))
+				inputDir.x=1;
+			if(inputDir != VECTOR2(0,0)) {
+				feet.update(frametime);
+				feet.setRadians(atan(inputDir.y/inputDir.x));
+			}
+			sin(inputDir.y);
+
+
+			if(input->getMouseLButton()&& (weaponCooldown <= 0) ){
+
+				//because we dont want to use the angle form player center
+				VECTOR2 bulletLoc = getCenter()+utilityNS::rotateVector(playerNS::bulletDisplacement,mouseDir);
+				VECTOR2 bulletPath = game->getMouseInWorld()-bulletLoc;
+				float bulletAngle = atan2(bulletPath.y,bulletPath.x);
+
+				game->spawnBullet(bulletLoc,bulletAngle,getColorFilter(),true);
+				weaponCooldown  = playerNS::WEAPON_COOLDOWN;
+				recoilCooldown = playerNS::RECOIL_TIME;
+				animComplete = false;
+				setCurrentFrame(0);
+			}
+
+
+			if(recoilCooldown > 0)
+			{
+				desiredTimeMultiplier = RECOIL_TM;
+			}
+			else if(inputDir == VECTOR2(0,0))
+			{
+				desiredTimeMultiplier = STANDING_TM;
+			}
+			//if walking
+			else if(input->isKeyDown(controls.walk))
+			{
+				currentSpeed = WALK_SPEED;
+				desiredTimeMultiplier = WALK_TM;
+			}
+			//if running
+			else if(inputDir != VECTOR2(0,0))
+			{
+				currentSpeed = RUN_SPEED;
+				desiredTimeMultiplier = RUN_TM;
+			}
 		
 		
 
 
-		if(currentTimeMultiplier - desiredTimeMultiplier < TIME_EPSILON)
-			currentTimeMultiplier = desiredTimeMultiplier;
+			if(currentTimeMultiplier - desiredTimeMultiplier < TIME_EPSILON)
+				currentTimeMultiplier = desiredTimeMultiplier;
 
-		if(currentTimeMultiplier != desiredTimeMultiplier)
-		{
-			float diff = desiredTimeMultiplier - currentTimeMultiplier;
-			diff /= abs(diff);
-			currentTimeMultiplier += diff*D_TIME_PER_FRAME;
+			if(currentTimeMultiplier != desiredTimeMultiplier)
+			{
+				float diff = desiredTimeMultiplier - currentTimeMultiplier;
+				diff /= abs(diff);
+				currentTimeMultiplier += diff*D_TIME_PER_FRAME;
+			}
+
+			frametime *= currentTimeMultiplier;
+
+		
+
+			D3DXVec2Normalize(&inputDir,&inputDir);
+			VECTOR2 endLoc = getCenter()+inputDir*currentSpeed*frametime;
+
+			//efficiency, lets only do the expensive getPlayerRealEndLoc if we are moving
+			if(endLoc != getCenter())
+			{
+				endLoc.x = max(0,min(game->getCurrentWorldSize().x,endLoc.x));
+				endLoc.y = max(0,min(game->getCurrentWorldSize().y,endLoc.y));
+
+				endLoc = game->getPlayerRealEndLoc(getCenter(),endLoc);
+			}
+
+			setCenter(endLoc);
+			feet.setCenter(endLoc);
+
+		
+			weaponCooldown -= frametime;
+			if(weaponCooldown < 0) weaponCooldown =0;
+
+			recoilCooldown -= frametime;
+			if(recoilCooldown < 0)recoilCooldown = 0;
 		}
-
-		frametime *= currentTimeMultiplier;
-
-
-		D3DXVec2Normalize(&inputDir,&inputDir);
-		inputDir *= currentSpeed*frametime;					
-		setCenter(getCenter()+inputDir);
-		feet.setCenter(getCenter() + inputDir);
-
-		weaponCooldown -= frametime;
-		if(weaponCooldown < 0) weaponCooldown =0;
-
-		recoilCooldown -= frametime;
-		if(recoilCooldown < 0)recoilCooldown = 0;
-
+		else
+		{
+			frametime *= DEATH_TM;
+		}
 	}
 	Image::update(frametime);
 }

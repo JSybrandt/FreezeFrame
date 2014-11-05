@@ -40,8 +40,10 @@ namespace freezeFrameNS
 	const float MENU_ITEM_SPEED = 300;
 	const float MENU_ITEM_DELAY = 0.25;
 
-	const int NUM_PARTICLES_IN_SMOKE_EFFECT = 300;
+	const int NUM_PARTICLES_IN_CLOUD_EFFECT = 350;
 	const int NUM_PARTICLES_IN_CONE_EFFECT = 100;
+
+	const float TIME_UNTIL_RESET = 1;
 }
 
 using namespace freezeFrameNS;
@@ -107,7 +109,7 @@ private:
 	Player player;
 
 	float worldFrameTime;
-	
+	float playerDeathCountdown;
 	
 
 	VECTOR2 screenLoc;
@@ -167,6 +169,12 @@ public:
 	VECTOR2 getPlayerLoc(){
 		return player.getCenter();
 	}
+
+	VECTOR2 getCurrentWorldSize(){return worldSizes[currentState];}
+
+	VECTOR2 getPlayerRealEndLoc(VECTOR2 startLoc, VECTOR2 endLoc);
+
+	void onPlayerDeath();
 
 };
 

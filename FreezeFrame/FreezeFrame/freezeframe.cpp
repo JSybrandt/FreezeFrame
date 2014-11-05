@@ -255,6 +255,13 @@ void FreezeFrame::menuUpdate(bool reset)
 
 void FreezeFrame::levelsUpdate()
 {
+	if(!player.alive)
+	{
+		playerDeathCountdown -= frameTime;
+		if(playerDeathCountdown<=0)
+			menuLoad();
+	}
+
 	worldFrameTime = frameTime;
 	player.update(worldFrameTime);
 	updateScreen(player.getCenter());
@@ -347,7 +354,7 @@ void FreezeFrame::collisions()
 			   enemyBullets[i].setActive(false);
 
 			if(enemyBullets[i].collidesWith(player,collisionVector))
-				menuLoad(); //TODO:something cool on death
+				onPlayerDeath();
 
 			for(int j = 0; j < MAX_WALLS; j++)
 				if(enemyBullets[i].collidesWith(walls[j],collisionVector))
@@ -370,7 +377,7 @@ void FreezeFrame::collisions()
 			{
 				mines[i].wasSteppedOn();
 				if(mines[i].getDangerous())
-					menuLoad(); //TODO:something cool on death
+					onPlayerDeath(); //TODO:something cool on death
 			}			
 		}
 
@@ -534,7 +541,7 @@ void FreezeFrame::level1Load()
 	deactivateAll();
 
 	player.setTop(0);player.setCenterX(worldSizes[currentState].x/6);
-
+	player.alive = true;
 
 	VECTOR2 offset(30,-30);
 
@@ -570,6 +577,7 @@ void FreezeFrame::level2Load()
 	deactivateAll();
 
 	player.setCenter(VECTOR2(1000,1000));
+	player.alive = true;
 
 	for(int i = 0; i < 10; i++)
 	{
@@ -705,7 +713,7 @@ void FreezeFrame::spawnParticleCloud(VECTOR2 loc, COLOR_ARGB c)
 {
 	float dir,spd;
 	VECTOR2 v(1,0);
-	for(int i = 0; i < NUM_PARTICLES_IN_SMOKE_EFFECT; i++)
+	for(int i = 0; i < NUM_PARTICLES_IN_CLOUD_EFFECT; i++)
 	{
 		dir = rand01()*2*PI;
 		spd = rand01()*particleNS::CLOUD_VEL;
@@ -741,4 +749,53 @@ void FreezeFrame::deactivateAll()
 		particles[i].setActive(false);
 	for(int i = 0; i < MAX_WALLS; i++)
 		walls[i].setActive(false);
+	for(int i = 0; i < MAX_MINES; i++)
+		mines[i].setActive(false);
+}
+
+
+
+VECTOR2 FreezeFrame::getPlayerRealEndLoc(VECTOR2 startLoc, VECTOR2 endLoc)
+{
+	for(int i = 0; i < MAX_WALLS; i++)
+	{
+		if(walls[i].getActive())
+		{
+			VECTOR2 wallTL(walls[i].getX(),walls[i].getY());
+			VECTOR2 wallBR(walls[i].getX()+ walls[i].getWidth(),walls[i].getY()+walls[i].getHeight());
+
+			VECTOR2 disp = endLoc - wallTL;
+			if(disp.x >= 0 && disp.y >= 0 && disp.x < walls[i].getWidth() && disp.y < walls[i].getHeight())
+			{
+				if(startLoc.x <= wallTL.x)
+				{
+					endLoc.x = wallTL.x;
+				}
+				if(startLoc.y <= wallTL.y)
+				{
+					endLoc.y = wallTL.y;
+				}
+				if(startLoc.x >= wallBR.x)
+				{
+					endLoc.x = wallBR.x;
+				}
+				if(startLoc.y >= wallBR.y)
+				{
+					endLoc.y = wallBR.y;
+				}
+				break;
+			}
+		}
+	}
+	return endLoc;
+}
+
+void FreezeFrame::onPlayerDeath()
+{
+	if(player.alive)
+	{
+		player.alive = false;
+		spawnParticleCloud(player.getCenter(),graphicsNS::BLUE);
+		playerDeathCountdown = TIME_UNTIL_RESET;
+	}
 }
