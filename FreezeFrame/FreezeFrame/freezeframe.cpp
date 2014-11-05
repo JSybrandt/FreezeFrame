@@ -160,10 +160,10 @@ void FreezeFrame::initialize(HWND hwnd)
 	{
 		if(!mines[i].initialize(this,&mineText,MINE_WIDTH,MINE_HEIGHT,MINE_COL,&mineTex))
 			throw GameError(-1*i,"FAILED TO MAKE explosion!");
-		turrets[i].setFrames(0, 1);   // animation frames
-		turrets[i].setCurrentFrame(0);     // starting frame
-		turrets[i].setFrameDelay(MINE_DELAY); //
-		turrets[i].setLoop(true);
+		mines[i].setFrames(0, 1);   // animation frames
+		mines[i].setCurrentFrame(0);     // starting frame
+		mines[i].setFrameDelay(MINE_DELAY); //
+		mines[i].setLoop(true);
 	}
 
 	player.setColorFilter(COLOR_ARGB(0xFF3E52ED));

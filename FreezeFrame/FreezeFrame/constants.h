@@ -103,7 +103,7 @@ const int  BASE_HEIGHT = 128;
 const int  MINE_COL = 2;
 const int  MINE_WIDTH = 32;
 const int  MINE_HEIGHT = 32;
-const float MINE_DELAY = 0.05f;
+const float MINE_DELAY = 0.10f;
  
 // game
 const double PI = 3.14159265;

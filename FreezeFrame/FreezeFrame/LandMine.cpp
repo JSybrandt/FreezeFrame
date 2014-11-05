@@ -29,7 +29,7 @@ void LandMine::update(float frametime)
 				radius = EXPLOSION_RADIUS;
 				game->spawnParticleCloud(getCenter(),graphicsNS::RED);
 				game->spawnParticleCloud(getCenter(),graphicsNS::ORANGE);
-				Image::update(frametime);
+				
 			}
 			else if(exploding)
 			{
@@ -38,6 +38,7 @@ void LandMine::update(float frametime)
 				setActive(false);
 			}
 		}
+		Image::update(frametime);
 	}
 }
 void LandMine::draw(VECTOR2 screenLoc)
