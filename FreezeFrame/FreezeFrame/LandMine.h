@@ -4,6 +4,8 @@
 #include "textDX.h"
 #include <string>
 
+class FreezeFrame;
+
 namespace landmineNS{
 	const float TIME_UNTIL_EXPLOSION = 1.5;
 	const float EXPLOSION_LIFETIME = 0.25;
@@ -18,13 +20,14 @@ private:
 	bool primed,exploding;
 	float timeRemaining;
 	TextDX * text;
+	FreezeFrame * game;
 public:
 	LandMine();
 	void update(float frametime);
 	void draw(VECTOR2 screenLoc);
 	void create(VECTOR2 loc);
 	void wasSteppedOn();//call when the mine gets stepped on
-	bool initialize(Game * g, TextDX * text,int width, int height, int ncols, TextureManager *textureM);
+	bool initialize(FreezeFrame * g, TextDX * text,int width, int height, int ncols, TextureManager *textureM);
 	bool getDangerous(){return exploding&&getActive();}
 	bool getPrimed(){return primed;}
 };

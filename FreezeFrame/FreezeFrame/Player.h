@@ -18,6 +18,7 @@ namespace playerNS{
 	const float WALK_TM = 0.3;
 	const float STANDING_TM = 0.01;
 	const float RECOIL_TM = 1;
+	const float DEATH_TM = 0.5;
 
 	const float TIME_EPSILON = 0.03;
 }
@@ -33,6 +34,11 @@ private:
 	float currentTimeMultiplier;
 	float desiredTimeMultiplier;
 
+	float timeUntilWallCollision;
+
+	
+	
+
 public:
 	Player();
 	~Player();
@@ -42,5 +48,9 @@ public:
 	void draw(VECTOR2 screenLoc);
 
 	void update(float &frameTime);
+
+	void setTimeOfWallCollision(float time){timeUntilWallCollision=time;};
+
+	bool alive;
 
 };

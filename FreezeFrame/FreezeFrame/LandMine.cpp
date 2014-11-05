@@ -3,6 +3,9 @@ using namespace landmineNS;
 using std::string;
 using std::to_string;
 
+#include "freezeframe.h"
+
+
 LandMine::LandMine()
 {
 	radius = MINE_RADIUS;
@@ -24,6 +27,8 @@ void LandMine::update(float frametime)
 				primed = false;
 				exploding = true;
 				radius = EXPLOSION_RADIUS;
+				game->spawnParticleCloud(getCenter(),graphicsNS::RED);
+				game->spawnParticleCloud(getCenter(),graphicsNS::ORANGE);
 			}
 			else if(exploding)
 			{
@@ -70,8 +75,9 @@ void LandMine::wasSteppedOn()
 	}
 }
 
-bool LandMine::initialize(Game * g, TextDX * t,int width, int height, int ncols, TextureManager *textureM)
+bool LandMine::initialize(FreezeFrame * g, TextDX * t,int width, int height, int ncols, TextureManager *textureM)
 {
+	game = g;
 	text = t;
 	return Actor::initialize(g,width,height,ncols,textureM);
 }

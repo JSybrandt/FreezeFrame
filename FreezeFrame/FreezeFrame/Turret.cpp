@@ -124,4 +124,5 @@ void Turret::create(VECTOR2 loc, float dir)
 	rotVel = turretNS::ROTATION_SPEED;
 	setCenter(loc);
 	base.setCenter(loc);
+	weaponCooldown = 0;
 }
