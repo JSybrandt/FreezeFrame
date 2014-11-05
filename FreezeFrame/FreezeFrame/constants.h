@@ -64,6 +64,7 @@ const char XGS_FILE[]   = "audio\\Win\\AudioProject.xgs";
 
 //Cue Names
 const char SC_LAUNCH[] = "launch"; //MUST be exactly the same as cue name
+const char LASER_CUE[] = "laser";
 
 // window
 const char CLASS_NAME[] = "Freeze Frame";
@@ -79,7 +80,7 @@ const int  WALK_HEIGHT = 64;
 const float WALK_DELAY = 0.05f;
 
 //Feet Cells
-const int  FEET_COL = 4;
+const int  FEET_COL = 3;
 const int  FEET_WIDTH = 64;
 const int  FEET_HEIGHT = 64;
 const float FEET_DELAY = 0.05f;

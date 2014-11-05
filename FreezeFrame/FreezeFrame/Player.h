@@ -27,6 +27,7 @@ class Player: public Actor
 private:
 	Controls controls;
 	FreezeFrame* game;
+	Actor feet;
 	float weaponCooldown;
 	float recoilCooldown;
 	float currentTimeMultiplier;
@@ -36,7 +37,9 @@ public:
 	Player();
 	~Player();
 
-	bool initialize(FreezeFrame * game, Controls c, int width, int height, int ncols, TextureManager *textureM);
+	bool initialize(FreezeFrame * game, Controls c, int width, int height, int ncols, TextureManager *playerTM, TextureManager *feetTM);
+
+	void draw(VECTOR2 screenLoc);
 
 	void update(float &frameTime);
 
