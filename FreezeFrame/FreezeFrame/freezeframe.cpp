@@ -14,7 +14,7 @@ FreezeFrame::FreezeFrame()
 {
 	srand(time(0));
 
-	P1Controls = Controls('W','S','A','D','C');
+	P1Controls = Controls('W','S','A','D','C','E');
 
 	worldSizes = new VECTOR2[GameState::SIZE];
 	worldSizes[GameState::TitleScreen] = VECTOR2(GAME_WIDTH,GAME_HEIGHT);
@@ -42,7 +42,6 @@ void FreezeFrame::initialize(HWND hwnd)
 {
 	Game::initialize(hwnd); // throws GameError
 
-	ShowCursor(false);
 
 	if(!backgroundTex.initialize(graphics,BACKGROUND_IMAGE))
 		throw GameError(1,"Failed to init background tex");
@@ -76,9 +75,12 @@ void FreezeFrame::initialize(HWND hwnd)
 		throw GameError(9,"Failed to init mine tex");
 	if(!cylinderTex.initialize(graphics,CYLINDER_IMAGE))
 		throw GameError(9,"Failed to init cylinder tex");
-
+	if(!dangerZoneTex.initialize(graphics,DANGER_ZONE_IMAGE))
+		throw GameError(9,"Failed to init danger zone tex");
 	if(!mineText.initialize(graphics,20,true,false,"Courier New"))
 		throw GameError(9,"Failed to init mine text");
+	if(!gunTex.initialize(graphics,GUN_IMAGE))
+		throw GameError(11,"Failed to init gun text");
 
 	if(!exit.initialize(this,0,0,0,&exitTex))
 		throw GameError(11,"Failed to init exit");
@@ -159,12 +161,16 @@ void FreezeFrame::initialize(HWND hwnd)
 
 	for(int i = 0; i < MAX_MINES; i++)
 	{
-		if(!mines[i].initialize(this,&mineText,MINE_WIDTH,MINE_HEIGHT,MINE_COL,&mineTex))
+		if(!mines[i].initialize(this,&mineText,MINE_WIDTH,MINE_HEIGHT,MINE_COL,&mineTex,&dangerZoneTex))
 			throw GameError(-1*i,"FAILED TO MAKE explosion!");
 		mines[i].setFrames(0, 1);   // animation frames
 		mines[i].setCurrentFrame(0);     // starting frame
 		mines[i].setFrameDelay(MINE_DELAY); //
 		mines[i].setLoop(true);
+	}
+	for(int i = 0; i < MAX_ITEMS; i++)
+	{
+		items[i].initialize(this,0,0,0,&gunTex);
 	}
 
 	player.setColorFilter(COLOR_ARGB(0xFF3E52ED));
@@ -172,6 +178,8 @@ void FreezeFrame::initialize(HWND hwnd)
 	currentState = TitleScreen;
 	menuLoad();
 	
+	ShowCursor(false);
+
 	return;
 }
 
@@ -336,7 +344,7 @@ void FreezeFrame::collisions()
 			for(int j = 0 ; j < MAX_TURRETS; j++)
 				if(playerBullets[i].collidesWith(turrets[j],collisionVector))
 				{
-					//turrets[j].setHealth(0);
+					turrets[j].hit();
 					playerBullets[i].setActive(false);
 				}
 
@@ -487,6 +495,10 @@ void FreezeFrame::levelsRender()
 	{
 		mines[i].draw(screenLoc);
 	}
+	for(int i = 0; i < MAX_ITEMS; i++)
+	{
+		items[i].draw(screenLoc);
+	}
 
 	player.draw(screenLoc);
 
@@ -546,7 +558,6 @@ void FreezeFrame::level1Load()
 	deactivateAll();
 
 	player.set(VECTOR2(worldSizes[currentState].x/6,100));
-	player.pickUpGun();
 
 	VECTOR2 offset(30,-30);
 
@@ -561,15 +572,19 @@ void FreezeFrame::level1Load()
 	t2->setTop(0);
 	t2->setCenter(t2->getCenter()-offset);
 
-	Wall* w1 = spawnWall(VECTOR2(0,0),VECTOR2(16,worldSizes[currentState].y*2/3));
-	Wall* w2 = spawnWall(VECTOR2(0,0),VECTOR2(16,worldSizes[currentState].y*2/3));
+	Wall* w1 = spawnWall(VECTOR2(0,0),VECTOR2(45,worldSizes[currentState].y*2/3));
+	Wall* w2 = spawnWall(VECTOR2(0,0),VECTOR2(45,worldSizes[currentState].y*2/3));
 
 	w1->setCenterX(worldSizes[currentState].x/3);
 
 	w2->setCenterX(worldSizes[currentState].x*2/3);
 	w2->setBot(worldSizes[currentState].y);
 
+	spawnMine(worldSizes[currentState]*0.4);
 	spawnMine(worldSizes[currentState]*0.5);
+	spawnMine(worldSizes[currentState]*0.6);
+
+	spawnItem(VECTOR2(worldSizes[currentState].x/6,300),Item::ItemType::WEAPON);
 
 	exit.setBot(worldSizes[currentState].y);
 	exit.setRight(worldSizes[currentState].x);
@@ -713,6 +728,32 @@ LandMine* FreezeFrame::spawnMine(VECTOR2 loc)
 	return nullptr;
 }
 
+Item* FreezeFrame::spawnItem(VECTOR2 loc, Item::ItemType t)
+{
+	for(int i = 0; i < MAX_ITEMS; i++)
+	{
+		if(!items[i].getActive())
+		{
+			items[i].create(loc,t);
+			return &items[i];
+		}
+	}
+	return nullptr;
+}
+
+Item* FreezeFrame::getItemUnderPlayer()
+{
+	VECTOR2 v;
+	for(int i = 0; i < MAX_ITEMS; i++)
+	{
+		if(items[i].collidesWith(player,v))
+		{
+			return &items[i];
+		}
+	}
+	return nullptr;
+}
+
 void FreezeFrame::spawnParticleCloud(VECTOR2 loc, COLOR_ARGB c)
 {
 	float dir,spd;
@@ -755,11 +796,13 @@ void FreezeFrame::deactivateAll()
 		walls[i].setActive(false);
 	for(int i = 0; i < MAX_MINES; i++)
 		mines[i].setActive(false);
+	for(int i = 0; i < MAX_ITEMS; i++)
+		items[i].setActive(false);
 }
 
 
 
-VECTOR2 FreezeFrame::getPlayerRealEndLoc(VECTOR2 startLoc, VECTOR2 endLoc)
+VECTOR2 FreezeFrame::getRealEndLoc(VECTOR2 startLoc, VECTOR2 endLoc)
 {
 	for(int i = 0; i < MAX_WALLS; i++)
 	{

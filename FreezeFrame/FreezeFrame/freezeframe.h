@@ -24,6 +24,7 @@ using std::string;
 #include "Turret.h"
 #include "Wall.h"
 #include "LandMine.h"
+#include "Item.h"
 
 namespace freezeFrameNS
 {
@@ -35,6 +36,7 @@ namespace freezeFrameNS
 	const int MAX_SCENERY = 1000;
 	const int MAX_WALLS = 100;
 	const int MAX_MINES = 100;
+	const int MAX_ITEMS = 100;
 
 	const int NUM_MENU_OPTIONS = 4;
 	const float MENU_ITEM_SPEED = 300;
@@ -83,6 +85,11 @@ private:
 	TextureManager menuTex;
 	TextureManager mineTex;
 	TextureManager cylinderTex;
+	TextureManager dangerZoneTex;
+	TextureManager loadingTex;
+	TextureManager gunTex;
+
+	Image loading;
 
 	TextDX mineText;
 
@@ -105,6 +112,7 @@ private:
 	Particle particles[MAX_PARTICLES];
 	Wall walls[MAX_WALLS];
 	LandMine mines[MAX_MINES];
+	Item items[MAX_ITEMS];
 
 	Controls P1Controls;
 	Player player;
@@ -144,6 +152,7 @@ public:
 	Turret* spawnTurret(VECTOR2 loc, float dir);
 	Wall* spawnWall(VECTOR2 loc, VECTOR2 size);
 	LandMine* spawnMine(VECTOR2 loc);
+	Item* spawnItem(VECTOR2 loc, Item::ItemType t);
 
 	void spawnParticleCloud(VECTOR2 loc, COLOR_ARGB c);
 	void spawnParticleCone(VECTOR2 loc, float dir, COLOR_ARGB c);
@@ -173,9 +182,11 @@ public:
 
 	VECTOR2 getCurrentWorldSize(){return worldSizes[currentState];}
 
-	VECTOR2 getPlayerRealEndLoc(VECTOR2 startLoc, VECTOR2 endLoc);
+	VECTOR2 getRealEndLoc(VECTOR2 startLoc, VECTOR2 endLoc);
 
 	void onPlayerDeath();
+
+	Item* getItemUnderPlayer();
 
 };
 

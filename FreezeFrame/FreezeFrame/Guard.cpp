@@ -26,10 +26,16 @@ void Guard::update(float frameTime)
 	{
 		if(health <= 0) {
 			setActive(false);
+<<<<<<< HEAD
 			audio->playCue(KILL1_CUE);
 		}
+=======
+		
+		VECTOR2 endLoc = getCenter()+(getVelocity()*guardNS::SPEED*frameTime);
+		endLoc = game->getRealEndLoc(getCenter(),endLoc);
+>>>>>>> 1f555f8904fc1e6dba6e855f45f9323797498b00
 
-		setCenter(getCenter()+(getVelocity()*guardNS::SPEED*frameTime));
+		setCenter(endLoc);
 		setRadians(atan2(velocity.y,velocity.x));
 		if(velocity != VECTOR2(0,0))
 			Actor::update(frameTime);

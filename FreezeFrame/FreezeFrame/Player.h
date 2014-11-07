@@ -22,7 +22,7 @@ namespace playerNS{
 
 	const float TIME_EPSILON = 0.03;
 	const float POS_EPSILON_SQRD = 144;
-	const float ROTATION_EPSILON = 0.03;
+	const float ROTATION_EPSILON = 0.01;
 
 	const int CYLINDER_MAX_IMG_INDEX = 6;
 	const float TIME_FOR_GUN_RAISING = 0.5;

@@ -61,6 +61,23 @@ void Player::update(float &frametime)
 	{
 		if(alive)
 		{
+
+			VECTOR2 diffOn= CYLINDER_ONSCREEN-cylinder.getCenter();
+			VECTOR2 diffOff= CYLINDER_OFFSCREEN-cylinder.getCenter();
+
+			//if the gun ui needs to get in position
+			if(numBullets > 0 && D3DXVec2LengthSq(&diffOn) > POS_EPSILON_SQRD)
+			{
+				D3DXVec2Normalize(&diffOn,&diffOn);
+				cylinder.setCenter(cylinder.getCenter()+diffOn*CYLINDER_VERTICAL_SPEED*frametime);
+			}
+			//if the gun ui needs to get in position
+			if(numBullets == 0 && D3DXVec2LengthSq(&diffOff) > POS_EPSILON_SQRD)
+			{
+				D3DXVec2Normalize(&diffOff,&diffOff);
+				cylinder.setCenter(cylinder.getCenter()+diffOff*CYLINDER_VERTICAL_SPEED*frametime);
+			}
+
 			float currentSpeed = playerNS::RUN_SPEED;
 			VECTOR2 distToMouse = game->getMouseInWorld()-getCenter();
 			float mouseDir = atan2(distToMouse.y,distToMouse.x);
@@ -104,6 +121,16 @@ void Player::update(float &frametime)
 				audio->playCue(PISTOL_CUE);
 			}
 
+			if(input->wasKeyPressed(controls.use))
+			{
+				Item* i = game->getItemUnderPlayer();
+				if(i!=nullptr && i->getType()==Item::ItemType::WEAPON)
+				{
+					pickUpGun();
+					i->setActive(false);
+				}
+			}
+
 
 			if(recoilCooldown > 0)
 			{
@@ -128,7 +155,6 @@ void Player::update(float &frametime)
 		
 		
 
-
 			if(currentTimeMultiplier - desiredTimeMultiplier < TIME_EPSILON)
 				currentTimeMultiplier = desiredTimeMultiplier;
 
@@ -152,7 +178,7 @@ void Player::update(float &frametime)
 				endLoc.x = max(0,min(game->getCurrentWorldSize().x,endLoc.x));
 				endLoc.y = max(0,min(game->getCurrentWorldSize().y,endLoc.y));
 
-				endLoc = game->getPlayerRealEndLoc(getCenter(),endLoc);
+				endLoc = game->getRealEndLoc(getCenter(),endLoc);
 			}
 
 			setCenter(endLoc);
@@ -165,23 +191,8 @@ void Player::update(float &frametime)
 			recoilCooldown -= frametime;
 			if(recoilCooldown < 0)recoilCooldown = 0;
 
-			VECTOR2 diffOn= CYLINDER_ONSCREEN-cylinder.getCenter();
-			VECTOR2 diffOff= CYLINDER_OFFSCREEN-cylinder.getCenter();
+
 			float diffAngle = cylinderDesiredDir - cylinder.getRadians();
-
-			//if the gun ui needs to get in position
-			if(numBullets > 0 && D3DXVec2LengthSq(&diffOn) > POS_EPSILON_SQRD)
-			{
-				D3DXVec2Normalize(&diffOn,&diffOn);
-				cylinder.setCenter(cylinder.getCenter()+diffOn*CYLINDER_VERTICAL_SPEED*frametime);
-			}
-			//if the gun ui needs to get in position
-			if(numBullets == 0 && D3DXVec2LengthSq(&diffOff) > POS_EPSILON_SQRD)
-			{
-				D3DXVec2Normalize(&diffOff,&diffOff);
-				cylinder.setCenter(cylinder.getCenter()+diffOff*CYLINDER_VERTICAL_SPEED*frametime);
-			}
-
 			if(diffAngle > ROTATION_EPSILON)
 			{
 				cylinder.setRadians(cylinder.getRadians()+CYLINDER_ROTATION_SPEED*frametime*getSign(cylinderDesiredDir));
@@ -204,6 +215,7 @@ void Player::pickUpGun()
 	cylinderDesiredDir = 0;
 	cylinder.setRadians(0);
 	cylinder.setCurrentFrame(0);
+
 }
 
 
@@ -213,6 +225,6 @@ void Player::set(VECTOR2 loc)
 	cylinder.setCenter(CYLINDER_OFFSCREEN);
 	alive = true;
 	setCenter(loc);
-	cylinderDesiredDir = 0;
-	cylinder.setRadians(0);
+	numBullets = 0;
+
 }

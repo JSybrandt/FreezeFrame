@@ -42,6 +42,9 @@ const char EXIT_IMAGE[] = "pictures\\exit.png";
 const char WALL_IMAGE[] = "pictures\\wall.png";
 const char CYLINDER_IMAGE[] = "pictures\\cylinder.png";
 const char MINE_IMAGE[] = "pictures\\mineAni.png";
+const char DANGER_ZONE_IMAGE[]="pictures\\dangerzone.png";
+const char LOADING_IMAGE[]="pictures\\loading.png";
+const char GUN_IMAGE[]="pictures\\gun.png";
 
 const char MENU_IMAGE[] = "pictures\\menu.png";
 const char MENU_CURSOR_IMAGE[] = "pictures\\menuCursor.png";
@@ -101,7 +104,7 @@ const float PL_DELAY = 0.05f;
 const int  TURRET_COL = 3;
 const int  TURRET_WIDTH = 64;
 const int  TURRET_HEIGHT = 64;
-const float TURRET_DELAY = 0.05f;
+const float TURRET_DELAY = 0.15f;
 const int  BASE_WIDTH = 128;
 const int  BASE_HEIGHT = 128;
 
