@@ -345,7 +345,7 @@ void FreezeFrame::collisions()
 			for(int j = 0 ; j < MAX_TURRETS; j++)
 				if(playerBullets[i].collidesWith(turrets[j],collisionVector))
 				{
-					//turrets[j].setHealth(0);
+					turrets[j].hit();
 					playerBullets[i].setActive(false);
 				}
 

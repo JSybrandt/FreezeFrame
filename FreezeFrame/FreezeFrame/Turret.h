@@ -9,7 +9,8 @@ namespace turretNS{
 	const float ENGAGE_DISTANCE_SQRD = pow(1000,2); // replace this with "line of sight"
 	const float ROTATION_WIDTH = PI/2;
 	const float ROT_EPSILON = 0.001;
-	const float FIRE_RATE = 0.5;
+	const float FIRE_RATE = 0.75;
+	const float REBOOT_TIME = 2;
 	const VECTOR2 BULLET1_OFFSET(30,-15);
 	const VECTOR2 BULLET2_OFFSET(30,15);
 };
@@ -21,6 +22,7 @@ private:
 	Actor base;
 	float minDir, maxDir,rotVel;
 	float weaponCooldown;
+	float rebootCooldown;
 public:
 	Turret();
 
@@ -34,4 +36,5 @@ public:
 
 	void create(VECTOR2 loc, float dir);
 
+	void hit();
 };

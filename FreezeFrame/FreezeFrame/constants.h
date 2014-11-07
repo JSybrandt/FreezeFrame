@@ -99,7 +99,7 @@ const float PL_DELAY = 0.05f;
 const int  TURRET_COL = 3;
 const int  TURRET_WIDTH = 64;
 const int  TURRET_HEIGHT = 64;
-const float TURRET_DELAY = 0.05f;
+const float TURRET_DELAY = 0.15f;
 const int  BASE_WIDTH = 128;
 const int  BASE_HEIGHT = 128;
 
