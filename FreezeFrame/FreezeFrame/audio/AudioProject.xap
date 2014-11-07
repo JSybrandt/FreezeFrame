@@ -16,8 +16,8 @@ Global Settings
     Header File = AudioProject.h;
     Exclude Category Names = 0;
     Exclude Variable Names = 0;
-    Last Modified Low = 30407376;
-    Last Modified High = 1981335361;
+    Last Modified Low = 3671228366;
+    Last Modified High = 30407377;
 
     Category
     {
@@ -225,6 +225,10 @@ Wave Bank
     Windows Bank Path Edited = 0;
     Seek Tables = 1;
     Compression Preset Name = <none>;
+    Xbox Bank Last Modified Low = 0;
+    Xbox Bank Last Modified High = 0;
+    PC Bank Last Modified Low = 3671288398;
+    PC Bank Last Modified High = 30407377;
     Header Last Modified Low = 0;
     Header Last Modified High = 0;
     Bank Last Revised Low = 3609605800;
@@ -491,6 +495,10 @@ Sound Bank
     Windows File = Win\Sound Bank.xsb;
     Xbox Bank Path Edited = 0;
     Windows Bank Path Edited = 0;
+    Bank Last Modified Low = 3671358459;
+    Bank Last Modified High = 30407377;
+    Header Last Modified High = 0;
+    Header Last Modified Low = 0;
 
     Sound
     {
