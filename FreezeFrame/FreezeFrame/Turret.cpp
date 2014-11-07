@@ -6,12 +6,8 @@ using namespace turretNS;
 
 Turret::Turret():Actor()
 {
-	edge.top = -32;
-	edge.bottom = 32;
-	edge.left = -32;
-	edge.right = 76;
-
-	collisionType = BOX;
+	radius = TURRET_RADIUS;
+	collisionType = CIRCLE;
 	base.setRadians(PI/4);
 
 	setActive(false);
@@ -135,6 +131,8 @@ void Turret::create(VECTOR2 loc, float dir)
 	setCenter(loc);
 	base.setCenter(loc);
 	weaponCooldown = 0;
+	rebootCooldown = 0;
+	colorFilter = graphicsNS::WHITE;
 }
 
 void Turret::hit()

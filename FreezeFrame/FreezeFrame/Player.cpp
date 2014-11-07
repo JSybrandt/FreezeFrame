@@ -214,6 +214,7 @@ void Player::pickUpGun()
 	cylinderDesiredDir = 0;
 	cylinder.setRadians(0);
 	cylinder.setCurrentFrame(0);
+
 }
 
 
@@ -223,6 +224,6 @@ void Player::set(VECTOR2 loc)
 	cylinder.setCenter(CYLINDER_OFFSCREEN);
 	alive = true;
 	setCenter(loc);
-	cylinderDesiredDir = 0;
-	cylinder.setRadians(0);
+	numBullets = 0;
+
 }
