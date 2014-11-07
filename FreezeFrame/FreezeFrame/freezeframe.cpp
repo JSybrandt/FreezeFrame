@@ -386,8 +386,9 @@ void FreezeFrame::collisions()
 			   enemyBullets[i].getCenter().y < 0 || enemyBullets[i].getCenter().y > worldSizes[currentState].y)
 			   enemyBullets[i].setActive(false);
 
-			if(enemyBullets[i].collidesWith(player,collisionVector))
+			if(enemyBullets[i].collidesWith(player,collisionVector)) {
 				onPlayerDeath();
+			}
 
 			for(int j = 0; j < MAX_WALLS; j++)
 				if(enemyBullets[i].collidesWith(walls[j],collisionVector))
@@ -868,5 +869,6 @@ void FreezeFrame::onPlayerDeath()
 		player.alive = false;
 		spawnParticleCloud(player.getCenter(),graphicsNS::BLUE);
 		playerDeathCountdown = TIME_UNTIL_RESET;
+		audio->playCue(KILL3_CUE);
 	}
 }

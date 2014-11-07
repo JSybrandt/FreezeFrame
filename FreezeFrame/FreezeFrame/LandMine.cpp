@@ -35,6 +35,7 @@ void LandMine::update(float frametime)
 			{
 				timeRemaining = 0;
 				exploding = false;
+				audio->playCue(EXP3_CUE);
 				setActive(false);
 			}
 		}
