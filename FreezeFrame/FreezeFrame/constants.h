@@ -43,7 +43,7 @@ const char WALL_IMAGE[] = "pictures\\wall.png";
 const char CYLINDER_IMAGE[] = "pictures\\cylinder.png";
 const char MINE_IMAGE[] = "pictures\\mineAni.png";
 const char DANGER_ZONE_IMAGE[]="pictures\\dangerzone.png";
-const char LOADING_IMAGE[]="pictures\\loading.png";
+const char PAUSE_IMAGE[]="pictures\\pause.png";
 const char GUN_IMAGE[]="pictures\\gun.png";
 
 const char MENU_IMAGE[] = "pictures\\menu.png";

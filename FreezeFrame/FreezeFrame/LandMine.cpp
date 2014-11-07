@@ -55,7 +55,7 @@ void LandMine::draw(VECTOR2 screenLoc)
 			int whole = (int)timeRemaining;
 			int dec = (timeRemaining-whole)*10;
 			string time = to_string(whole)+"."+to_string(dec);
-			VECTOR2 textLoc = getCenter()+TEXT_DISPLACEMENT;
+			VECTOR2 textLoc = getCenter()+TEXT_DISPLACEMENT - screenLoc;
 			text->print(time,textLoc.x,textLoc.y);
 
 		}

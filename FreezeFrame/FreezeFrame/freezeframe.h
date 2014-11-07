@@ -46,6 +46,8 @@ namespace freezeFrameNS
 	const int NUM_PARTICLES_IN_CONE_EFFECT = 100;
 
 	const float TIME_UNTIL_RESET = 1;
+
+	const UCHAR PAUSE_BUTTON = 'P';
 }
 
 using namespace freezeFrameNS;
@@ -86,12 +88,12 @@ private:
 	TextureManager mineTex;
 	TextureManager cylinderTex;
 	TextureManager dangerZoneTex;
-	TextureManager loadingTex;
+	TextureManager pauseTex;
 	TextureManager gunTex;
 
-	Image loading;
+	Image pause;
 
-	TextDX mineText;
+	TextDX infoText;
 
 	Exit exit;
 
@@ -126,6 +128,8 @@ private:
 	VECTOR2 * worldSizes; //array of sizes per level
 
 	GameState currentState;
+
+	bool paused;
 
 public:
 	// Constructor

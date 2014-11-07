@@ -19,14 +19,17 @@ Player::Player():Actor(){
 
 	timeUntilWallCollision = 1;
 
+	showUseMessage = false;
+
 };
 Player::~Player(){};
 
-bool Player::initialize(FreezeFrame * g, Controls c, int width, int height, int ncols, TextureManager *playerTM, TextureManager *feetTM,TextureManager *cylinderTM)
+bool Player::initialize(FreezeFrame * g, Controls c,TextDX* t, int width, int height, int ncols, TextureManager *playerTM, TextureManager *feetTM,TextureManager *cylinderTM)
 {
 	game = g;
 	controls = c;
-	
+	text = t;
+
 	bool result =  Actor::initialize(g,width,height,ncols,playerTM);
 	result = result && feet.initialize(g,FEET_WIDTH,FEET_HEIGHT,FEET_COL,feetTM);
 	feet.setFrames(0,2);
@@ -52,6 +55,14 @@ void Player::draw(VECTOR2 screenLoc)
 		feet.draw(screenLoc);
 
 		Actor::draw(screenLoc);
+
+		
+		if(showUseMessage){
+			VECTOR2 textloc = getCenter() +TEXT_DISPLACEMENT - screenLoc;
+			std::string t = "PRESS ";
+			t+=(char)controls.use;
+			text->print(t,textloc.x,textloc.y);
+		}
 	}
 }
 
@@ -120,15 +131,18 @@ void Player::update(float &frametime)
 				setCurrentFrame(0);
 			}
 
+			Item* i = game->getItemUnderPlayer();
+			showUseMessage = (i != nullptr);
 			if(input->wasKeyPressed(controls.use))
 			{
-				Item* i = game->getItemUnderPlayer();
+				
 				if(i!=nullptr && i->getType()==Item::ItemType::WEAPON)
 				{
 					pickUpGun();
 					i->setActive(false);
 				}
 			}
+		
 
 
 			if(recoilCooldown > 0)

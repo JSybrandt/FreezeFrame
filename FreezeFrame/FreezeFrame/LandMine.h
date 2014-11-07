@@ -7,9 +7,9 @@
 class FreezeFrame;
 
 namespace landmineNS{
-	const float TIME_UNTIL_EXPLOSION = 1.5;
+	const float TIME_UNTIL_EXPLOSION = 1;
 	const float EXPLOSION_LIFETIME = 0.25;
-	const float MINE_RADIUS = 32;
+	const float MINE_RADIUS = 64;
 	const float EXPLOSION_RADIUS = 128;
 	const VECTOR2 TEXT_DISPLACEMENT(-12,-32);
 };

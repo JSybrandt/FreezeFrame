@@ -36,6 +36,9 @@ namespace playerNS{
 	
 	const VECTOR2 CYLINDER_OFFSCREEN(64,GAME_HEIGHT*-0.2);
 	const VECTOR2 CYLINDER_ONSCREEN(64,72);
+
+	const VECTOR2 TEXT_DISPLACEMENT(-32,-50);
+
 }
 
 
@@ -57,12 +60,15 @@ private:
 	bool gunAnimation;
 	float cylinderDesiredDir;
 	
+	bool showUseMessage;
+
+	TextDX * text;
 
 public:
 	Player();
 	~Player();
 
-	bool initialize(FreezeFrame * game, Controls c, int width, int height, int ncols, TextureManager *playerTM, TextureManager *feetTM, TextureManager *cylinderTM);
+	bool initialize(FreezeFrame * game, Controls c, TextDX* t, int width, int height, int ncols, TextureManager *playerTM, TextureManager *feetTM, TextureManager *cylinderTM);
 
 	void draw(VECTOR2 screenLoc);
 

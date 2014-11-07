@@ -24,6 +24,8 @@ FreezeFrame::FreezeFrame()
 	worldSizes[GameState::FeelingLucky] = VECTOR2(GAME_WIDTH,GAME_HEIGHT);
 
 	currentState = TitleScreen;
+
+	paused = false;
 	
 }
 
@@ -78,13 +80,22 @@ void FreezeFrame::initialize(HWND hwnd)
 		throw GameError(9,"Failed to init cylinder tex");
 	if(!dangerZoneTex.initialize(graphics,DANGER_ZONE_IMAGE))
 		throw GameError(9,"Failed to init danger zone tex");
-	if(!mineText.initialize(graphics,20,true,false,"Courier New"))
+	if(!infoText.initialize(graphics,20,true,false,"Courier New"))
 		throw GameError(9,"Failed to init mine text");
+
+	infoText.setFontColor(graphicsNS::BLACK);
+
 	if(!gunTex.initialize(graphics,GUN_IMAGE))
 		throw GameError(11,"Failed to init gun text");
 
 	if(!exit.initialize(this,0,0,0,&exitTex))
 		throw GameError(11,"Failed to init exit");
+
+	if(!pauseTex.initialize(graphics,PAUSE_IMAGE))
+		throw GameError(11,"Failed to init gun text");
+
+	if(!pause.initialize(graphics,0,0,0,&pauseTex))
+		throw GameError(11,"Failed to init pause");
 
 	if(!title.initialize(graphics,MENU_CELL_WIDTH,MENU_CELL_HEIGHT,1,&menuTex))
 		throw GameError(12,"Failed to init title");
@@ -107,7 +118,7 @@ void FreezeFrame::initialize(HWND hwnd)
 	if(!background.initialize(graphics,0,0,0,&backgroundTex))
 		throw GameError(15,"Failed to init background image");
 
-	if(!player.initialize(this,P1Controls,PL_WIDTH,PL_HEIGHT,PL_COL,&manTex, &feetTex,&cylinderTex))
+	if(!player.initialize(this,P1Controls,&infoText,PL_WIDTH,PL_HEIGHT,PL_COL,&manTex, &feetTex,&cylinderTex))
 		throw GameError(24,"Failed to init player");
 	player.setFrames(0, 5);
 	player.setCurrentFrame(5);
@@ -162,7 +173,7 @@ void FreezeFrame::initialize(HWND hwnd)
 
 	for(int i = 0; i < MAX_MINES; i++)
 	{
-		if(!mines[i].initialize(this,&mineText,MINE_WIDTH,MINE_HEIGHT,MINE_COL,&mineTex,&dangerZoneTex))
+		if(!mines[i].initialize(this,&infoText,MINE_WIDTH,MINE_HEIGHT,MINE_COL,&mineTex,&dangerZoneTex))
 			throw GameError(-1*i,"FAILED TO MAKE explosion!");
 		mines[i].setFrames(0, 1);   // animation frames
 		mines[i].setCurrentFrame(0);     // starting frame
@@ -189,15 +200,15 @@ void FreezeFrame::initialize(HWND hwnd)
 //=============================================================================
 void FreezeFrame::update()
 {
-
-	switch (currentState){
-	case TitleScreen:
-		menuUpdate();
-		break;
-	default:
-		levelsUpdate();
-	}
-
+	
+		switch (currentState){
+		case TitleScreen:
+			menuUpdate();
+			break;
+		default:
+			levelsUpdate();
+		}
+	
 }
 
 void FreezeFrame::menuUpdate(bool reset)
@@ -269,6 +280,15 @@ void FreezeFrame::menuUpdate(bool reset)
 
 void FreezeFrame::levelsUpdate()
 {
+	if(input->wasKeyPressed(PAUSE_BUTTON))
+	{
+		paused = !paused;
+		ShowCursor(paused);
+	}
+
+	if(paused) return;
+
+
 	if(!player.alive)
 	{
 		playerDeathCountdown -= frameTime;
@@ -504,6 +524,10 @@ void FreezeFrame::levelsRender()
 	player.draw(screenLoc);
 
 	cursor.draw(screenLoc);
+
+	if(paused)
+		pause.draw(VECTOR2(0,0));
+
 }
 
 //=============================================================================
