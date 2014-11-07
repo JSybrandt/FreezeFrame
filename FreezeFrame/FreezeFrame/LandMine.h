@@ -21,13 +21,15 @@ private:
 	float timeRemaining;
 	TextDX * text;
 	FreezeFrame * game;
+	Image dangerZone;
+	
 public:
 	LandMine();
 	void update(float frametime);
 	void draw(VECTOR2 screenLoc);
 	void create(VECTOR2 loc);
 	void wasSteppedOn();//call when the mine gets stepped on
-	bool initialize(FreezeFrame * g, TextDX * text,int width, int height, int ncols, TextureManager *textureM);
+	bool initialize(FreezeFrame * g, TextDX * text,int width, int height, int ncols, TextureManager *textureM, TextureManager *dangerZoneM);
 	bool getDangerous(){return exploding&&getActive();}
 	bool getPrimed(){return primed;}
 };

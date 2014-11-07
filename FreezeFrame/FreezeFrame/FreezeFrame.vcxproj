@@ -123,6 +123,7 @@
     <ClInclude Include="image.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="freezeframe.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="LandMine.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Player.h" />

@@ -48,14 +48,17 @@ void LandMine::draw(VECTOR2 screenLoc)
 		
 		if(primed)
 		{
+			dangerZone.setColorFilter(Graphics::calculateAlpha(0.5-(timeRemaining/TIME_UNTIL_EXPLOSION)/2));
+			dangerZone.draw(screenLoc);
+
 			Actor::draw(screenLoc);
 			int whole = (int)timeRemaining;
 			int dec = (timeRemaining-whole)*10;
 			string time = to_string(whole)+"."+to_string(dec);
 			VECTOR2 textLoc = getCenter()+TEXT_DISPLACEMENT;
 			text->print(time,textLoc.x,textLoc.y);
+
 		}
-		//TODO: explosion
 	}
 }
 
@@ -66,6 +69,7 @@ void LandMine::create(VECTOR2 loc)
 	primed = false;
 	exploding = false;
 	radius = MINE_RADIUS;
+	dangerZone.setCenter(loc);
 }
 
 void LandMine::wasSteppedOn()
@@ -77,9 +81,10 @@ void LandMine::wasSteppedOn()
 	}
 }
 
-bool LandMine::initialize(FreezeFrame * g, TextDX * t,int width, int height, int ncols, TextureManager *textureM)
+bool LandMine::initialize(FreezeFrame * g, TextDX * t,int width, int height, int ncols, TextureManager *textureM, TextureManager *dangerZoneM)
 {
 	game = g;
 	text = t;
-	return Actor::initialize(g,width,height,ncols,textureM);
+	bool result = dangerZone.initialize(g->getGraphics(),0,0,0,dangerZoneM);
+	return result && Actor::initialize(g,width,height,ncols,textureM);
 }

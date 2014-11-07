@@ -26,8 +26,11 @@ void Guard::update(float frameTime)
 	{
 		if(health <= 0)
 			setActive(false);
+		
+		VECTOR2 endLoc = getCenter()+(getVelocity()*guardNS::SPEED*frameTime);
+		endLoc = game->getRealEndLoc(getCenter(),endLoc);
 
-		setCenter(getCenter()+(getVelocity()*guardNS::SPEED*frameTime));
+		setCenter(endLoc);
 		setRadians(atan2(velocity.y,velocity.x));
 		if(velocity != VECTOR2(0,0))
 			Actor::update(frameTime);
