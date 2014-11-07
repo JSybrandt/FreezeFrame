@@ -23,8 +23,7 @@ FreezeFrame::FreezeFrame()
 	worldSizes[GameState::Level3] = VECTOR2(2048,2048);
 	worldSizes[GameState::FeelingLucky] = VECTOR2(GAME_WIDTH,GAME_HEIGHT);
 
-	currentState = TitleScreen;
-	
+	currentState = TitleScreen;	
 }
 
 //=============================================================================

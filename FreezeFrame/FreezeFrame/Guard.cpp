@@ -24,8 +24,10 @@ void Guard::update(float frameTime)
 {
 	if(getActive())
 	{
-		if(health <= 0)
+		if(health <= 0) {
 			setActive(false);
+			audio->playCue(KILL1_CUE);
+		}
 
 		setCenter(getCenter()+(getVelocity()*guardNS::SPEED*frameTime));
 		setRadians(atan2(velocity.y,velocity.x));

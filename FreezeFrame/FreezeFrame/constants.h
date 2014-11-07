@@ -65,7 +65,12 @@ const char XGS_FILE[]   = "audio\\Win\\AudioProject.xgs";
 
 //Cue Names
 const char SC_LAUNCH[] = "launch"; //MUST be exactly the same as cue name
-const char LASER_CUE[] = "laser";
+const char TURRET_CUE[] = "turret";
+const char PISTOL_CUE[] = "pistol";
+const char EMPTY_CUE[] = "empty";
+const char KILL1_CUE[] = "kill1";
+const char KILL2_CUE[] = "kill2";
+const char KILL3_CUE[] = "kill3";
 
 // window
 const char CLASS_NAME[] = "Freeze Frame";
