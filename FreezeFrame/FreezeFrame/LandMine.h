@@ -18,7 +18,7 @@ class LandMine: public Actor
 {
 private:
 	bool primed,exploding;
-	float timeRemaining;
+	float timeRemaining, beeper;
 	TextDX * text;
 	FreezeFrame * game;
 	Image dangerZone;
