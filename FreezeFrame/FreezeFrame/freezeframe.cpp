@@ -75,6 +75,8 @@ void FreezeFrame::initialize(HWND hwnd)
 		throw GameError(9,"Failed to init exit tex");
 	if(!mineTex.initialize(graphics,MINE_IMAGE))
 		throw GameError(9,"Failed to init mine tex");
+	if(!cylinderTex.initialize(graphics,CYLINDER_IMAGE))
+		throw GameError(9,"Failed to init cylinder tex");
 
 	if(!mineText.initialize(graphics,20,true,false,"Courier New"))
 		throw GameError(9,"Failed to init mine text");
@@ -103,7 +105,7 @@ void FreezeFrame::initialize(HWND hwnd)
 	if(!background.initialize(graphics,0,0,0,&backgroundTex))
 		throw GameError(15,"Failed to init background image");
 
-	if(!player.initialize(this,P1Controls,PL_WIDTH,PL_HEIGHT,PL_COL,&manTex, &feetTex))
+	if(!player.initialize(this,P1Controls,PL_WIDTH,PL_HEIGHT,PL_COL,&manTex, &feetTex,&cylinderTex))
 		throw GameError(24,"Failed to init player");
 	player.setFrames(0, 5);
 	player.setCurrentFrame(5);
@@ -540,8 +542,8 @@ void FreezeFrame::level1Load()
 	currentState = Level1;
 	deactivateAll();
 
-	player.setTop(0);player.setCenterX(worldSizes[currentState].x/6);
-	player.alive = true;
+	player.set(VECTOR2(worldSizes[currentState].x/6,100));
+	player.pickUpGun();
 
 	VECTOR2 offset(30,-30);
 
@@ -576,8 +578,7 @@ void FreezeFrame::level2Load()
 	currentState = Level2;
 	deactivateAll();
 
-	player.setCenter(VECTOR2(1000,1000));
-	player.alive = true;
+	player.set(VECTOR2(1000,1000));
 
 	for(int i = 0; i < 10; i++)
 	{
@@ -598,6 +599,7 @@ void FreezeFrame::level2Load()
 
 void FreezeFrame::feelingLuckyLoad()
 {
+
 	currentState = FeelingLucky;
 	deactivateAll();
 
@@ -609,8 +611,7 @@ void FreezeFrame::feelingLuckyLoad()
 		spawnTurret(playerPos+rotateVector(turretDisp,i),i+PI);
 	}
 
-	player.setCenter(playerPos);
-
+	player.set(playerPos);
 
 	exit.setRight(worldSizes[currentState].x);
 	exit.setBot(worldSizes[currentState].y);

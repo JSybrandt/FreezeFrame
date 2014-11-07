@@ -15,3 +15,8 @@ float utilityNS::toPincipleArgument(float angle)
 	while(angle > PI)angle-=2*PI;
 	return angle;
 }
+
+float utilityNS::getSign(float n)
+{
+	return n/abs(n);
+}

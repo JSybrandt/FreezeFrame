@@ -22,7 +22,7 @@ Player::Player():Actor(){
 };
 Player::~Player(){};
 
-bool Player::initialize(FreezeFrame * g, Controls c, int width, int height, int ncols, TextureManager *playerTM, TextureManager *feetTM)
+bool Player::initialize(FreezeFrame * g, Controls c, int width, int height, int ncols, TextureManager *playerTM, TextureManager *feetTM,TextureManager *cylinderTM)
 {
 	game = g;
 	controls = c;
@@ -35,6 +35,9 @@ bool Player::initialize(FreezeFrame * g, Controls c, int width, int height, int 
 	feet.setLoop(true);
 	feet.setCenter(getCenter());
 
+	result = result && cylinder.initialize(g->getGraphics(),CYLINDER_WIDTH,CYLINDER_HEIGHT,CYLINDER_COLS,cylinderTM);
+	cylinder.setCenter(CYLINDER_OFFSCREEN);
+	cylinder.setCurrentFrame(CYLINDER_MAX_IMG_INDEX);
 
 	return result;
 }
@@ -43,6 +46,9 @@ void Player::draw(VECTOR2 screenLoc)
 {
 	if(getActive())
 	{
+
+		cylinder.draw(VECTOR2(0,0));
+
 		feet.draw(screenLoc);
 
 		Actor::draw(screenLoc);
@@ -77,7 +83,13 @@ void Player::update(float &frametime)
 			sin(inputDir.y);
 
 
-			if(input->getMouseLButton()&& (weaponCooldown <= 0) ){
+			if(input->getMouseLButton()&& (weaponCooldown <= 0)&&numBullets>0){
+
+				numBullets--;
+
+				cylinder.setCurrentFrame(CYLINDER_MAX_IMG_INDEX-numBullets);
+
+				cylinderDesiredDir = (CYLINDER_MAX_IMG_INDEX-numBullets)*PI/3;
 
 				//because we dont want to use the angle form player center
 				VECTOR2 bulletLoc = getCenter()+utilityNS::rotateVector(playerNS::bulletDisplacement,mouseDir);
@@ -151,6 +163,30 @@ void Player::update(float &frametime)
 
 			recoilCooldown -= frametime;
 			if(recoilCooldown < 0)recoilCooldown = 0;
+
+			VECTOR2 diffOn= CYLINDER_ONSCREEN-cylinder.getCenter();
+			VECTOR2 diffOff= CYLINDER_OFFSCREEN-cylinder.getCenter();
+			float diffAngle = cylinderDesiredDir - cylinder.getRadians();
+
+			//if the gun ui needs to get in position
+			if(numBullets > 0 && D3DXVec2LengthSq(&diffOn) > POS_EPSILON_SQRD)
+			{
+				D3DXVec2Normalize(&diffOn,&diffOn);
+				cylinder.setCenter(cylinder.getCenter()+diffOn*CYLINDER_VERTICAL_SPEED*frametime);
+			}
+			//if the gun ui needs to get in position
+			if(numBullets == 0 && D3DXVec2LengthSq(&diffOff) > POS_EPSILON_SQRD)
+			{
+				D3DXVec2Normalize(&diffOff,&diffOff);
+				cylinder.setCenter(cylinder.getCenter()+diffOff*CYLINDER_VERTICAL_SPEED*frametime);
+			}
+
+			if(diffAngle > ROTATION_EPSILON)
+			{
+				cylinder.setRadians(cylinder.getRadians()+CYLINDER_ROTATION_SPEED*frametime*getSign(cylinderDesiredDir));
+			}
+
+
 		}
 		else
 		{
@@ -158,4 +194,24 @@ void Player::update(float &frametime)
 		}
 	}
 	Image::update(frametime);
+}
+
+void Player::pickUpGun()
+{
+	gunAnimation = true; 
+	numBullets = playerNS::GUN_BULLET_CAPACITY;
+	cylinderDesiredDir = 0;
+	cylinder.setRadians(0);
+	cylinder.setCurrentFrame(0);
+}
+
+
+
+void Player::set(VECTOR2 loc)
+{
+	cylinder.setCenter(CYLINDER_OFFSCREEN);
+	alive = true;
+	setCenter(loc);
+	cylinderDesiredDir = 0;
+	cylinder.setRadians(0);
 }

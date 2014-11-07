@@ -10,4 +10,6 @@ namespace utilityNS{
 	float rand01();
 
 	float toPincipleArgument(float angle);
+
+	float getSign(float n);
 }

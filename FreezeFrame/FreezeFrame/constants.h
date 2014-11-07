@@ -41,6 +41,7 @@ const char LINE_IMAGE[] = "pictures\\line2.png";
 const char EXIT_IMAGE[] = "pictures\\exit.png";
 const char WALL_IMAGE[] = "pictures\\wall.png";
 const char MINE_IMAGE[] = "pictures\\landmine.png";
+const char CYLINDER_IMAGE[] = "pictures\\cylinder.png";
 
 const char MENU_IMAGE[] = "pictures\\menu.png";
 const char MENU_CURSOR_IMAGE[] = "pictures\\menuCursor.png";

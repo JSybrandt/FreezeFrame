@@ -82,6 +82,7 @@ private:
 	TextureManager menuCursorTex;
 	TextureManager menuTex;
 	TextureManager mineTex;
+	TextureManager cylinderTex;
 
 	TextDX mineText;
 
