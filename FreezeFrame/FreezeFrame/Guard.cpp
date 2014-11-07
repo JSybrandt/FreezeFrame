@@ -9,6 +9,7 @@ Guard::Guard():Actor(){
 	collisionType = COLLISION_TYPE::BOX;
 	colorFilter = guardNS::COLOR;
 	setActive(false);
+	target = false;
 }
 Guard::~Guard(){}
 
@@ -28,7 +29,8 @@ void Guard::update(float frameTime)
 
 		setCenter(getCenter()+(getVelocity()*guardNS::SPEED*frameTime));
 		setRadians(atan2(velocity.y,velocity.x));
-		Actor::update(frameTime);
+		if(velocity != VECTOR2(0,0))
+			Actor::update(frameTime);
 	}
 }
 
@@ -67,15 +69,26 @@ void Guard::vectorTrack(float frametime)
 
 void Guard::ai(float time, Actor &t)
 { 
-	targetEntity = t;
-	vectorTrack(time);
-	//deltaTrack(time);
-	//evade();
+	VECTOR2 toPlayer = game->getPlayerLoc() - getCenter();
+	float distSqrdToPlayer = D3DXVec2LengthSq(&toPlayer);
+
+	if(distSqrdToPlayer < guardNS::ENGAGE_DISTANCE_SQRD) {
+		target = true;
+	}
+
+	if(target) {
+		targetEntity = t;
+		vectorTrack(time);
+		//deltaTrack(time);
+		//evade();
+	}
 	return;
 }
 
 void Guard::create(VECTOR2 loc)
 {
+	target = false;
+	velocity = VECTOR2(0,0);
 	setActive(true);
 	setCenter(loc);
 }
