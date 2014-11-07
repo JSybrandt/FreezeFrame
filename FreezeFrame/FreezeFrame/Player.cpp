@@ -129,6 +129,7 @@ void Player::update(float &frametime)
 				recoilCooldown = playerNS::RECOIL_TIME;
 				animComplete = false;
 				setCurrentFrame(0);
+				audio->playCue(PISTOL_CUE);
 			}
 
 			Item* i = game->getItemUnderPlayer();

@@ -43,7 +43,7 @@ void Turret::update(float frametime)
 			//if the player is close and in view
 			if(distSqrdToPlayer < turretNS::ENGAGE_DISTANCE_SQRD)
 			{
-			
+
 				//convert to principle arguments
 				dirToPlayer = toPincipleArgument(dirToPlayer);
 				radians = toPincipleArgument(radians);
@@ -82,13 +82,13 @@ void Turret::update(float frametime)
 					game->spawnBullet(v2,radians,graphicsNS::RED,false);
 					animComplete = false;
 					setCurrentFrame(0);
-					audio->playCue(LASER_CUE);
+					audio->playCue(TURRET_CUE);
 					weaponCooldown = turretNS::FIRE_RATE;
 				}
 			}
 			else
 			{
-		
+
 				if(radians > maxDir)
 				{
 					rotVel = -turretNS::ROTATION_SPEED;
@@ -100,6 +100,7 @@ void Turret::update(float frametime)
 				}
 				setRadians(radians+ rotVel*frametime);
 			}
+
 		}
 	}
 	base.setCenter(getCenter());
@@ -113,7 +114,7 @@ void Turret::draw(VECTOR2 screenLoc)
 {
 	if(getActive())
 	{
-		
+
 		base.draw(screenLoc);
 
 		Actor::draw(screenLoc);

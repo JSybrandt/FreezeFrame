@@ -26,7 +26,6 @@ FreezeFrame::FreezeFrame()
 	currentState = TitleScreen;
 
 	paused = false;
-	
 }
 
 //=============================================================================
