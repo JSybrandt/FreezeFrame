@@ -1,40 +1,22 @@
-﻿Build started 11/7/2014 3:25:57 PM.
+﻿Build started 11/9/2014 1:53:20 PM.
      1>Project "C:\PROJECTS\FreezeFrame\FreezeFrame\FreezeFrame\FreezeFrame.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\\Include" /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt freezeframe.cpp
-         freezeframe.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\\Include" /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Guard.cpp
+         Guard.cpp
+     1>c:\projects\freezeframe\freezeframe\freezeframe\guard.h(10): warning C4244: 'initializing' : conversion from 'double' to 'const float', possible loss of data
+     1>c:\projects\freezeframe\freezeframe\freezeframe\guard.h(11): warning C4244: 'initializing' : conversion from 'double' to 'const float', possible loss of data
      1>c:\projects\freezeframe\freezeframe\freezeframe\player.h(16): warning C4305: 'initializing' : truncation from 'double' to 'const float'
      1>c:\projects\freezeframe\freezeframe\freezeframe\player.h(18): warning C4305: 'initializing' : truncation from 'double' to 'const float'
      1>c:\projects\freezeframe\freezeframe\freezeframe\player.h(19): warning C4305: 'initializing' : truncation from 'double' to 'const float'
      1>c:\projects\freezeframe\freezeframe\freezeframe\player.h(23): warning C4305: 'initializing' : truncation from 'double' to 'const float'
      1>c:\projects\freezeframe\freezeframe\freezeframe\player.h(25): warning C4305: 'initializing' : truncation from 'double' to 'const float'
      1>c:\projects\freezeframe\freezeframe\freezeframe\player.h(30): warning C4244: 'initializing' : conversion from 'const double' to 'const float', possible loss of data
-     1>c:\projects\freezeframe\freezeframe\freezeframe\guard.h(10): warning C4244: 'initializing' : conversion from 'double' to 'const float', possible loss of data
      1>c:\projects\freezeframe\freezeframe\freezeframe\cursor.h(7): warning C4244: 'initializing' : conversion from 'const double' to 'const float', possible loss of data
      1>c:\projects\freezeframe\freezeframe\freezeframe\turret.h(8): warning C4244: 'initializing' : conversion from 'const double' to 'const float', possible loss of data
      1>c:\projects\freezeframe\freezeframe\freezeframe\turret.h(9): warning C4244: 'initializing' : conversion from 'double' to 'const float', possible loss of data
      1>c:\projects\freezeframe\freezeframe\freezeframe\turret.h(10): warning C4244: 'initializing' : conversion from 'const double' to 'const float', possible loss of data
      1>c:\projects\freezeframe\freezeframe\freezeframe\turret.h(11): warning C4305: 'initializing' : truncation from 'double' to 'const float'
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.h(179): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.cpp(15): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.cpp(20): warning C4244: 'argument' : conversion from 'const UINT' to 'FLOAT', possible loss of data
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.cpp(21): warning C4244: 'argument' : conversion from 'const UINT' to 'FLOAT', possible loss of data
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.cpp(24): warning C4244: 'argument' : conversion from 'const UINT' to 'FLOAT', possible loss of data
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.cpp(239): warning C4244: 'argument' : conversion from 'const UINT' to 'float', possible loss of data
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.cpp(560): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.cpp(563): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.cpp(573): warning C4244: 'argument' : conversion from 'const UINT' to 'float', possible loss of data
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.cpp(588): warning C4244: 'argument' : conversion from 'const double' to 'float', possible loss of data
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.cpp(589): warning C4244: 'argument' : conversion from 'const double' to 'float', possible loss of data
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.cpp(607): warning C4305: 'argument' : truncation from 'double' to 'FLOAT'
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.cpp(609): warning C4305: 'argument' : truncation from 'double' to 'FLOAT'
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.cpp(633): warning C4244: 'argument' : conversion from 'const double' to 'float', possible loss of data
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.cpp(634): warning C4244: 'argument' : conversion from 'const double' to 'float', possible loss of data
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.cpp(651): warning C4244: '+=' : conversion from 'const double' to 'float', possible loss of data
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.cpp(653): warning C4244: 'argument' : conversion from 'const double' to 'float', possible loss of data
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.cpp(787): warning C4244: '=' : conversion from 'const double' to 'float', possible loss of data
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.cpp(799): warning C4244: '=' : conversion from 'const double' to 'float', possible loss of data
-     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.cpp(800): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\projects\freezeframe\freezeframe\freezeframe\freezeframe.h(186): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\PROJECTS\FreezeFrame\FreezeFrame\FreezeFrame\Debug\FreezeFrame.exe" /NOLOGO /LIBPATH:"C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\\Lib\x86" d3d9.lib d3dx9.lib winmm.lib xinput.lib winmm.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\PROJECTS\FreezeFrame\FreezeFrame\FreezeFrame\Debug\FreezeFrame.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\PROJECTS\FreezeFrame\FreezeFrame\FreezeFrame\Debug\FreezeFrame.lib" /MACHINE:X86 /SAFESEH Debug\Actor.obj
          Debug\audio.obj
@@ -61,4 +43,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.84
+Time Elapsed 00:00:01.87

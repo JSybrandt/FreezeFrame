@@ -27,7 +27,7 @@ FreezeFrame::FreezeFrame()
 
 	paused = false;
 
-	l2pCheat==false;
+	l2pCheat=false;
 	infAmmoCheat=false;
 	textCooldown = 0;
 }
@@ -441,7 +441,7 @@ void FreezeFrame::collisions()
 			switch (currentState)
 			{
 			case FreezeFrame::Level1:
-				menuLoad();
+				level2Load();
 				break;
 			case FreezeFrame::Level2:
 				level3Load();
