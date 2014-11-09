@@ -20,7 +20,7 @@ FreezeFrame::FreezeFrame()
 	worldSizes[GameState::TitleScreen] = VECTOR2(GAME_WIDTH,GAME_HEIGHT);
 	worldSizes[GameState::Level1] = VECTOR2(GAME_WIDTH,GAME_HEIGHT);
 	worldSizes[GameState::Level2] = VECTOR2(2048,2048);
-	worldSizes[GameState::Level3] = VECTOR2(2048,2048);
+	worldSizes[GameState::Level3] = VECTOR2(1300,2048);
 	worldSizes[GameState::FeelingLucky] = VECTOR2(GAME_WIDTH,GAME_HEIGHT);
 
 	currentState = TitleScreen;
@@ -261,7 +261,7 @@ void FreezeFrame::menuUpdate(bool reset)
 			switch (selectedItem)
 			{
 			case 0:
-				level1Load();
+				level3Load();
 				break;
 			case 1:
 				feelingLuckyLoad();
@@ -420,12 +420,13 @@ void FreezeFrame::collisions()
 			switch (currentState)
 			{
 			case FreezeFrame::Level1:
-				level2Load();
+				level1Load();
 				break;
 			case FreezeFrame::Level2:
 				menuLoad();
 				break;
 			case FreezeFrame::Level3:
+				menuLoad();
 				break;
 			case FreezeFrame::RestartScreen:
 				break;
@@ -637,6 +638,53 @@ void FreezeFrame::level2Load()
 
 	exit.setCenterX(100);
 	exit.setCenterY(100);
+	exit.update(0);
+}
+
+void FreezeFrame::level3Load()
+{
+	currentState = Level3;
+	deactivateAll();
+
+	player.set(VECTOR2(worldSizes[currentState].x/6,1800));
+
+	VECTOR2 offset(30,-30);
+
+	/*Turret * t1 = spawnTurret(VECTOR2(0,0),-PI/4);
+	Turret * t2 = spawnTurret(VECTOR2(0,0),3*PI/4);
+
+	t1->setLeft(0);
+	t1->setBot(worldSizes[currentState].y);
+	t1->setCenter(t1->getCenter()+offset);
+
+	t2->setRight(worldSizes[currentState].x);
+	t2->setTop(0);
+	t2->setCenter(t2->getCenter()-offset);*/
+
+	Wall* w1 = spawnWall(VECTOR2(0,1600),VECTOR2(600,50));
+	Wall* w2 = spawnWall(VECTOR2(800,1600),VECTOR2(600,50)); //Entrance way
+
+	Wall* w3 = spawnWall(VECTOR2(0,2000),VECTOR2(worldSizes[currentState].x, 100)); //Bottom wall
+
+	Wall* w4 = spawnWall(VECTOR2(1250,0),VECTOR2(50,worldSizes[currentState].y)); //Wall along right side
+	Wall* w5 = spawnWall(VECTOR2(0,0),VECTOR2(50,worldSizes[currentState].y-448)); //Wall along right side
+	Wall* w6 = spawnWall(VECTOR2(0,0),VECTOR2(50,worldSizes[currentState].y-448));
+
+	Wall* w7 = spawnWall(VECTOR2(0,0),VECTOR2(50,worldSizes[currentState].y-448));
+
+	//w1->setCenterX(worldSizes[currentState].x/3);
+
+	//w2->setCenterX(worldSizes[currentState].x*2/3);
+	//w2->setBot(worldSizes[currentState].y);
+
+	spawnMine(VECTOR2(700,1625));
+	//spawnMine(worldSizes[currentState]*0.5);
+	//spawnMine(worldSizes[currentState]*0.6);
+
+	//spawnItem(VECTOR2(worldSizes[currentState].x/6,300),Item::ItemType::WEAPON);
+
+	exit.setBot(100);
+	exit.setRight(worldSizes[currentState].x);
 	exit.update(0);
 }
 

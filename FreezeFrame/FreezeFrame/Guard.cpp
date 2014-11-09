@@ -10,6 +10,7 @@ Guard::Guard():Actor(){
 	colorFilter = guardNS::COLOR;
 	setActive(false);
 	target = false;
+	shoot = false;
 }
 Guard::~Guard(){}
 
@@ -28,14 +29,43 @@ void Guard::update(float frameTime)
 			setActive(false);
 			audio->playCue(KILL1_CUE);
 		}
-		
+
 		VECTOR2 endLoc = getCenter()+(getVelocity()*guardNS::SPEED*frameTime);
 		endLoc = game->getRealEndLoc(getCenter(),endLoc);
 		setCenter(endLoc);
-		setRadians(atan2(velocity.y,velocity.x));
-		if(velocity != VECTOR2(0,0))
+		VECTOR2 aim(game->getPlayerLoc().x - endLoc.x,game->getPlayerLoc().y - endLoc.y);
+		float aimDir = atan2(aim.y,aim.x);
+
+		if(velocity != VECTOR2(0,0)) {
+			setRadians(atan2(velocity.y,velocity.x));
 			Actor::update(frameTime);
+		}
+
+		else if(shoot && weaponCooldown <= 0){
+			//because we dont want to use the angle form player center
+			VECTOR2 bulletLoc = getCenter()+utilityNS::rotateVector(guardNS::bulletDisplacement,aimDir); //
+			VECTOR2 bulletPath = game->getPlayerLoc() - bulletLoc;
+			float bulletAngle = atan2(bulletPath.y,bulletPath.x);
+
+			game->spawnBullet(bulletLoc,bulletAngle,getColorFilter(),false);
+			setRadians(bulletAngle);
+			weaponCooldown  = guardNS::WEAPON_COOLDOWN;
+			recoilCooldown = guardNS::RECOIL_TIME;
+
+			animComplete = false;
+			setCurrentFrame(0);
+			audio->playCue(PISTOL_CUE);
+		}
+		else
+			setRadians(aimDir);
+
+		weaponCooldown -= frameTime;
+		if(weaponCooldown < 0) weaponCooldown =0;
+
+		recoilCooldown -= frameTime;
+		if(recoilCooldown < 0)recoilCooldown = 0;
 	}
+
 }
 
 void Guard::evade(float frameTime)
@@ -77,7 +107,13 @@ void Guard::ai(float time, Actor &t)
 	float distSqrdToPlayer = D3DXVec2LengthSq(&toPlayer);
 
 	if(distSqrdToPlayer < guardNS::ENGAGE_DISTANCE_SQRD) {
+		shoot = true;
+		target = false;
+		setVelocity(VECTOR2(0,0));
+	}
+	else if(distSqrdToPlayer < guardNS::CHASE_DISTANCE_SQRD) {
 		target = true;
+		shoot = false;
 	}
 
 	if(target) {

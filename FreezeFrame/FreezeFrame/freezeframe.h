@@ -167,6 +167,7 @@ public:
 
 	void level1Load();
 	void level2Load();
+	void level3Load();
 	void feelingLuckyLoad();
 
 	void levelsUpdate();

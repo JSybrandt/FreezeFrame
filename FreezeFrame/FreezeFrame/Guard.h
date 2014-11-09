@@ -7,8 +7,12 @@ class FreezeFrame;
 namespace guardNS
 {
 	const float SPEED=100;
-	const float ENGAGE_DISTANCE_SQRD = pow(500,2);
+	const float CHASE_DISTANCE_SQRD = pow(500,2);
+	const float ENGAGE_DISTANCE_SQRD = pow(300,2);
+	const float WEAPON_COOLDOWN = 1;
+	const float RECOIL_TIME = 0.25;
 	const COLOR_ARGB COLOR = graphicsNS::RED;
+	const VECTOR2 bulletDisplacement(28,18);
 };
 
 class Guard:public Actor
@@ -16,7 +20,10 @@ class Guard:public Actor
 public:
 	FreezeFrame *game;
 	Actor targetEntity;
-	bool target;
+	bool target, shoot;
+	int numBullets;
+	float weaponCooldown;
+	float recoilCooldown;
 
 public:
 	Guard();
