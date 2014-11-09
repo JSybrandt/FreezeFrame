@@ -19,13 +19,17 @@ FreezeFrame::FreezeFrame()
 	worldSizes = new VECTOR2[GameState::SIZE];
 	worldSizes[GameState::TitleScreen] = VECTOR2(GAME_WIDTH,GAME_HEIGHT);
 	worldSizes[GameState::Level1] = VECTOR2(GAME_WIDTH,GAME_HEIGHT);
-	worldSizes[GameState::Level2] = VECTOR2(2048,2048);
+	worldSizes[GameState::Level2] = VECTOR2(2048,4096);
 	worldSizes[GameState::Level3] = VECTOR2(2048,2048);
 	worldSizes[GameState::FeelingLucky] = VECTOR2(GAME_WIDTH,GAME_HEIGHT);
 
 	currentState = TitleScreen;
 
 	paused = false;
+
+	l2pCheat==false;
+	infAmmoCheat=false;
+	textCooldown = 0;
 }
 
 //=============================================================================
@@ -272,8 +276,25 @@ void FreezeFrame::menuUpdate(bool reset)
 			default:
 				break;
 			}
-		
 		}
+
+		if(textCooldown > 0) textCooldown -= frameTime;
+		if(textCooldown < 0) textCooldown = 0;
+
+		if(input->isKeyDown('L')&&input->isKeyDown('2')&&input->isKeyDown('P'))
+		{
+			statusString = "L2P N00B: Player Is Invincible!";
+			textCooldown = TEXT_ON_SCREEN;
+			l2pCheat = true;
+		}
+
+		if(input->isKeyDown('A')&&input->isKeyDown('M')&&input->isKeyDown('O'))
+		{
+			statusString = "AMMO: Infinite Ammo!";
+			textCooldown = TEXT_ON_SCREEN;
+			infAmmoCheat = true;
+		}
+
 	}
 }
 
@@ -473,6 +494,12 @@ void FreezeFrame::menuRender()
 
 	menuCursor.draw(UIScreenLoc);
 	
+
+	if(textCooldown > 0)
+	{
+		infoText.print(statusString,0,0);
+	}
+
 }
 
 void FreezeFrame::levelsRender()
@@ -620,23 +647,76 @@ void FreezeFrame::level2Load()
 	currentState = Level2;
 	deactivateAll();
 
-	player.set(VECTOR2(1000,1000));
+	player.set(VECTOR2(100,100));
 
-	for(int i = 0; i < 10; i++)
+
+	spawnWall(VECTOR2(300,0),VECTOR2(250,600));
+	spawnWall(VECTOR2(950,0),VECTOR2(600,180));
+	spawnWall(VECTOR2(1150,0),VECTOR2(300,300));
+	spawnWall(VECTOR2(550,450),VECTOR2(1100,150));
+	spawnWall(VECTOR2(1450,600),VECTOR2(200,800));
+
+	spawnWall(VECTOR2(0,900),VECTOR2(300,700));
+	spawnWall(VECTOR2(0,1600),VECTOR2(1650,200));
+
+	spawnWall(VECTOR2(worldSizes[currentState].x - 1650,2450),VECTOR2(1800,200));
+	spawnWall(VECTOR2(650,2650),VECTOR2(1000,400));
+	spawnWall(VECTOR2(650,3050),VECTOR2(200,850));
+
+	spawnWall(worldSizes[currentState]-VECTOR2(550,550),VECTOR2(550,550));
+
+
+	spawnItem(VECTOR2(750,100),Item::ItemType::WEAPON);
+	spawnItem(VECTOR2(500,4000),Item::ItemType::WEAPON);
+
+	spawnTurret(VECTOR2(1000,250),PI/2);
+
+	spawnTurret(VECTOR2(1700,800),PI/2);
+
+	spawnTurret(VECTOR2(1850,100),PI/2);
+
+	spawnTurret(VECTOR2(1000,800),PI);
+	spawnTurret(VECTOR2(600,1300),0);
+
+	spawnTurret(VECTOR2(500,2700),PI);
+	spawnTurret(VECTOR2(500,2900),PI);
+	spawnTurret(VECTOR2(500,3100),PI);
+	spawnTurret(VECTOR2(500,3300),PI);
+	spawnTurret(VECTOR2(500,3500),PI);
+	spawnTurret(VECTOR2(500,3700),PI);
+
+	spawnGuard(VECTOR2(550,1900));
+	spawnGuard(VECTOR2(150,2100));
+	spawnGuard(VECTOR2(800,2375));
+
+	spawnGuard(VECTOR2(1100,1900));
+	spawnGuard(VECTOR2(1475,2100));
+	spawnGuard(VECTOR2(975,2375));
+
+	spawnGuard(VECTOR2(1000,3200));
+	spawnGuard(VECTOR2(1875,3000));
+
+	for(int i = 400; i < 1400; i+=200)
 	{
-		guards[i].create(VECTOR2(rand01()*worldSizes[currentState].x,rand01()*worldSizes[currentState].y));
+		for(int j = 600; j < 1500; j+= 200)
+		{
+			spawnMine(VECTOR2(i,j));
+		}
 	}
 
-	for(int i = 0; i < 10; i++)
+	for(int i = 0; i < 250; i+=75)
 	{
-		VECTOR2 spawn(rand01()*worldSizes[currentState].x,rand01()*worldSizes[currentState].y);
-		turrets[i].setRadians(rand01()*2*PI);
-		turrets[i].create(spawn,rand01()*2*PI);
+		for(int j = 2500; j < worldSizes[currentState].y; j+= 150)
+		{
+			spawnMine(VECTOR2(i,j));
+		}
 	}
 
-	exit.setCenterX(100);
-	exit.setCenterY(100);
+
+
+	exit.setCenter(VECTOR2(1875,2760));
 	exit.update(0);
+	
 }
 
 void FreezeFrame::feelingLuckyLoad()
@@ -720,6 +800,20 @@ Turret* FreezeFrame::spawnTurret(VECTOR2 loc, float dir)
 		{
 			turrets[i].create(loc,dir);
 			return &turrets[i];
+		}
+	}
+
+	return nullptr;
+}
+
+Guard* FreezeFrame::spawnGuard(VECTOR2 loc)
+{
+	for(int i = 0; i < MAX_GUARDS; i++)
+	{
+		if(!guards[i].getActive())
+		{
+			guards[i].create(loc);
+			return &guards[i];
 		}
 	}
 
@@ -863,7 +957,7 @@ VECTOR2 FreezeFrame::getRealEndLoc(VECTOR2 startLoc, VECTOR2 endLoc)
 
 void FreezeFrame::onPlayerDeath()
 {
-	if(player.alive)
+	if(player.alive && !l2pCheat)
 	{
 		player.alive = false;
 		spawnParticleCloud(player.getCenter(),graphicsNS::BLUE);
