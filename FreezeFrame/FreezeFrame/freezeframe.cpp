@@ -801,7 +801,7 @@ void FreezeFrame::level3Load()
 	//spawnMine(worldSizes[currentState]*0.5);
 	//spawnMine(worldSizes[currentState]*0.6);
 
-	spawnItem(VECTOR2(1200,1500),Item::ItemType::WEAPON);
+	spawnItem(VECTOR2(1200,1450),Item::ItemType::WEAPON);
 
 	exit.setBot(100);
 	exit.setRight(worldSizes[currentState].x);
