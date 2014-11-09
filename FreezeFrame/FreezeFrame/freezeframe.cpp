@@ -30,6 +30,8 @@ FreezeFrame::FreezeFrame()
 	l2pCheat=false;
 	infAmmoCheat=false;
 	textCooldown = 0;
+
+	numLives = STARTING_LIVES;
 }
 
 //=============================================================================
@@ -83,10 +85,10 @@ void FreezeFrame::initialize(HWND hwnd)
 		throw GameError(9,"Failed to init cylinder tex");
 	if(!dangerZoneTex.initialize(graphics,DANGER_ZONE_IMAGE))
 		throw GameError(9,"Failed to init danger zone tex");
-	if(!infoText.initialize(graphics,20,true,false,"Courier New"))
+	if(!infoText.initialize(graphics,20,true,false,"Verdana"))
 		throw GameError(9,"Failed to init mine text");
 
-	infoText.setFontColor(graphicsNS::BLACK);
+	infoText.setFontColor(graphicsNS::BLUE);
 
 	if(!gunTex.initialize(graphics,GUN_IMAGE))
 		throw GameError(11,"Failed to init gun text");
@@ -123,10 +125,6 @@ void FreezeFrame::initialize(HWND hwnd)
 
 	if(!player.initialize(this,P1Controls,&infoText,PL_WIDTH,PL_HEIGHT,PL_COL,&manTex, &feetTex,&cylinderTex))
 		throw GameError(24,"Failed to init player");
-	player.setFrames(0, 5);
-	player.setCurrentFrame(5);
-	player.setFrameDelay(PL_DELAY);
-	player.setLoop(false);
 
 	if(!cursor.initialize(this,0,0,0,&cursorTex))
 		throw GameError(25,"Failed to init cursor");
@@ -195,6 +193,9 @@ void FreezeFrame::initialize(HWND hwnd)
 	
 	ShowCursor(false);
 
+	audio->playCue(OPENING_CUE);
+	introMusicCoutdown = INTRO_MUSIC_COUNTDOWN;
+
 	return;
 }
 
@@ -203,14 +204,21 @@ void FreezeFrame::initialize(HWND hwnd)
 //=============================================================================
 void FreezeFrame::update()
 {
-	
-		switch (currentState){
-		case TitleScreen:
-			menuUpdate();
-			break;
-		default:
-			levelsUpdate();
-		}
+	if(introMusicCoutdown > 0)
+		introMusicCoutdown-=frameTime;
+	if(introMusicCoutdown < 0)
+	{
+		introMusicCoutdown = 0;
+		audio->playCue(MAIN_LOOP_CUE);
+	}
+
+	switch (currentState){
+	case TitleScreen:
+		menuUpdate();
+		break;
+	default:
+		levelsUpdate();
+	}
 	
 }
 
@@ -266,9 +274,11 @@ void FreezeFrame::menuUpdate(bool reset)
 			{
 			case 0:
 				level1Load();
+				numLives = STARTING_LIVES;
 				break;
 			case 1:
 				feelingLuckyLoad();
+				numLives = 1;
 				break;
 			case 3:
 				PostQuitMessage(0);
@@ -284,14 +294,14 @@ void FreezeFrame::menuUpdate(bool reset)
 		if(input->isKeyDown('L')&&input->isKeyDown('2')&&input->isKeyDown('P'))
 		{
 			statusString = "L2P N00B: Player Is Invincible!";
-			textCooldown = TEXT_ON_SCREEN;
+			textCooldown = TIME_TEXT_ON_SCREEN;
 			l2pCheat = true;
 		}
 
 		if(input->isKeyDown('A')&&input->isKeyDown('M')&&input->isKeyDown('O'))
 		{
 			statusString = "AMMO: Infinite Ammo!";
-			textCooldown = TEXT_ON_SCREEN;
+			textCooldown = TIME_TEXT_ON_SCREEN;
 			infAmmoCheat = true;
 		}
 
@@ -313,13 +323,35 @@ void FreezeFrame::levelsUpdate()
 	{
 		playerDeathCountdown -= frameTime;
 		if(playerDeathCountdown<=0)
-			menuLoad();
+			if(numLives > 0)
+			{
+				switch (currentState)
+				{
+				case FreezeFrame::Level1:
+					level1Load();
+					break;
+				case FreezeFrame::Level2:
+					level2Load();
+					break;
+				case FreezeFrame::Level3:
+					level3Load();
+					break;
+				case FreezeFrame::FeelingLucky:
+					feelingLuckyLoad();
+					break;
+				default:
+					break;
+				}
+			}
+			else menuLoad();
 	}
 
 	worldFrameTime = frameTime;
 	player.update(worldFrameTime);
 	updateScreen(player.getCenter());
 
+	if(player.readyToFire())cursor.setColorFilter(graphicsNS::WHITE);
+	else cursor.setColorFilter(graphicsNS::ALPHA50);
 
 	cursor.update(worldFrameTime);
 
@@ -553,6 +585,8 @@ void FreezeFrame::levelsRender()
 
 	cursor.draw(screenLoc);
 
+	infoText.print("LIVES:"+std::to_string(numLives),GAME_WIDTH*0.8,0);
+
 	if(paused)
 		pause.draw(VECTOR2(0,0));
 
@@ -690,7 +724,7 @@ void FreezeFrame::level2Load()
 
 	spawnGuard(VECTOR2(1400,2000));
 	spawnGuard(VECTOR2(1300,2100));
-	spawnGuard(VECTOR2(1350,2200));
+	//spawnGuard(VECTOR2(1350,2200));
 	spawnGuard(VECTOR2(1450,2350));
 
 	spawnGuard(VECTOR2(600,2000));
@@ -734,17 +768,17 @@ void FreezeFrame::level3Load()
 
 	VECTOR2 offset(30,-30);
 
-	Turret * t1 = spawnTurret(VECTOR2(0,0),-PI/4);
-	t1->setLeft(325);
-	t1->setBot(1100);
-	t1->setCenter(t1->getCenter()+offset);
+	Turret * t1 = spawnTurret(VECTOR2(400,1050),-PI/4);
+	//t1->setLeft(325);
+	//t1->setBot(1100);
+	//t1->setCenter(t1->getCenter()+offset);
 
-	Turret * t2 = spawnTurret(VECTOR2(0,0),3*PI/4);
-	t2->setRight(1250);
+	Turret * t2 = spawnTurret(VECTOR2(1200,1550),3*PI/4); //Bottom right turret
+	/*t2->setRight(1250);
 	t2->setTop(1400);
-	t2->setCenter(t2->getCenter()-offset);
+	t2->setCenter(t2->getCenter()-offset);*/
 
-	Turret * t3 = spawnTurret(VECTOR2(125,600),3*PI/4);
+	Turret * t3 = spawnTurret(VECTOR2(125,550),3*PI/4);
 	/*t3->setLeft(0);
 	t3->setTop(0);
 	t3->setCenter(t2->getCenter()-offset);*/
@@ -753,8 +787,8 @@ void FreezeFrame::level3Load()
 
 
 	//Walls that are close to each other are grouped together.
-	Wall* w1 = spawnWall(VECTOR2(0,1600),VECTOR2(600,50));
-	Wall* w2 = spawnWall(VECTOR2(800,1600),VECTOR2(600,50)); //Entrance way
+	Wall* w1 = spawnWall(VECTOR2(0,1600),VECTOR2(500,100));
+	Wall* w2 = spawnWall(VECTOR2(700,1600),VECTOR2(550,100)); //Entrance way
 
 	Wall* w3 = spawnWall(VECTOR2(0,2000),VECTOR2(worldSizes[currentState].x, 100)); //Bottom wall
 
@@ -765,31 +799,47 @@ void FreezeFrame::level3Load()
 	Wall* w7 = spawnWall(VECTOR2(200,1000),VECTOR2(100,400)); //7 and 8 should be same height and starting y location
 
 	Wall* w8 = spawnWall(VECTOR2(800,1000),VECTOR2(100,400)); //First section on the right
-	Wall* w9 = spawnWall(VECTOR2(800,1300),VECTOR2(300,100)); 
+	Wall* w9 = spawnWall(VECTOR2(800,1400),VECTOR2(350,100)); //bottom piece
 	Wall* w10 = spawnWall(VECTOR2(500,1000),VECTOR2(300,100)); 
 
 	Wall* w11 = spawnWall(VECTOR2(200,800),VECTOR2(700,100)); //Horizontal Bar 1/3
 
 	Wall* w12 = spawnWall(VECTOR2(1000,800),VECTOR2(100,400)); 
 
-	Wall* w15 = spawnWall(VECTOR2(200,600),VECTOR2(100,200));
-
 	Wall* w13 = spawnWall(VECTOR2(50,400),VECTOR2(400,100)); //Horizontal Bar 2/3
 	Wall* w14 = spawnWall(VECTOR2(550,400),VECTOR2(700,100)); //Horizontal Bar 2/3
+
+	Wall* w15 = spawnWall(VECTOR2(200,600),VECTOR2(100,200));
+
+	//Walls for final area.
+	Wall* w16 = spawnWall(VECTOR2(200,300),VECTOR2(50,50));
+	Wall* w17 = spawnWall(VECTOR2(200,100),VECTOR2(50,50)); //Wall along right side
+	Wall* w18 = spawnWall(VECTOR2(600,300),VECTOR2(50,50)); //Wall along right side
+	Wall* w19 = spawnWall(VECTOR2(600,100),VECTOR2(50,50)); //Wall along right side
+	Wall* w20 = spawnWall(VECTOR2(1000,300),VECTOR2(50,50));
+	Wall* w21 = spawnWall(VECTOR2(1000,100),VECTOR2(50,50)); //Wall along right side
+
+	Wall* w22 = spawnWall(VECTOR2(50,0),VECTOR2(worldSizes[currentState].y-100, 50)); //Wall along right side
+
+	//Gaurds spawn
+	spawnGuard(VECTOR2(100,100));
+	spawnGuard(VECTOR2(100,200));
+	spawnGuard(VECTOR2(900,100));
+	spawnGuard(VECTOR2(900,200));
 
 	//w1->setCenterX(worldSizes[currentState].x/3);
 
 	//w2->setCenterX(worldSizes[currentState].x*2/3);
 	//w2->setBot(worldSizes[currentState].y);
 
-	spawnMine(VECTOR2(700,1625)); //Entrance mine
+	spawnMine(VECTOR2(600,1625)); //Entrance mine
 	spawnMine(VECTOR2(125,1050));
 	spawnMine(VECTOR2(900,950));
 
 	//spawnMine(worldSizes[currentState]*0.5);
 	//spawnMine(worldSizes[currentState]*0.6);
 
-	//spawnItem(VECTOR2(worldSizes[currentState].x/6,300),Item::ItemType::WEAPON);
+	spawnItem(VECTOR2(1200,1500),Item::ItemType::WEAPON);
 
 	exit.setBot(100);
 	exit.setRight(worldSizes[currentState].x);
@@ -1040,5 +1090,7 @@ void FreezeFrame::onPlayerDeath()
 		spawnParticleCloud(player.getCenter(),graphicsNS::BLUE);
 		playerDeathCountdown = TIME_UNTIL_RESET;
 		audio->playCue(KILL3_CUE);
+		numLives--;
+		player.setBullets(0);
 	}
 }

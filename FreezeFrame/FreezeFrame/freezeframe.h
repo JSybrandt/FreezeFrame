@@ -42,16 +42,20 @@ namespace freezeFrameNS
 	const float MENU_ITEM_SPEED = 300;
 	const float MENU_ITEM_DELAY = 0.25;
 
-	const int NUM_PARTICLES_IN_CLOUD_EFFECT = 350;
+	const int NUM_PARTICLES_IN_CLOUD_EFFECT = 200;
 	const int NUM_PARTICLES_IN_CONE_EFFECT = 100;
 
 	const float TIME_UNTIL_RESET = 1;
 
 	const UCHAR PAUSE_BUTTON = 'P';
 
-	const float TEXT_ON_SCREEN = 3;
+	const float TIME_TEXT_ON_SCREEN = 3;
 
+	const int STARTING_LIVES = 3;
+
+	const float INTRO_MUSIC_COUNTDOWN = 6;
 }
+
 
 using namespace freezeFrameNS;
 using namespace utilityNS;
@@ -136,6 +140,10 @@ private:
 
 	float textCooldown;
 	string statusString;
+
+	int numLives;
+
+	float introMusicCoutdown; 
 
 public:
 	// Constructor

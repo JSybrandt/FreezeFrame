@@ -9,7 +9,7 @@ namespace guardNS
 	const float SPEED=100;
 	const float LOSE_DISTANCE_SQRD = pow(600,2);
 	const float CHASE_DISTANCE_SQRD = pow(500,2);
-	const float ENGAGE_DISTANCE_SQRD = pow(300,2);
+	const float ENGAGE_DISTANCE_SQRD = pow(200,2);
 	const float WEAPON_COOLDOWN = 1;
 	const float RECOIL_TIME = 0.25;
 	const COLOR_ARGB COLOR = graphicsNS::RED;

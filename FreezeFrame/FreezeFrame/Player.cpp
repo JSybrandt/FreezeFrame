@@ -31,6 +31,11 @@ bool Player::initialize(FreezeFrame * g, Controls c,TextDX* t, int width, int he
 	game = g;
 	controls = c;
 	text = t;
+			
+	setFrames(0,5);
+	setCurrentFrame(0);
+	setFrameDelay(PL_DELAY);
+	setLoop(false);
 
 	bool result =  Actor::initialize(g,width,height,ncols,playerTM);
 	result = result && feet.initialize(g,FEET_WIDTH,FEET_HEIGHT,FEET_COL,feetTM);
@@ -93,10 +98,13 @@ void Player::update(float &frametime)
 				cylinder.setCenter(cylinder.getCenter()+diffOff*CYLINDER_VERTICAL_SPEED*frametime);
 			}
 
+			if(weaponCooldown > 0) cylinder.setColorFilter(graphicsNS::LTGRAY);
+			else cylinder.setColorFilter(graphicsNS::WHITE);
+
 			float currentSpeed = playerNS::RUN_SPEED;
+
 			VECTOR2 distToMouse = game->getMouseInWorld()-getCenter();
 			float mouseDir = atan2(distToMouse.y,distToMouse.x);
-			setRadians(mouseDir);
 
 			VECTOR2 inputDir(0,0);
 
@@ -112,6 +120,16 @@ void Player::update(float &frametime)
 				feet.update(frametime);
 				feet.setRadians(atan(inputDir.y/inputDir.x));
 			}
+
+			setRadians(mouseDir);
+
+			////set dir based on if gun or not
+			//if(numBullets > 0){
+			//	setRadians(mouseDir);
+			//}
+			//else if(inputDir != VECTOR2(0,0)){
+			//	setRadians(atan2(inputDir.y,inputDir.x));
+			//}
 
 			if(input->isKeyDown(controls.walk))
 			{
@@ -142,6 +160,7 @@ void Player::update(float &frametime)
 						recoilCooldown = playerNS::RECOIL_TIME;
 						animComplete = false;
 						setCurrentFrame(0);
+						setFrames(0, 5);
 						audio->playCue(PISTOL_CUE);
 					}
 					else
@@ -243,6 +262,9 @@ void Player::pickUpGun()
 	cylinder.setRadians(0);
 	cylinder.setCurrentFrame(0);
 
+	setCurrentFrame(0);
+	setFrames(0, 5);
+
 }
 
 
@@ -252,6 +274,10 @@ void Player::set(VECTOR2 loc)
 	cylinder.setCenter(CYLINDER_OFFSCREEN);
 	alive = true;
 	setCenter(loc);
-	numBullets = 0;
+	if(game->infAmmoCheat){
+		numBullets =  playerNS::GUN_BULLET_CAPACITY;
+		cylinder.setCurrentFrame(CYLINDER_MAX_IMG_INDEX-numBullets);
+		cylinderDesiredDir = 0;
+	}
 
 }

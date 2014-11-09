@@ -41,7 +41,7 @@ void Guard::update(float frameTime)
 			Actor::update(frameTime);
 		}
 
-		else if(shoot && weaponCooldown <= 0){
+		if(shoot && weaponCooldown <= 0){
 			//because we dont want to use the angle form player center
 			VECTOR2 bulletLoc = getCenter()+utilityNS::rotateVector(guardNS::bulletDisplacement,aimDir); //
 			VECTOR2 bulletPath = jiggleVector(game->getPlayerLoc()) - bulletLoc;
@@ -103,31 +103,31 @@ void Guard::vectorTrack(float frametime)
 
 void Guard::ai(float time, Actor &t)
 { 
-	VECTOR2 toPlayer = game->getPlayerLoc() - getCenter();
-	float distSqrdToPlayer = D3DXVec2LengthSq(&toPlayer);
+	if(active) {
+		VECTOR2 toPlayer = game->getPlayerLoc() - getCenter();
+		float distSqrdToPlayer = D3DXVec2LengthSq(&toPlayer);
 
+		if(distSqrdToPlayer > guardNS::LOSE_DISTANCE_SQRD) {
+			target = false;
+			shoot = false;
+			setVelocity(VECTOR2(0,0));
+		}
+		else if(distSqrdToPlayer < personalChaseDistanceSQRD) {
+			target = true;
+			//shoot = false;
+		}
 
-	if(distSqrdToPlayer > guardNS::LOSE_DISTANCE_SQRD) {
-		target = false;
-		shoot = false;
-		setVelocity(VECTOR2(0,0));
-	}
-
-	else if(distSqrdToPlayer < personalEngageDistanceSQRD) {
-		shoot = true;
-		target = false;
-		setVelocity(VECTOR2(0,0));
-	}
-	else if(distSqrdToPlayer < personalChaseDistanceSQRD) {
-		target = true;
-		shoot = false;
-	}
-
-	if(target) {
-		targetEntity = t;
-		vectorTrack(time);
-		//deltaTrack(time);
-		//evade();
+		if(target && distSqrdToPlayer < guardNS::LOSE_DISTANCE_SQRD && distSqrdToPlayer > personalEngageDistanceSQRD) {
+			shoot = true;
+			targetEntity = t;
+			vectorTrack(time);
+			//setVelocity(VECTOR2(0,0));
+		}
+		else if(target && distSqrdToPlayer < guardNS::LOSE_DISTANCE_SQRD) {
+			shoot = true;
+			setVelocity(VECTOR2(0,0));
+		}
+		
 	}
 	return;
 }

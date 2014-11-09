@@ -78,6 +78,8 @@ const char EXP1_CUE[] = "exp1";
 const char EXP3_CUE[] = "exp3";
 const char COCK1_CUE[] = "cock1";
 const char BEEP_CUE[] = "beep";
+const char OPENING_CUE[] = "opening";
+const char MAIN_LOOP_CUE[] = "mainLoop";
 
 // window
 const char CLASS_NAME[] = "Freeze Frame";
@@ -99,7 +101,7 @@ const int  FEET_HEIGHT = 64;
 const float FEET_DELAY = 0.05f;
 
 //Player Cells
-const int  PL_COL = 3;
+const int  PL_COL = 5;
 const int  PL_WIDTH = 64;
 const int  PL_HEIGHT = 64;
 const float PL_DELAY = 0.05f;

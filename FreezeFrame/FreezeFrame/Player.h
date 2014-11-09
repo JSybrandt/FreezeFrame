@@ -84,4 +84,7 @@ public:
 
 	void set(VECTOR2 loc);
 
+	bool readyToFire(){return weaponCooldown <= 0;};
+
+	void setBullets(int n){numBullets = n;}
 };
