@@ -73,6 +73,8 @@ void Player::update(float &frametime)
 		if(alive)
 		{
 
+			if(game->infAmmoCheat && numBullets == 0) pickUpGun();
+
 			VECTOR2 diffOn= CYLINDER_ONSCREEN-cylinder.getCenter();
 			VECTOR2 diffOff= CYLINDER_OFFSCREEN-cylinder.getCenter();
 

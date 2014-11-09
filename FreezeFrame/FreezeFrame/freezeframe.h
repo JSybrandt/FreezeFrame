@@ -48,6 +48,9 @@ namespace freezeFrameNS
 	const float TIME_UNTIL_RESET = 1;
 
 	const UCHAR PAUSE_BUTTON = 'P';
+
+	const float TEXT_ON_SCREEN = 3;
+
 }
 
 using namespace freezeFrameNS;
@@ -131,6 +134,9 @@ private:
 
 	bool paused;
 
+	float textCooldown;
+	string statusString;
+
 public:
 	// Constructor
     FreezeFrame();
@@ -157,7 +163,7 @@ public:
 	Wall* spawnWall(VECTOR2 loc, VECTOR2 size);
 	LandMine* spawnMine(VECTOR2 loc);
 	Item* spawnItem(VECTOR2 loc, Item::ItemType t);
-
+	Guard* spawnGuard(VECTOR2 loc);//TODO: add stuff for AI
 	void spawnParticleCloud(VECTOR2 loc, COLOR_ARGB c);
 	void spawnParticleCone(VECTOR2 loc, float dir, COLOR_ARGB c);
 
@@ -193,6 +199,9 @@ public:
 
 	Item* getItemUnderPlayer();
 
+
+	bool l2pCheat;
+	bool infAmmoCheat;
 };
 
 #endif
