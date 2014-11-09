@@ -21,6 +21,8 @@ Player::Player():Actor(){
 
 	showUseMessage = false;
 
+	mouseDown = false;
+
 };
 Player::~Player(){};
 
@@ -113,26 +115,37 @@ void Player::update(float &frametime)
 			sin(inputDir.y);
 
 
-			if(input->getMouseLButton()&& (weaponCooldown <= 0)&&numBullets>0){
+			if(input->getMouseLButton())
+			{
+				if(!mouseDown)
+				{
+					if(weaponCooldown <= 0&&numBullets>0)
+					{
+						numBullets--;
 
-				numBullets--;
+						cylinder.setCurrentFrame(CYLINDER_MAX_IMG_INDEX-numBullets);
 
-				cylinder.setCurrentFrame(CYLINDER_MAX_IMG_INDEX-numBullets);
+						cylinderDesiredDir = (CYLINDER_MAX_IMG_INDEX-numBullets)*PI/3;
 
-				cylinderDesiredDir = (CYLINDER_MAX_IMG_INDEX-numBullets)*PI/3;
+						//because we dont want to use the angle form player center
+						VECTOR2 bulletLoc = getCenter()+utilityNS::rotateVector(playerNS::bulletDisplacement,mouseDir);
+						VECTOR2 bulletPath = game->getMouseInWorld()-bulletLoc;
+						float bulletAngle = atan2(bulletPath.y,bulletPath.x);
 
-				//because we dont want to use the angle form player center
-				VECTOR2 bulletLoc = getCenter()+utilityNS::rotateVector(playerNS::bulletDisplacement,mouseDir);
-				VECTOR2 bulletPath = game->getMouseInWorld()-bulletLoc;
-				float bulletAngle = atan2(bulletPath.y,bulletPath.x);
-
-				game->spawnBullet(bulletLoc,bulletAngle,getColorFilter(),true);
-				weaponCooldown  = playerNS::WEAPON_COOLDOWN;
-				recoilCooldown = playerNS::RECOIL_TIME;
-				animComplete = false;
-				setCurrentFrame(0);
-				audio->playCue(PISTOL_CUE);
+						game->spawnBullet(bulletLoc,bulletAngle,getColorFilter(),true);
+						weaponCooldown  = playerNS::WEAPON_COOLDOWN;
+						recoilCooldown = playerNS::RECOIL_TIME;
+						animComplete = false;
+						setCurrentFrame(0);
+						audio->playCue(PISTOL_CUE);
+					}
+					else
+						audio->playCue(EMPTY_CUE);
+				}
+				mouseDown = true;
 			}
+			else
+				mouseDown = false;
 
 			Item* i = game->getItemUnderPlayer();
 			showUseMessage = (i != nullptr);

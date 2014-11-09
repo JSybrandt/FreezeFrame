@@ -25,6 +25,9 @@ public:
 	float weaponCooldown;
 	float recoilCooldown;
 
+	float personalChaseDistanceSQRD;
+	float personalEngageDistanceSQRD;
+
 public:
 	Guard();
 	~Guard();

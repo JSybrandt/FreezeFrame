@@ -44,7 +44,7 @@ void Guard::update(float frameTime)
 		else if(shoot && weaponCooldown <= 0){
 			//because we dont want to use the angle form player center
 			VECTOR2 bulletLoc = getCenter()+utilityNS::rotateVector(guardNS::bulletDisplacement,aimDir); //
-			VECTOR2 bulletPath = game->getPlayerLoc() - bulletLoc;
+			VECTOR2 bulletPath = jiggleVector(game->getPlayerLoc()) - bulletLoc;
 			float bulletAngle = atan2(bulletPath.y,bulletPath.x);
 
 			game->spawnBullet(bulletLoc,bulletAngle,getColorFilter(),false);
@@ -106,12 +106,12 @@ void Guard::ai(float time, Actor &t)
 	VECTOR2 toPlayer = game->getPlayerLoc() - getCenter();
 	float distSqrdToPlayer = D3DXVec2LengthSq(&toPlayer);
 
-	if(distSqrdToPlayer < guardNS::ENGAGE_DISTANCE_SQRD) {
+	if(distSqrdToPlayer < personalEngageDistanceSQRD) {
 		shoot = true;
 		target = false;
 		setVelocity(VECTOR2(0,0));
 	}
-	else if(distSqrdToPlayer < guardNS::CHASE_DISTANCE_SQRD) {
+	else if(distSqrdToPlayer < personalChaseDistanceSQRD) {
 		target = true;
 		shoot = false;
 	}
@@ -133,4 +133,8 @@ void Guard::create(VECTOR2 loc)
 	setActive(true);
 	setCenter(loc);
 	setHealth(100);
+
+
+	personalChaseDistanceSQRD = (rand01()+0.5) * guardNS::CHASE_DISTANCE_SQRD;
+	personalEngageDistanceSQRD = (rand01()+0.5) * guardNS::ENGAGE_DISTANCE_SQRD;
 }

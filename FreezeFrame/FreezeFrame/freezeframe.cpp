@@ -657,6 +657,7 @@ void FreezeFrame::level2Load()
 	spawnWall(VECTOR2(1150,0),VECTOR2(300,300));
 	spawnWall(VECTOR2(550,450),VECTOR2(1100,150));
 	spawnWall(VECTOR2(1450,600),VECTOR2(200,800));
+	spawnWall(VECTOR2(550,0),VECTOR2(600,50));
 
 	spawnWall(VECTOR2(0,900),VECTOR2(300,700));
 	spawnWall(VECTOR2(0,1600),VECTOR2(1650,200));
@@ -687,26 +688,29 @@ void FreezeFrame::level2Load()
 	spawnTurret(VECTOR2(500,3500),PI);
 	spawnTurret(VECTOR2(500,3700),PI);
 
-	spawnGuard(VECTOR2(550,1900));
-	spawnGuard(VECTOR2(150,2100));
-	spawnGuard(VECTOR2(800,2375));
+	spawnGuard(VECTOR2(1400,2000));
+	spawnGuard(VECTOR2(1300,2100));
+	spawnGuard(VECTOR2(1350,2200));
+	spawnGuard(VECTOR2(1450,2350));
 
-	spawnGuard(VECTOR2(1100,1900));
-	spawnGuard(VECTOR2(1475,2100));
-	spawnGuard(VECTOR2(975,2375));
+	spawnGuard(VECTOR2(600,2000));
+	spawnGuard(VECTOR2(650,2100));
+	spawnGuard(VECTOR2(475,2375));
 
 	spawnGuard(VECTOR2(1000,3200));
 	spawnGuard(VECTOR2(1875,3000));
+	spawnGuard(VECTOR2(1400,4000));
+
 
 	for(int i = 400; i < 1400; i+=200)
 	{
 		for(int j = 600; j < 1500; j+= 200)
 		{
-			spawnMine(VECTOR2(i,j));
+			spawnMine(VECTOR2(rand()%50-25+i,rand()%50-25+j));
 		}
 	}
 
-	for(int i = 0; i < 250; i+=75)
+	for(int i =0; i < 300; i+=75)
 	{
 		for(int j = 2500; j < worldSizes[currentState].y; j+= 150)
 		{

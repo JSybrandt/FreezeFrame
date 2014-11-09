@@ -64,6 +64,8 @@ private:
 
 	TextDX * text;
 
+	bool mouseDown;
+
 public:
 	Player();
 	~Player();

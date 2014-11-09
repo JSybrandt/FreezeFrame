@@ -20,3 +20,9 @@ float utilityNS::getSign(float n)
 {
 	return n/abs(n);
 }
+
+
+VECTOR2 utilityNS::jiggleVector(VECTOR2 v)
+{
+	return VECTOR2(v.x + (2*rand01()-1)*JIGGLE_FACTOR,v.y + (2*rand01()-1)*JIGGLE_FACTOR);
+}
