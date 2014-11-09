@@ -142,6 +142,7 @@ void Player::update(float &frametime)
 				if(i!=nullptr && i->getType()==Item::ItemType::WEAPON)
 				{
 					pickUpGun();
+					audio->playCue(COCK1_CUE);
 					i->setActive(false);
 				}
 			}

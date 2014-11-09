@@ -74,6 +74,10 @@ const char EMPTY_CUE[] = "empty";
 const char KILL1_CUE[] = "kill1";
 const char KILL2_CUE[] = "kill2";
 const char KILL3_CUE[] = "kill3";
+const char EXP1_CUE[] = "exp1";
+const char EXP3_CUE[] = "exp3";
+const char COCK1_CUE[] = "cock1";
+const char BEEP_CUE[] = "beep";
 
 // window
 const char CLASS_NAME[] = "Freeze Frame";

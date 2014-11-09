@@ -1,6 +1,6 @@
 <?xml version="1.0" standalone="no" ?>
 <!DOCTYPE project PUBLIC "-//audacityproject-1.3.0//DTD//EN" "http://audacity.sourceforge.net/xml/audacityproject-1.3.0.dtd" >
-<project xmlns="http://audacity.sourceforge.net/xml/" projname="turret_data" version="1.3.0" audacityversion="2.0.6" sel0="0.0000000000" sel1="0.0000000000" vpos="0" h="0.0000000000" zoom="222.9975728155" rate="44100.0" snapto="off" selectionformat="hh:mm:ss + milliseconds">
+<project xmlns="http://audacity.sourceforge.net/xml/" projname="turret_data" version="1.3.0" audacityversion="2.0.6" sel0="0.0000000000" sel1="0.0000000000" vpos="0" h="0.0000000000" zoom="1605.5720484129" rate="44100.0" snapto="off" selectionformat="hh:mm:ss + milliseconds">
 	<tags>
 		<tag name="TITLE" value="http://www.freesfx.co.uk"/>
 	</tags>
@@ -8,7 +8,7 @@
 		<waveclip offset="0.00000000">
 			<sequence maxsamples="262144" sampleformat="262159" numsamples="30653">
 				<waveblock start="0">
-					<simpleblockfile filename="e00007d7.au" len="30653" min="-0.808526" max="0.971558" rms="0.073864"/>
+					<simpleblockfile filename="e0000438.au" len="30653" min="-0.808526" max="0.971558" rms="0.073465"/>
 				</waveblock>
 			</sequence>
 			<envelope numpoints="0"/>
@@ -18,7 +18,7 @@
 		<waveclip offset="0.00000000">
 			<sequence maxsamples="262144" sampleformat="262159" numsamples="30653">
 				<waveblock start="0">
-					<simpleblockfile filename="e00000cd.au" len="30653" min="-0.784774" max="0.969836" rms="0.073521"/>
+					<simpleblockfile filename="e000014a.au" len="30653" min="-0.784774" max="0.969836" rms="0.073156"/>
 				</waveblock>
 			</sequence>
 			<envelope numpoints="0"/>

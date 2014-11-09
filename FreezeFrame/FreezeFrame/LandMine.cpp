@@ -19,6 +19,7 @@ void LandMine::update(float frametime)
 	if(getActive())
 	{
 		timeRemaining -= frametime;
+		beeper -= frametime;
 		if(timeRemaining < 0) 
 		{
 			if(primed)
@@ -35,8 +36,13 @@ void LandMine::update(float frametime)
 			{
 				timeRemaining = 0;
 				exploding = false;
+				audio->playCue(EXP3_CUE);
 				setActive(false);
 			}
+		}
+		if(beeper <= 0 && timeRemaining > 0) {
+			audio->playCue(BEEP_CUE);
+			beeper = timeRemaining/3.0;
 		}
 		Image::update(frametime);
 	}
