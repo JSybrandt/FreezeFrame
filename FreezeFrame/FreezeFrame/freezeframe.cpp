@@ -27,7 +27,7 @@ FreezeFrame::FreezeFrame()
 
 	paused = false;
 
-	l2pCheat==false;
+	l2pCheat=false;
 	infAmmoCheat=false;
 	textCooldown = 0;
 }
@@ -265,7 +265,7 @@ void FreezeFrame::menuUpdate(bool reset)
 			switch (selectedItem)
 			{
 			case 0:
-				level3Load();
+				level1Load();
 				break;
 			case 1:
 				feelingLuckyLoad();
@@ -441,10 +441,10 @@ void FreezeFrame::collisions()
 			switch (currentState)
 			{
 			case FreezeFrame::Level1:
-				level1Load();
+				level2Load();
 				break;
 			case FreezeFrame::Level2:
-				menuLoad();
+				level3Load();
 				break;
 			case FreezeFrame::Level3:
 				menuLoad();

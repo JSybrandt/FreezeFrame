@@ -128,7 +128,9 @@ void Guard::ai(float time, Actor &t)
 void Guard::create(VECTOR2 loc)
 {
 	target = false;
+	shoot = false;
 	velocity = VECTOR2(0,0);
 	setActive(true);
 	setCenter(loc);
+	setHealth(100);
 }

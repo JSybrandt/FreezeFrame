@@ -80,7 +80,7 @@ void LandMine::create(VECTOR2 loc)
 
 void LandMine::wasSteppedOn()
 {
-	if(!primed)
+	if(!primed && !exploding)
 	{
 		primed = true;
 		timeRemaining = TIME_UNTIL_EXPLOSION;
