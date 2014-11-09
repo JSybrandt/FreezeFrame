@@ -8,7 +8,7 @@ class FreezeFrame;
 
 namespace playerNS{
 	const float RUN_SPEED = 300;
-	const float WALK_SPEED = 300;
+	const float WALK_SPEED = 150;
 	const float WEAPON_COOLDOWN = 1;
 	const VECTOR2 bulletDisplacement(28,-18);
 	const float RECOIL_TIME = 0.25;

@@ -106,7 +106,14 @@ void Guard::ai(float time, Actor &t)
 	VECTOR2 toPlayer = game->getPlayerLoc() - getCenter();
 	float distSqrdToPlayer = D3DXVec2LengthSq(&toPlayer);
 
-	if(distSqrdToPlayer < personalEngageDistanceSQRD) {
+
+	if(distSqrdToPlayer > guardNS::LOSE_DISTANCE_SQRD) {
+		target = false;
+		shoot = false;
+		setVelocity(VECTOR2(0,0));
+	}
+
+	else if(distSqrdToPlayer < personalEngageDistanceSQRD) {
 		shoot = true;
 		target = false;
 		setVelocity(VECTOR2(0,0));

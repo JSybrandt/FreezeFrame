@@ -112,8 +112,13 @@ void Player::update(float &frametime)
 				feet.update(frametime);
 				feet.setRadians(atan(inputDir.y/inputDir.x));
 			}
-			sin(inputDir.y);
 
+			if(input->isKeyDown(controls.walk))
+			{
+				currentSpeed = WALK_SPEED;
+			}
+			else
+				currentSpeed = RUN_SPEED;
 
 			if(input->getMouseLButton())
 			{
@@ -170,16 +175,8 @@ void Player::update(float &frametime)
 			{
 				desiredTimeMultiplier = STANDING_TM;
 			}
-			//if walking
-			else if(input->isKeyDown(controls.walk))
-			{
-				currentSpeed = WALK_SPEED;
-				desiredTimeMultiplier = WALK_TM;
-			}
-			//if running
 			else if(inputDir != VECTOR2(0,0))
 			{
-				currentSpeed = RUN_SPEED;
 				desiredTimeMultiplier = RUN_TM;
 			}
 		
