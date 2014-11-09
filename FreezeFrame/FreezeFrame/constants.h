@@ -45,6 +45,7 @@ const char MINE_IMAGE[] = "pictures\\mineAni.png";
 const char DANGER_ZONE_IMAGE[]="pictures\\dangerzone.png";
 const char PAUSE_IMAGE[]="pictures\\pause.png";
 const char GUN_IMAGE[]="pictures\\gun.png";
+const char EXP_IMAGE[]="pictures\\explode.png";
 
 const char MENU_IMAGE[] = "pictures\\menu.png";
 const char MENU_CURSOR_IMAGE[] = "pictures\\menuCursor.png";
@@ -80,6 +81,7 @@ const char COCK1_CUE[] = "cock1";
 const char BEEP_CUE[] = "beep";
 const char OPENING_CUE[] = "opening";
 const char MAIN_LOOP_CUE[] = "mainLoop";
+const char END_CUE[] = "end";
 
 // window
 const char CLASS_NAME[] = "Freeze Frame";

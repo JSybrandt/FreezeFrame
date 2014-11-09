@@ -97,6 +97,7 @@ private:
 	TextureManager dangerZoneTex;
 	TextureManager pauseTex;
 	TextureManager gunTex;
+	TextureManager expTex;
 
 	Image pause;
 

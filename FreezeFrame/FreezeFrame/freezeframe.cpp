@@ -99,6 +99,9 @@ void FreezeFrame::initialize(HWND hwnd)
 	if(!pauseTex.initialize(graphics,PAUSE_IMAGE))
 		throw GameError(11,"Failed to init gun text");
 
+	if(!expTex.initialize(graphics,EXP_IMAGE))
+		throw GameError(11,"Failed to init gun text");
+
 	if(!pause.initialize(graphics,0,0,0,&pauseTex))
 		throw GameError(11,"Failed to init pause");
 
@@ -273,7 +276,7 @@ void FreezeFrame::menuUpdate(bool reset)
 			switch (selectedItem)
 			{
 			case 0:
-				level1Load();
+				level3Load();
 				numLives = STARTING_LIVES;
 				break;
 			case 1:
@@ -479,6 +482,8 @@ void FreezeFrame::collisions()
 				level3Load();
 				break;
 			case FreezeFrame::Level3:
+				audio->stopCue(MAIN_LOOP_CUE);
+				audio->playCue(END_CUE);
 				menuLoad();
 				break;
 			case FreezeFrame::RestartScreen:
@@ -761,6 +766,7 @@ void FreezeFrame::level2Load()
 
 void FreezeFrame::level3Load()
 {
+	exit.initialize(this,0,0,0,&expTex);
 	currentState = Level3;
 	deactivateAll();
 
@@ -769,22 +775,12 @@ void FreezeFrame::level3Load()
 	VECTOR2 offset(30,-30);
 
 	Turret * t1 = spawnTurret(VECTOR2(350,1050),-PI/4);
-	//t1->setLeft(325);
-	//t1->setBot(1100);
-	//t1->setCenter(t1->getCenter()+offset);
 
 	Turret * t2 = spawnTurret(VECTOR2(1200,1550),3*PI/4); //Bottom right turret
-	/*t2->setRight(1250);
-	t2->setTop(1400);
-	t2->setCenter(t2->getCenter()-offset);*/
 
 	Turret * t3 = spawnTurret(VECTOR2(125,600),3*PI/4);
-	/*t3->setLeft(0);
-	t3->setTop(0);
-	t3->setCenter(t2->getCenter()-offset);*/
 
 	Turret * t4 = spawnTurret(VECTOR2(950,650),3*PI/4);
-
 
 	//Walls that are close to each other are grouped together.
 	Wall* w1 = spawnWall(VECTOR2(0,1600),VECTOR2(650,100));
@@ -813,11 +809,11 @@ void FreezeFrame::level3Load()
 
 	//Walls for final area.
 	Wall* w16 = spawnWall(VECTOR2(200,300),VECTOR2(50,50));
-	Wall* w17 = spawnWall(VECTOR2(200,100),VECTOR2(50,50)); //Wall along right side
-	Wall* w18 = spawnWall(VECTOR2(600,300),VECTOR2(50,50)); //Wall along right side
-	Wall* w19 = spawnWall(VECTOR2(600,100),VECTOR2(50,50)); //Wall along right side
+	Wall* w17 = spawnWall(VECTOR2(200,100),VECTOR2(50,50)); //
+	Wall* w18 = spawnWall(VECTOR2(600,300),VECTOR2(50,50)); //
+	Wall* w19 = spawnWall(VECTOR2(600,100),VECTOR2(50,50)); //
 	Wall* w20 = spawnWall(VECTOR2(1000,300),VECTOR2(50,50));
-	Wall* w21 = spawnWall(VECTOR2(1000,100),VECTOR2(50,50)); //Wall along right side
+	Wall* w21 = spawnWall(VECTOR2(1000,100),VECTOR2(50,50)); //
 
 	Wall* w22 = spawnWall(VECTOR2(50,0),VECTOR2(worldSizes[currentState].y-100, 50)); //Wall along right side
 
@@ -827,22 +823,14 @@ void FreezeFrame::level3Load()
 	spawnGuard(VECTOR2(900,100));
 	spawnGuard(VECTOR2(900,200));
 
-	//w1->setCenterX(worldSizes[currentState].x/3);
-
-	//w2->setCenterX(worldSizes[currentState].x*2/3);
-	//w2->setBot(worldSizes[currentState].y);
-
 	spawnMine(VECTOR2(725,1625)); //Entrance mine
 	spawnMine(VECTOR2(125,950));
 	spawnMine(VECTOR2(950,950));
 
-	//spawnMine(worldSizes[currentState]*0.5);
-	//spawnMine(worldSizes[currentState]*0.6);
-
 	spawnItem(VECTOR2(1200,1450),Item::ItemType::WEAPON);
 
 	exit.setBot(100);
-	exit.setRight(worldSizes[currentState].x);
+	exit.setRight(worldSizes[currentState].x/2);
 	exit.update(0);
 }
 
