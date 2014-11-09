@@ -265,7 +265,7 @@ void FreezeFrame::menuUpdate(bool reset)
 			switch (selectedItem)
 			{
 			case 0:
-				level3Load();
+				level2Load();
 				break;
 			case 1:
 				feelingLuckyLoad();
@@ -441,10 +441,10 @@ void FreezeFrame::collisions()
 			switch (currentState)
 			{
 			case FreezeFrame::Level1:
-				level1Load();
+				menuLoad();
 				break;
 			case FreezeFrame::Level2:
-				menuLoad();
+				level3Load();
 				break;
 			case FreezeFrame::Level3:
 				menuLoad();
@@ -730,17 +730,25 @@ void FreezeFrame::level3Load()
 
 	VECTOR2 offset(30,-30);
 
-	/*Turret * t1 = spawnTurret(VECTOR2(0,0),-PI/4);
-	Turret * t2 = spawnTurret(VECTOR2(0,0),3*PI/4);
-
-	t1->setLeft(0);
-	t1->setBot(worldSizes[currentState].y);
+	Turret * t1 = spawnTurret(VECTOR2(0,0),-PI/4);
+	t1->setLeft(325);
+	t1->setBot(1100);
 	t1->setCenter(t1->getCenter()+offset);
 
-	t2->setRight(worldSizes[currentState].x);
-	t2->setTop(0);
-	t2->setCenter(t2->getCenter()-offset);*/
+	Turret * t2 = spawnTurret(VECTOR2(0,0),3*PI/4);
+	t2->setRight(1250);
+	t2->setTop(1400);
+	t2->setCenter(t2->getCenter()-offset);
 
+	Turret * t3 = spawnTurret(VECTOR2(125,600),3*PI/4);
+	/*t3->setLeft(0);
+	t3->setTop(0);
+	t3->setCenter(t2->getCenter()-offset);*/
+
+	Turret * t4 = spawnTurret(VECTOR2(950,650),3*PI/4);
+
+
+	//Walls that are close to each other are grouped together.
 	Wall* w1 = spawnWall(VECTOR2(0,1600),VECTOR2(600,50));
 	Wall* w2 = spawnWall(VECTOR2(800,1600),VECTOR2(600,50)); //Entrance way
 
@@ -748,16 +756,32 @@ void FreezeFrame::level3Load()
 
 	Wall* w4 = spawnWall(VECTOR2(1250,0),VECTOR2(50,worldSizes[currentState].y)); //Wall along right side
 	Wall* w5 = spawnWall(VECTOR2(0,0),VECTOR2(50,worldSizes[currentState].y-448)); //Wall along right side
-	Wall* w6 = spawnWall(VECTOR2(0,0),VECTOR2(50,worldSizes[currentState].y-448));
+	//Wall* w6 = spawnWall(VECTOR2(0,0),VECTOR2(50,worldSizes[currentState].y-448));
 
-	Wall* w7 = spawnWall(VECTOR2(0,0),VECTOR2(50,worldSizes[currentState].y-448));
+	Wall* w7 = spawnWall(VECTOR2(200,1000),VECTOR2(100,400)); //7 and 8 should be same height and starting y location
+
+	Wall* w8 = spawnWall(VECTOR2(800,1000),VECTOR2(100,400)); //First section on the right
+	Wall* w9 = spawnWall(VECTOR2(800,1300),VECTOR2(300,100)); 
+	Wall* w10 = spawnWall(VECTOR2(500,1000),VECTOR2(300,100)); 
+
+	Wall* w11 = spawnWall(VECTOR2(200,800),VECTOR2(700,100)); //Horizontal Bar 1/3
+
+	Wall* w12 = spawnWall(VECTOR2(1000,800),VECTOR2(100,400)); 
+
+	Wall* w15 = spawnWall(VECTOR2(200,600),VECTOR2(100,200));
+
+	Wall* w13 = spawnWall(VECTOR2(50,400),VECTOR2(400,100)); //Horizontal Bar 2/3
+	Wall* w14 = spawnWall(VECTOR2(550,400),VECTOR2(700,100)); //Horizontal Bar 2/3
 
 	//w1->setCenterX(worldSizes[currentState].x/3);
 
 	//w2->setCenterX(worldSizes[currentState].x*2/3);
 	//w2->setBot(worldSizes[currentState].y);
 
-	spawnMine(VECTOR2(700,1625));
+	spawnMine(VECTOR2(700,1625)); //Entrance mine
+	spawnMine(VECTOR2(125,1050));
+	spawnMine(VECTOR2(900,950));
+
 	//spawnMine(worldSizes[currentState]*0.5);
 	//spawnMine(worldSizes[currentState]*0.6);
 
