@@ -730,7 +730,7 @@ void FreezeFrame::level3Load()
 
 	VECTOR2 offset(30,-30);
 
-	Turret * t1 = spawnTurret(VECTOR2(400,1050),-PI/4);
+	Turret * t1 = spawnTurret(VECTOR2(350,1050),-PI/4);
 	//t1->setLeft(325);
 	//t1->setBot(1100);
 	//t1->setCenter(t1->getCenter()+offset);
@@ -740,7 +740,7 @@ void FreezeFrame::level3Load()
 	t2->setTop(1400);
 	t2->setCenter(t2->getCenter()-offset);*/
 
-	Turret * t3 = spawnTurret(VECTOR2(125,550),3*PI/4);
+	Turret * t3 = spawnTurret(VECTOR2(125,600),3*PI/4);
 	/*t3->setLeft(0);
 	t3->setTop(0);
 	t3->setCenter(t2->getCenter()-offset);*/
@@ -749,8 +749,8 @@ void FreezeFrame::level3Load()
 
 
 	//Walls that are close to each other are grouped together.
-	Wall* w1 = spawnWall(VECTOR2(0,1600),VECTOR2(500,100));
-	Wall* w2 = spawnWall(VECTOR2(700,1600),VECTOR2(550,100)); //Entrance way
+	Wall* w1 = spawnWall(VECTOR2(0,1600),VECTOR2(650,100));
+	Wall* w2 = spawnWall(VECTOR2(800,1600),VECTOR2(450,100)); //Entrance way
 
 	Wall* w3 = spawnWall(VECTOR2(0,2000),VECTOR2(worldSizes[currentState].x, 100)); //Bottom wall
 
@@ -762,7 +762,7 @@ void FreezeFrame::level3Load()
 
 	Wall* w8 = spawnWall(VECTOR2(800,1000),VECTOR2(100,400)); //First section on the right
 	Wall* w9 = spawnWall(VECTOR2(800,1400),VECTOR2(350,100)); //bottom piece
-	Wall* w10 = spawnWall(VECTOR2(500,1000),VECTOR2(300,100)); 
+	Wall* w10 = spawnWall(VECTOR2(400,1000),VECTOR2(400,100)); 
 
 	Wall* w11 = spawnWall(VECTOR2(200,800),VECTOR2(700,100)); //Horizontal Bar 1/3
 
@@ -794,9 +794,9 @@ void FreezeFrame::level3Load()
 	//w2->setCenterX(worldSizes[currentState].x*2/3);
 	//w2->setBot(worldSizes[currentState].y);
 
-	spawnMine(VECTOR2(600,1625)); //Entrance mine
-	spawnMine(VECTOR2(125,1050));
-	spawnMine(VECTOR2(900,950));
+	spawnMine(VECTOR2(725,1625)); //Entrance mine
+	spawnMine(VECTOR2(125,950));
+	spawnMine(VECTOR2(950,950));
 
 	//spawnMine(worldSizes[currentState]*0.5);
 	//spawnMine(worldSizes[currentState]*0.6);
