@@ -45,6 +45,8 @@ const char MINE_IMAGE[] = "pictures\\mineAni.png";
 const char DANGER_ZONE_IMAGE[]="pictures\\dangerzone.png";
 const char PAUSE_IMAGE[]="pictures\\pause.png";
 const char GUN_IMAGE[]="pictures\\gun.png";
+const char CONTROLS_IMAGE[] = "pictures\\controls.png";
+const char CREDITS_IMAGE[] = "pictures\\credits.png";
 
 const char MENU_IMAGE[] = "pictures\\menu.png";
 const char MENU_CURSOR_IMAGE[] = "pictures\\menuCursor.png";

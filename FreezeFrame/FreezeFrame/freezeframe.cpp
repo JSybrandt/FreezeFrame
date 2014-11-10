@@ -29,6 +29,7 @@ FreezeFrame::FreezeFrame()
 
 	l2pCheat=false;
 	infAmmoCheat=false;
+	showCredits = false;
 	textCooldown = 0;
 
 	numLives = STARTING_LIVES;
@@ -85,6 +86,18 @@ void FreezeFrame::initialize(HWND hwnd)
 		throw GameError(9,"Failed to init cylinder tex");
 	if(!dangerZoneTex.initialize(graphics,DANGER_ZONE_IMAGE))
 		throw GameError(9,"Failed to init danger zone tex");
+	if(!controlTex.initialize(graphics,CONTROLS_IMAGE))
+		throw GameError(9,"Failed to init control tex");
+	if(!controlImage.initialize(graphics,0,0,0,&controlTex))
+		throw GameError(9,"Failed to init control image");
+	controlImage.setCenter(VECTOR2(controlImage.getWidth()/2,GAME_HEIGHT/2));
+
+	if(!creditsTex.initialize(graphics,CREDITS_IMAGE))
+		throw GameError(9,"Failed to init control tex");
+	if(!creditsImage.initialize(graphics,0,0,0,&creditsTex))
+		throw GameError(9,"Failed to init control image");
+	creditsImage.setX(0);creditsImage.setY(GAME_HEIGHT - creditsImage.getHeight());
+
 	if(!infoText.initialize(graphics,20,true,false,"Verdana"))
 		throw GameError(9,"Failed to init mine text");
 
@@ -279,6 +292,9 @@ void FreezeFrame::menuUpdate(bool reset)
 			case 1:
 				feelingLuckyLoad();
 				numLives = 1;
+				break;
+			case 2:
+				showCredits = !showCredits;
 				break;
 			case 3:
 				PostQuitMessage(0);
@@ -534,6 +550,11 @@ void FreezeFrame::menuRender()
 		infoText.print(statusString,0,0);
 	}
 
+	controlImage.draw(UIScreenLoc);
+
+	if(showCredits)
+		creditsImage.draw(UIScreenLoc);
+
 }
 
 void FreezeFrame::levelsRender()
@@ -586,9 +607,6 @@ void FreezeFrame::levelsRender()
 	cursor.draw(screenLoc);
 
 	infoText.print("LIVES:"+std::to_string(numLives),GAME_WIDTH*0.8,0);
-
-	if(paused)
-		pause.draw(VECTOR2(0,0));
 
 }
 

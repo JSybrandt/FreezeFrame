@@ -97,7 +97,11 @@ private:
 	TextureManager dangerZoneTex;
 	TextureManager pauseTex;
 	TextureManager gunTex;
+	TextureManager controlTex;
+	TextureManager creditsTex;
 
+	Image creditsImage;
+	Image controlImage;
 	Image pause;
 
 	TextDX infoText;
@@ -137,6 +141,7 @@ private:
 	GameState currentState;
 
 	bool paused;
+	bool showCredits;
 
 	float textCooldown;
 	string statusString;
@@ -144,6 +149,7 @@ private:
 	int numLives;
 
 	float introMusicCoutdown; 
+
 
 public:
 	// Constructor
