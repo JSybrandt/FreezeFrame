@@ -665,6 +665,7 @@ void FreezeFrame::menuLoad()
 
 void FreezeFrame::level1Load()
 {
+	exit.setTextureManager(&exitTex);
 	currentState = Level1;
 	deactivateAll();
 
@@ -704,6 +705,7 @@ void FreezeFrame::level1Load()
 
 void FreezeFrame::level2Load()
 {
+	exit.setTextureManager(&exitTex);
 	currentState = Level2;
 	deactivateAll();
 
@@ -786,7 +788,7 @@ void FreezeFrame::level2Load()
 
 void FreezeFrame::level3Load()
 {
-	exit.initialize(this,0,0,0,&expTex);
+	exit.setTextureManager(&expTex);
 	currentState = Level3;
 	deactivateAll();
 
