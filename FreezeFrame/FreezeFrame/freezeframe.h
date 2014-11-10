@@ -99,6 +99,7 @@ private:
 	TextureManager gunTex;
 	TextureManager controlTex;
 	TextureManager creditsTex;
+	TextureManager expTex;
 
 	Image creditsImage;
 	Image controlImage;
